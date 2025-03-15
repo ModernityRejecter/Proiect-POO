@@ -1,14 +1,12 @@
 #include <iostream>
-#include <array>
-#include <chrono>
-#include <thread>
+#include <vector>
+#include <complex>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include <cmath>
 
 class Player {
 private:
-    sf::Texture texture; // Trebuie declarat ÎNAINTE de sprite
+    sf::Texture texture;
     sf::Sprite sprite;
     float speed;
 
@@ -16,7 +14,7 @@ public:
     Player(const std::string& texturePath, float x, float y, float speed)
         : texture(texturePath), sprite(texture), speed(speed) {
         if (!texture.loadFromFile(texturePath)) {
-            std::cerr << "Eroare la încărcarea imaginii jucătorului!\n";
+            std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";
             exit(EXIT_FAILURE);
         }
         sprite.setTexture(texture);
@@ -41,15 +39,71 @@ public:
         move(movement.x, movement.y);
     }
 
-    void draw (sf::RenderWindow& window) const {
+    void draw(sf::RenderWindow& window) const {
+        window.draw(sprite);
+    }
+
+    sf::Vector2f getPosition() const {
+        return sprite.getPosition();
+    }
+
+    sf::Vector2u getSize() const {
+        return texture.getSize();
+    }
+};
+
+class Projectile { // Schimbat numele clasei
+private:
+    static sf::Texture texture;
+    sf::Sprite sprite;
+    sf::Vector2f direction;
+    float speed;
+    float lifetime;
+    static constexpr float maxLifetime = 3.0f;
+
+public:
+    Projectile(float startX, float startY, float targetX, float targetY, float speed) // Schimbat numele constructorului
+        : sprite(texture), speed(speed), lifetime(0.f) {
+        if (texture.getSize().x == 0) {
+            if (!texture.loadFromFile("../assets/plasma_proj1.png")) {
+                std::cerr << "Eroare la incarcarea texturii glonțului!\n";
+                exit(EXIT_FAILURE);
+            }
+        }
+        sprite.setTexture(texture);
+        sf::Vector2u size = texture.getSize();
+        sprite.setOrigin(sf::Vector2f(static_cast<float>(size.x) / 2.0f, static_cast<float>(size.y) / 2.0f));
+        sprite.setPosition(sf::Vector2f(startX, startY));
+
+        sf::Vector2f vec(targetX - startX, targetY - startY);
+        float length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
+        if (length != 0)
+            direction = vec / length;
+        else
+            direction = sf::Vector2f(1.f, 0.f);
+    }
+
+    void update(float deltaTime) {
+        sprite.move(direction * speed * deltaTime);
+        lifetime += deltaTime;
+    }
+
+    bool isAlive() const {
+        return lifetime < maxLifetime;
+    }
+
+    void draw(sf::RenderWindow& window) const {
         window.draw(sprite);
     }
 };
+
+sf::Texture Projectile::texture;
 
 class Game {
 private:
     sf::RenderWindow window;
     Player player;
+    std::vector<Projectile> projectiles;
     bool shouldExit = false;
 
 public:
@@ -79,20 +133,36 @@ private:
                 event->getIf<sf::Event::KeyPressed>()->scancode == sf::Keyboard::Scan::Escape) {
                 shouldExit = true;
             }
+            if (event->is<sf::Event::MouseButtonPressed>()) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                    sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
+                    sf::Vector2f playerPos = player.getPosition();
+                    sf::Vector2u playerSize = player.getSize();
+
+                    projectiles.emplace_back(
+                        playerPos.x + static_cast<float>(playerSize.x) / 2.0f,
+                        playerPos.y + static_cast<float>(playerSize.y) / 2.0f,
+                        worldPos.x,
+                        worldPos.y,
+                        500.0f
+                    );
+                }
+            }
         }
-        if (shouldExit) {
-            window.close();
-            std::cout << "Fereastra a fost închisă.\n";
-        }
+        if (shouldExit) window.close();
     }
 
     void update(float deltaTime) {
         player.update(deltaTime);
+        for (auto& projectile : projectiles) projectile.update(deltaTime);
+        std::erase_if(projectiles, [](const Projectile& b) { return !b.isAlive(); });
     }
 
     void render() {
         window.clear();
         player.draw(window);
+        for (const auto& projectile : projectiles) projectile.draw(window);
         window.display();
     }
 };
