@@ -111,7 +111,7 @@ public:
             directionIndex = 3;
         } else if (angle >= 112.5 && angle < 157.5) {
             directionIndex = 4;
-        } else if (angle >= 157.5 && angle < -157.5) {
+        } else if (angle >= 157.5 || angle < -157.5) {
             directionIndex = 5;
         } else if (angle >= -157.5 && angle < -112.5) {
             directionIndex = 6;
