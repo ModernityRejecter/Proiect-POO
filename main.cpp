@@ -19,7 +19,7 @@ private:
 
 public:
     Player(const std::string& texturePath, float x, float y, float speed)
-        : texture(texturePath), sprite(texture), speed(speed), textureIndex(1), directionIndex(1) {
+        : texture(texturePath), sprite(texture), speed(speed), textureIndex(1), directionIndex(1), previousDirectionIndex(1) {
         if (!texture.loadFromFile(texturePath)) {
             std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";
             exit(EXIT_FAILURE);
