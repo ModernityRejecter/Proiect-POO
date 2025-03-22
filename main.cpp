@@ -199,6 +199,7 @@ public:
     }
 
     void run() {
+        player.loadPlayerTextures();
         sf::Clock clock;
         while (window.isOpen()) {
             float deltaTime = clock.restart().asSeconds();
@@ -240,7 +241,6 @@ private:
 
     void update(float deltaTime) {
         player.update(deltaTime);
-        player.loadPlayerTextures();
         for (auto& projectile : projectiles) projectile.update(deltaTime);
         std::erase_if(projectiles, [](const Projectile& b) { return !b.isAlive(); });
     }
