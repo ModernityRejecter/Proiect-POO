@@ -28,37 +28,37 @@ public:
         sprite.setPosition(sf::Vector2f(x, y));
     }
     void loadPlayerTextures() {
-        sf::Texture playerTexture("../assets/plr_sprite_d1.png");
+        sf::Texture playerTexture("./assets/plr_sprite_d1.png");
         playerTextures[1][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_d2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_d2.png");
         playerTextures[1][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_sd1.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_sd1.png");
         playerTextures[2][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_sd2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_sd2.png");
         playerTextures[2][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_s1.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_s1.png");
         playerTextures[3][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_s2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_s2.png");
         playerTextures[3][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_sa1.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_sa1.png");
         playerTextures[4][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_sa2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_sa2.png");
         playerTextures[4][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_a1.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_a1.png");
         playerTextures[5][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_a2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_a2.png");
         playerTextures[5][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_wa1.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_wa1.png");
         playerTextures[6][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_wa2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_wa2.png");
         playerTextures[6][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_w1.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_w1.png");
         playerTextures[7][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_w2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_w2.png");
         playerTextures[7][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_wd1.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_wd1.png");
         playerTextures[8][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_wd2.png");
+        playerTexture = sf::Texture("./assets/plr_sprite_wd2.png");
         playerTextures[8][2] = playerTexture;
     }
 
@@ -137,7 +137,7 @@ public:
     }
 };
 
-class Projectile { // Schimbat numele clasei
+class Projectile {
 private:
     static sf::Texture texture;
     sf::Sprite sprite;
@@ -147,11 +147,11 @@ private:
     static constexpr float maxLifetime = 3.0f;
 
 public:
-    Projectile(float startX, float startY, float targetX, float targetY, float speed) // Schimbat numele constructorului
+    Projectile(float startX, float startY, float targetX, float targetY, float speed)
         : sprite(texture), speed(speed), lifetime(0.f) {
         if (texture.getSize().x == 0) {
-            if (!texture.loadFromFile("../assets/plasma_proj1.png")) {
-                std::cerr << "Eroare la incarcarea texturii glonțului!\n";
+            if (!texture.loadFromFile("./assets/plasma_proj1.png")) {
+                std::cerr << "Eroare la incarcarea texturii proiectilului!\n";
                 exit(EXIT_FAILURE);
             }
         }
@@ -194,7 +194,7 @@ private:
 public:
     Game()
         : window(sf::VideoMode({1920, 1111}), "ETERNAL DOOM", sf::Style::Default),
-          player("../assets/plr_sprite_s1.png", 400.f, 300.f, 200.f) {
+          player("./assets/plr_sprite_s1.png", 400.f, 300.f, 200.f) {
         window.setVerticalSyncEnabled(true);
     }
 
