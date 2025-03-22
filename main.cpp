@@ -15,6 +15,7 @@ private:
     std::unordered_map<int, std::unordered_map<int, sf::Texture>> playerTextures;
     int textureIndex;
     int directionIndex;
+    int previousDirectionIndex;
 
 public:
     Player(const std::string& texturePath, float x, float y, float speed)
@@ -27,20 +28,47 @@ public:
         sprite.setPosition(sf::Vector2f(x, y));
     }
     void loadPlayerTextures() {
-        sf::Texture playerTexture("../assets/plr_sprite_s1.png");
+        sf::Texture playerTexture("../assets/plr_sprite_d1.png");
         playerTextures[1][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_s2.png");
+        playerTexture = sf::Texture("../assets/plr_sprite_d2.png");
         playerTextures[1][2] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_w1.png");
+        playerTexture = sf::Texture("../assets/plr_sprite_sd1.png");
+        playerTextures[2][1] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_sd2.png");
+        playerTextures[2][2] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_s1.png");
         playerTextures[3][1] = playerTexture;
-        playerTexture = sf::Texture("../assets/plr_sprite_w2.png");
+        playerTexture = sf::Texture("../assets/plr_sprite_s2.png");
         playerTextures[3][2] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_sa1.png");
+        playerTextures[4][1] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_sa2.png");
+        playerTextures[4][2] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_a1.png");
+        playerTextures[5][1] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_a2.png");
+        playerTextures[5][2] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_wa1.png");
+        playerTextures[6][1] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_wa2.png");
+        playerTextures[6][2] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_w1.png");
+        playerTextures[7][1] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_w2.png");
+        playerTextures[7][2] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_wd1.png");
+        playerTextures[8][1] = playerTexture;
+        playerTexture = sf::Texture("../assets/plr_sprite_wd2.png");
+        playerTextures[8][2] = playerTexture;
     }
 
     void move(float offsetX, float offsetY) {
         sprite.move({offsetX, offsetY});
     }
     void idleAnimation() {
+        if (previousDirectionIndex != directionIndex) {
+            sprite.setTexture(playerTextures[directionIndex][1]);
+        }
         if (interval.getElapsedTime().asMilliseconds() >= 300) {
             if (textureIndex == 1) {
                 sprite.setTexture(playerTextures[directionIndex][2]);
@@ -72,22 +100,25 @@ public:
         sf::Vector2i mousePosition = sf::Mouse::getPosition();
 
         float angle = std::atan2(static_cast<float>(mousePosition.y) - position.y, static_cast<float>(mousePosition.x) - position.x) * 180.f / 3.14f;
+        std::cout<<angle;
+        previousDirectionIndex = directionIndex;
+
         if (angle >= -22.5 && angle < 22.5) {
-            directionIndex = 0; // Dreapta
+            directionIndex = 1;
         } else if (angle >= 22.5 && angle < 67.5) {
-            directionIndex = 1; // Sus-dreapta
+            directionIndex = 2;
         } else if (angle >= 67.5 && angle < 112.5) {
-            directionIndex = 2; // Sus
+            directionIndex = 3;
         } else if (angle >= 112.5 && angle < 157.5) {
-            directionIndex = 3; // Sus-stânga
-        } else if (angle >= 157.5 || angle < -157.5) {
-            directionIndex = 4; // Stânga
+            directionIndex = 4;
+        } else if (angle >= 157.5 && angle < -157.5) {
+            directionIndex = 5;
         } else if (angle >= -157.5 && angle < -112.5) {
-            directionIndex = 5; // Jos-stânga
+            directionIndex = 6;
         } else if (angle >= -112.5 && angle < -67.5) {
-            directionIndex = 6; // Jos
+            directionIndex = 7;
         } else if (angle >= -67.5 && angle < -22.5) {
-            directionIndex = 7; // Jos-dreapta
+            directionIndex = 8;
         }
         move(movement.x, movement.y);
         idleAnimation();
