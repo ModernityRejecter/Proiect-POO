@@ -1,6 +1,19 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# ETERNAL DOOM
 
-### Folosiți template-ul corespunzător grupei voastre!
+### ENG
+
+A frenetic top-down shooter where you take on the slayer's unending fight against the forces of hell.
+Survive as long as possible by fending off endless waves of demons from the depths of hell.
+You'll be provided some of the most lethal and iconic weapons from the franchise to aid in your crusade against the unique hellborn monstrosities you will face,
+each and every single one of them with different abilities and archetypes.
+
+### RO
+
+Un shooter frenetic din perspectivă top-down, în care preiei lupta nesfârșită a Slayer-ului împotriva forțelor iadului.
+Supraviețuiește cât mai mult posibil, respingând valuri nesfârșite de demoni veniți din adâncurile iadului.
+Vei fi echipat cu unele dintre cele mai letale și iconice arme din franciză, care te vor ajuta în cruciada ta împotriva monstruozităților infernale unice pe care le vei înfrunta,
+fiecare dintre ele având abilități și arhetipuri diferite.
+
 
 | Laborant  | Link template                                |
 |-----------|----------------------------------------------|
