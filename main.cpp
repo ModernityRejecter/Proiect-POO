@@ -92,7 +92,7 @@ public:
         info <<"Weapon name : "<<weapon.name<<std::endl
              <<"Firerate : "<<weapon.fireRate<<std::endl;
 
-        for (auto& projectile : weapon.projectiles) {
+        for (const auto& projectile : weapon.projectiles) {
             std::cout<<"Projectile information : "<<std::endl<<projectile;
         }
         return info;
