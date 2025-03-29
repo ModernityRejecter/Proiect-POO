@@ -8,7 +8,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <SFML/Window/Event.hpp>
-#include "SFML/Audio.hpp"
+#include <SFML/Audio/Sound.hpp>
 #include <random>
 
 class Projectile {
