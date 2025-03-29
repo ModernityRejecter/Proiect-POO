@@ -28,6 +28,33 @@ public:
         direction = (length != 0) ? vec / length : sf::Vector2f(1.f, 0.f);
     }
 
+    Projectile (const Projectile& other)
+        : sprite(other.sprite), direction(other.direction), speed(other.speed), lifetime(other.lifetime) {
+        std::cout<<"Proiectilul a fost copiat cu succes";
+    }
+
+    ~Projectile() {
+        std::cout<<"Proiectiilul a fost distrus cu succes";
+    }
+
+    Projectile& operator=(const Projectile& other) {
+        if (this != &other) {
+            sprite = other.sprite;
+            direction = other.direction;
+            speed = other.speed;
+            lifetime = other.lifetime;
+            // std::cout<<"Copiere efectuata cu succes"<<std::endl; cauzeaza lag
+        }
+        return *this;
+    }
+
+    friend std::ostream& operator<<(std::ostream& info, const Projectile& projectile) {
+        info <<"Projectile speed : "<< projectile.speed<<std::endl
+             <<"Projectile elapsed lifetime : "<<projectile.lifetime<<std::endl
+             <<"Projectile position : ("<<projectile.sprite.getPosition().x <<", "<<projectile.sprite.getPosition().y<<")";
+        return info;
+    }
+
     void update(float deltaTime) {
         sprite.move(direction * speed * deltaTime);
         lifetime += deltaTime;
@@ -61,6 +88,15 @@ public:
         }
     }
 
+    friend std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
+        info <<"Weapon name : "<<weapon.name<<std::endl
+             <<"Firerate : "<<weapon.fireRate<<std::endl;
+
+        for (auto& projectile : weapon.projectiles) {
+            std::cout<<"Projectile information : "<<std::endl<<projectile;
+        }
+        return info;
+    }
     void update(float deltaTime) {
 
         for (auto& p : projectiles) p.update(deltaTime);
@@ -119,6 +155,13 @@ public:
         sprite.setPosition(sf::Vector2f(x, y));
 
         weapons.emplace_back("Plasma Rifle", "./assets/plasma_proj1.png", 500.0f, 20.0f);
+    }
+
+    friend std::ostream& operator<<(std::ostream& info, const Player& player) {
+        info << "Player position : ("<< player.sprite.getPosition().x<<", "<<player.sprite.getPosition().y<<")"<<std::endl
+             << "Current direction : "<<player.directionIndex<<std::endl
+             << "Current weapon information: "<<player.weapons[player.currentWeaponIndex]<<std::endl;
+        return info;
     }
     void loadPlayerTextures() {
         sf::Texture playerTexture("./assets/plr_sprite_d1.png");
@@ -279,7 +322,6 @@ private:
     sf::RenderWindow window;
     Player player;
     bool shouldExit = false;
-
 public:
     Game()
         : window(sf::VideoMode({1920, 1111}), "ETERNAL DOOM", sf::Style::Default),
@@ -290,14 +332,22 @@ public:
     void run() {
         player.loadPlayerTextures();
         sf::Clock clock;
+        sf::Clock informationClock;
         while (window.isOpen()) {
             float deltaTime = clock.restart().asSeconds();
             processEvents();
             update(deltaTime);
             render();
+            if (informationClock.getElapsedTime().asMilliseconds() >= 5000) {
+                std::cout<<player;
+                informationClock.restart();
+            }
         }
     }
-
+    friend std::ostream& operator<<(std::ostream& info, const Game &game) {
+        info <<"Player information : "<< game.player <<std::endl;
+        return info;
+    }
 private:
     void processEvents() {
         while (auto event = window.pollEvent()) {
