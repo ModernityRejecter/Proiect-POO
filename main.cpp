@@ -8,7 +8,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <SFML/Window/Event.hpp>
-#include "SFML/Audio/Sound.hpp"
+#include "SFML/Audio.hpp"
 #include <random>
 
 class Projectile {
@@ -435,7 +435,7 @@ private:
             std::uniform_int_distribution<> distrib(0, static_cast<int>(trackPaths.size()) - 1);
             currentMusicIndex = distrib(gen);
             std::cout<<"Now Playing :"<<currentMusicIndex<<std::endl;
-            soundTrack.openFromFile(trackPaths[currentMusicIndex]);
+            std::ignore = soundTrack.openFromFile(trackPaths[currentMusicIndex]);
             soundTrack.play();
             soundTrack.setVolume(musicVolume);
         }
