@@ -101,8 +101,7 @@ public:
 
         for (auto& p : projectiles) p.update(deltaTime);
 
-        projectiles.erase(std::remove_if(projectiles.begin(), projectiles.end(),
-            [](const Projectile& p) { return !p.isAlive(); }), projectiles.end());
+        std::erase_if(projectiles, [](const Projectile& p) { return !p.isAlive(); });
 
         if (!canShoot && fireClock.getElapsedTime().asSeconds() >= 1.0f/fireRate) {
             canShoot = true;
@@ -119,10 +118,6 @@ public:
 
     void drawProjectiles(sf::RenderWindow& window) const {
         for (const auto& p : projectiles) p.draw(window);
-    }
-
-    const std::string& getName() const {
-        return name;
     }
 
     float getFireRate() const {
@@ -156,7 +151,8 @@ public:
 
         weapons.emplace_back("Plasma Rifle", "./assets/plasma_proj1.png", 500.0f, 20.0f);
     }
-
+    // afisarea cauzeaza lag in cazul in care sunt active multe proiectile
+    // motiv pentru care este apelata la 5 secunde (trebuie gandita putin mai bine)
     friend std::ostream& operator<<(std::ostream& info, const Player& player) {
         info << "Player position : ("<< player.sprite.getPosition().x<<", "<<player.sprite.getPosition().y<<")"<<std::endl
              << "Current direction : "<<player.directionIndex<<std::endl
@@ -220,10 +216,10 @@ public:
             interval.restart();
         }
     }
-    void loadWeaponsAttributes() {
-        weapons.clear();
-        weapons.emplace_back("PlasmaRifle", "./assets/plasma_proj1.png", 500.0f, 0.2f);
-    }
+    // void loadWeaponsAttributes() {
+    //     weapons.clear();
+    //     weapons.emplace_back("PlasmaRifle", "./assets/plasma_proj1.png", 500.0f, 0.2f);
+    // } Work in progress
     void idleAnimation() {
         if (previousDirectionIndex != directionIndex) {
             sprite.setTexture(playerTextures[directionIndex][1]);
