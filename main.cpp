@@ -3,9 +3,13 @@
 #include <complex>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio/Music.hpp>
 #include <unordered_map>
 #include <cmath>
-
+#include <cstdlib>
+#include <SFML/Window/Event.hpp>
+#include "SFML/Audio/Sound.hpp"
+#include <random>
 
 class Projectile {
 private:
@@ -92,9 +96,9 @@ public:
         info <<"Weapon name : "<<weapon.name<<std::endl
              <<"Firerate : "<<weapon.fireRate<<std::endl;
 
-        for (const auto& projectile : weapon.projectiles) {
-            std::cout<<"Projectile information : "<<std::endl<<projectile;
-        }
+        // for (const auto& projectile : weapon.projectiles) {
+        //     std::cout<<"Projectile information : "<<std::endl<<projectile;
+        // }
         return info;
     }
     void update(float deltaTime) {
@@ -160,42 +164,42 @@ public:
         return info;
     }
     void loadPlayerTextures() {
-        sf::Texture playerTexture("./assets/plr_sprite_d1.png");
+        sf::Texture playerTexture("./assets/textures/player/idle/plr_sprite_d1.png");
         playerTextures[1][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_d2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_d2.png");
         playerTextures[1][2] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_sd1.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sd1.png");
         playerTextures[2][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_sd2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sd2.png");
         playerTextures[2][2] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_s1.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_s1.png");
         playerTextures[3][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_s2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_s2.png");
         playerTextures[3][2] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_sa1.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sa1.png");
         playerTextures[4][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_sa2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sa2.png");
         playerTextures[4][2] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_a1.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_a1.png");
         playerTextures[5][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_a2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_a2.png");
         playerTextures[5][2] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_wa1.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wa1.png");
         playerTextures[6][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_wa2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wa2.png");
         playerTextures[6][2] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_w1.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_w1.png");
         playerTextures[7][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_w2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_w2.png");
         playerTextures[7][2] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_wd1.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wd1.png");
         playerTextures[8][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_sprite_wd2.png");
+        playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wd2.png");
         playerTextures[8][2] = playerTexture;
 
-        playerTexture = sf::Texture("./assets/plr_shooting_s1.png");
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s1.png");
         playerTextures[9][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/plr_shooting_s2.png");
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s2.png");
         playerTextures[9][2] = playerTexture;
 
     }
@@ -228,21 +232,24 @@ public:
             if (textureIndex == 1) {
                 sprite.setTexture(playerTextures[directionIndex][2]);
                 textureIndex = 2;
-                std::cout <<"am actualizat ";
+                // std::cout <<"am actualizat ";
             }
             else {
                 sprite.setTexture(playerTextures[directionIndex][1]);
                 textureIndex = 1;
-                std::cout <<"am actualizat ";
+                // std::cout <<"am actualizat ";
             }
-            std::cout << textureIndex << std::endl;
+            // std::cout << textureIndex << std::endl;
             interval.restart();
         }
 
     }
-    void update(float deltaTime) {
+
+    void update(float deltaTime, unsigned int width, unsigned int height) {
 
         sf::Vector2f movement(0.f, 0.f);
+        sf::Vector2f position = getPosition();
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
             movement.y -= speed * deltaTime;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
@@ -253,7 +260,6 @@ public:
             movement.x += speed * deltaTime;
 
 
-        sf::Vector2f position = getPosition();
         sf::Vector2i mousePos = sf::Mouse::getPosition();
         float angle = std::atan2(static_cast<float>(mousePos.y) - position.y, static_cast<float>(mousePos.x) - position.x) * 180.f / 3.14f;
 
@@ -275,7 +281,19 @@ public:
         else if (angle >= -67.5 && angle < -22.5)
             directionIndex = 8;
 
-        move(movement.x, movement.y);
+        float halfWidth = static_cast<float>(getSize().x) / 2.f;
+        float halfHeight = static_cast<float>(getSize().y) / 2.f;
+
+        // Definește limitele pentru centrul sprite-ului
+        float minX = 0;
+        float maxX = static_cast<float>(width) - 28.f - halfWidth;
+        float minY = 0;
+        float maxY = static_cast<float>(height) - 28.f - halfHeight;
+        sf::Vector2f newPos = position + movement;
+
+        newPos.x = std::max(minX, std::min(newPos.x, maxX));
+        newPos.y = std::max(minY, std::min(newPos.y, maxY));
+        sprite.setPosition(newPos);
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             shootingAnimation();
@@ -310,29 +328,43 @@ public:
     }
 };
 
-
-
-
 class Game {
 private:
     sf::RenderWindow window;
     Player player;
     bool shouldExit = false;
+    sf::Music soundTrack;
+    std::vector<std::string> trackPaths;
+    float musicVolume;
+    int currentMusicIndex;
+
 public:
     Game()
         : window(sf::VideoMode({1920, 1111}), "ETERNAL DOOM", sf::Style::Default),
-          player("./assets/plr_sprite_s1.png", 400.f, 300.f, 200.f){
+          player("./assets/textures/player/idle/plr_sprite_s1.png", 400.f, 300.f, 300.f),
+          musicVolume(20.0f), currentMusicIndex(0){
         window.setVerticalSyncEnabled(true);
+    }
+
+    void loadTracks() {
+        trackPaths.emplace_back("./assets/music/RTPN-Uprizing-_-y_5KVimqxI_.ogg");
+        trackPaths.emplace_back("./assets/music/RTPN-Sustain-_Si1Uw_nmjMk_.ogg");
+        trackPaths.emplace_back("./assets/music/RTPN-Release-_9eluFZIpmOs_.ogg");
+        trackPaths.emplace_back("./assets/music/RTPN-Hive-_u2lNDShmM-k_.ogg");
+        trackPaths.emplace_back("./assets/music/RTPN-ClownIsWe-_O_t53q1vq04_.ogg");
+        trackPaths.emplace_back("./assets/music/RTPN-Decay-_kK2k_W0nKdE_.ogg");
     }
 
     void run() {
         player.loadPlayerTextures();
+        loadTracks();
         sf::Clock clock;
         sf::Clock informationClock;
         while (window.isOpen()) {
             float deltaTime = clock.restart().asSeconds();
             processEvents();
             update(deltaTime);
+            musicHandler();
             render();
             if (informationClock.getElapsedTime().asMilliseconds() >= 5000) {
                 std::cout<<player;
@@ -357,16 +389,56 @@ private:
         }
         if (shouldExit) window.close();
     }
-
+    // bool isWithinBounds() {
+    //     if (player.getPosition().x > 20 && player.getPosition().y > 20 &&
+    //         player.getPosition().x < window.getSize().x - 20 && player.getPosition().y < window.getSize().y - 20) {
+    //         return true;
+    //     }
+    // }
     void update(float deltaTime) {
-        player.update(deltaTime);
+        player.update(deltaTime, window.getSize().x, window.getSize().y);
     }
 
     void render() {
         window.clear();
         player.draw(window);
         window.display();
+    }
 
+    void musicHandler () {
+        static sf::Clock clock;
+        if (clock.getElapsedTime().asMilliseconds() >= 300) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Hyphen) && soundTrack.getVolume() > 0) {
+                std::cout<<"Volume lowered"<<std::endl;
+                musicVolume -= 1;
+                soundTrack.setVolume(musicVolume);
+                clock.restart();
+            }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Equal) && soundTrack.getVolume() < 30) {
+                std::cout<<"Volume increased"<<std::endl;
+                musicVolume += 1;
+                soundTrack.setVolume(musicVolume);
+                clock.restart();
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::M) && soundTrack.getVolume() != 0) {
+                soundTrack.setVolume(0);
+                clock.restart();
+            }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::M) && soundTrack.getVolume() == 0) {
+                soundTrack.setVolume(musicVolume);
+                clock.restart();
+            }
+        }
+        if (soundTrack.getStatus() == sf::Sound::Status::Stopped) {
+            std::random_device random;
+            std::mt19937 gen(random());
+            std::uniform_int_distribution<> distrib(0, static_cast<int>(trackPaths.size()) - 1);
+            currentMusicIndex = distrib(gen);
+            std::cout<<"Now Playing :"<<currentMusicIndex<<std::endl;
+            soundTrack.openFromFile(trackPaths[currentMusicIndex]);
+            soundTrack.play();
+            soundTrack.setVolume(musicVolume);
+        }
     }
 };
 
