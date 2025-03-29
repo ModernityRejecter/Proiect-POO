@@ -53,7 +53,7 @@ private:
 
 public:
     Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate)
-        : name(name), projectileSpeed(speed), fireRate(rate)
+        : name(name), fireRate(rate), projectileSpeed(speed)
     {
         if (!projectileTexture.loadFromFile(projectilePath)) {
             std::cerr << "Eroare la incarcarea texturii pentru " << name << "\n";
@@ -62,14 +62,12 @@ public:
     }
 
     void update(float deltaTime) {
-        // Actualizeaza proiectilele
+
         for (auto& p : projectiles) p.update(deltaTime);
 
-        // Elimina proiectilele expirate
         projectiles.erase(std::remove_if(projectiles.begin(), projectiles.end(),
             [](const Projectile& p) { return !p.isAlive(); }), projectiles.end());
 
-        // Controleaza rata de tragere
         if (!canShoot && fireClock.getElapsedTime().asSeconds() >= 1.0f/fireRate) {
             canShoot = true;
         }
@@ -120,7 +118,6 @@ public:
         sprite.setTexture(texture);
         sprite.setPosition(sf::Vector2f(x, y));
 
-        // Initializeaza armele
         weapons.emplace_back("Plasma Rifle", "./assets/plasma_proj1.png", 500.0f, 20.0f);
     }
     void loadPlayerTextures() {
@@ -168,7 +165,7 @@ public:
         sprite.move({offsetX, offsetY});
     }
     void shootingAnimation() {
-        if(interval.getElapsedTime().asMilliseconds() >= 1000.0f / weapons[currentWeaponIndex].getFireRate()) {
+        if(static_cast<float>(interval.getElapsedTime().asMilliseconds()) >= 1000.0f / weapons[currentWeaponIndex].getFireRate()) {
             if (textureIndex == 1) {
                 sprite.setTexture(playerTextures[9][textureIndex]);
                 textureIndex = 2;
@@ -247,10 +244,10 @@ public:
             sf::Vector2f playerPos = getPosition();
             sf::Vector2u playerSize = getSize();
             weapons[currentWeaponIndex].fire(
-                playerPos.x + playerSize.x/2.0f,
-                playerPos.y + playerSize.y/2.0f,
-                mousePos.x,
-                mousePos.y
+                playerPos.x + static_cast<float>(playerSize.x)/2.0f,
+                playerPos.y + static_cast<float>(playerSize.y)/2.0f,
+                static_cast<float>(mousePos.x),
+                static_cast<float>(mousePos.y)
             );
         } else {
             idleAnimation();
