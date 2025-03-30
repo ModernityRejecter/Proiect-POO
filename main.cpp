@@ -89,14 +89,14 @@ private:
     sf::Texture projectileTexture;
     float fireRate;
     int ammoCount;
-    // const int maxAmmo;
+    const int maxAmmo;
     const float projectileSpeed;
     sf::Clock fireClock;
     float spread;
 
 public:
     Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate, int ammo, int maxAmmo, float spread)
-        : name(name), fireRate(rate), ammoCount(ammo), projectileSpeed(speed), spread(spread) {
+        : name(name), fireRate(rate), ammoCount(ammo), maxAmmo(maxAmmo), projectileSpeed(speed), spread(spread) {
         if (!projectileTexture.loadFromFile(projectilePath)) {
             std::cerr << "Eroare la incarcarea texturii pentru " << name << "\n";
             exit(EXIT_FAILURE);
@@ -123,7 +123,8 @@ public:
     friend std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
         info << "Weapon name: " << weapon.name << "\n"
              << "Fire rate: " << weapon.fireRate << "\n"
-             << "Projectile speed: " << weapon.projectileSpeed << "\n";
+             << "Projectile speed: " << weapon.projectileSpeed << "\n"
+             << "Max ammo : "<<weapon.getMaxAmmo();
         return info;
     }
 
@@ -133,9 +134,9 @@ public:
     int getAmmoCount() const {
         return ammoCount;
     }
-    // int getMaxAmmo() const {
-    //     return maxAmmo;
-    // }
+    int getMaxAmmo() const {
+        return maxAmmo;
+    }
 };
 
 class Player {
@@ -170,6 +171,7 @@ public:
         info << "Player position : ("<< player.sprite.getPosition().x<<", "<<player.sprite.getPosition().y<<")"<<std::endl
              << "Current direction : "<<player.directionIndex<<std::endl
              << "Current weapon information: "<<player.weapons[player.currentWeaponIndex]<<std::endl;
+
         return info;
     }
 
