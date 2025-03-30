@@ -209,10 +209,38 @@ public:
         playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wd2.png");
         playerTextures[8][2] = playerTexture;
 
-        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s1.png");
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_d1.png");
         playerTextures[9][1] = playerTexture;
-        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s2.png");
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_d2.png");
         playerTextures[9][2] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sd1.png");
+        playerTextures[10][1] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sd2.png");
+        playerTextures[10][2] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s1.png");
+        playerTextures[11][1] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s2.png");
+        playerTextures[11][2] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sa1.png");
+        playerTextures[12][1] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sa2.png");
+        playerTextures[12][2] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_a1.png");
+        playerTextures[13][1] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_a2.png");
+        playerTextures[13][2] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wa1.png");
+        playerTextures[14][1] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wa2.png");
+        playerTextures[14][2] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_w1.png");
+        playerTextures[15][1] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_w2.png");
+        playerTextures[15][2] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wd1.png");
+        playerTextures[16][1] = playerTexture;
+        playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wd2.png");
+        playerTextures[16][2] = playerTexture;
 
     }
 
@@ -222,11 +250,11 @@ public:
     void shootingAnimation() {
         if(static_cast<float>(interval.getElapsedTime().asMilliseconds()) >= 1000.0f / weapons[currentWeaponIndex].getFireRate()) {
             if (textureIndex == 1) {
-                sprite.setTexture(playerTextures[9][textureIndex]);
+                sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
                 textureIndex = 2;
             }
             else {
-                sprite.setTexture(playerTextures[9][textureIndex]);
+                sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
                 textureIndex = 1;
             }
             interval.restart();
