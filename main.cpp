@@ -116,6 +116,10 @@ public:
         return {projectileTexture, startX, startY, targetX, targetY, projectileSpeed, spread};
     }
 
+    void passiveReload() {
+        if (ammoCount < maxAmmo) {}
+            ammoCount += 1;
+    }
     friend std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
         info << "Weapon name: " << weapon.name << "\n"
              << "Fire rate: " << weapon.fireRate << "\n"
@@ -223,7 +227,7 @@ public:
         weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f);
         weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f);
         weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f);
-        weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj1.png", 2000.0f, 50.0f, 1000, 1000, 10.0f);
+        weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 1000, 1000, 10.0f);
     }
     void idleAnimation() {
         if (previousDirectionIndex != directionIndex) {
@@ -243,7 +247,7 @@ public:
             // std::cout << textureIndex << std::endl;
             interval.restart();
         }
-
+        weapons[currentWeaponIndex].passiveReload();
     }
 
     void update(float deltaTime, unsigned int width, unsigned int height) {
@@ -344,7 +348,20 @@ public:
         return texture.getSize();
     }
 };
+class Hud {
+    sf::Texture texture;
+    sf::Sprite sprite;
 
+public:
+
+    Hud (const std::string& path, float height) : texture(path), sprite(texture) {
+        sprite.setTexture(texture);
+        sprite.setPosition(sf::Vector2f(0, height - static_cast<float>(texture.getSize().y)));
+    }
+    void draw(sf::RenderWindow& window) const {
+        window.draw(sprite);
+    }
+};
 class Game {
 private:
     sf::RenderWindow window;
@@ -354,12 +371,13 @@ private:
     std::vector<std::string> trackPaths;
     float musicVolume;
     int currentMusicIndex;
+    Hud hud;
 
 public:
     Game()
         : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
           player("./assets/textures/player/idle/plr_sprite_s1.png", 400.f, 300.f, 300.f),
-          musicVolume(20.0f), currentMusicIndex(0){
+          musicVolume(20.0f), currentMusicIndex(0), hud("./assets/textures/hud/hud_bg.png", static_cast<float>(window.getSize().y)) {
         window.setVerticalSyncEnabled(true);
     }
 
@@ -418,6 +436,7 @@ private:
 
     void render() {
         window.clear();
+        hud.draw(window);
         player.draw(window);
         window.display();
     }
