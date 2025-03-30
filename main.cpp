@@ -127,7 +127,15 @@ public:
         return info;
     }
 
-    float getFireRate() const { return fireRate; }
+    float getFireRate() const {
+        return fireRate;
+    }
+    int getAmmoCount() const {
+        return ammoCount;
+    }
+    int getMaxAmmo() const {
+        return maxAmmo;
+    }
 };
 
 class Player {
@@ -227,7 +235,7 @@ public:
         weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f);
         weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f);
         weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f);
-        weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 1000, 1000, 10.0f);
+        weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 999, 999, 10.0f);
     }
     void idleAnimation() {
         if (previousDirectionIndex != directionIndex) {
@@ -247,7 +255,7 @@ public:
             // std::cout << textureIndex << std::endl;
             interval.restart();
         }
-        weapons[currentWeaponIndex].passiveReload();
+        // weapons[currentWeaponIndex].passiveReload();
     }
 
     void update(float deltaTime, unsigned int width, unsigned int height) {
@@ -291,7 +299,7 @@ public:
         float minX = 0;
         float maxX = static_cast<float>(width) - 28.f - halfWidth;
         float minY = 0;
-        float maxY = static_cast<float>(height) - 28.f - halfHeight;
+        float maxY = static_cast<float>(height) - 28.f - halfHeight - 192.0f;
         sf::Vector2f newPos = position + movement;
 
         newPos.x = std::max(minX, std::min(newPos.x, maxX));
@@ -347,19 +355,109 @@ public:
     sf::Vector2u getSize() const {
         return texture.getSize();
     }
+    size_t getWeaponIndex() const {
+        return currentWeaponIndex;
+    }
+    int getWeaponAmmoCount() const {
+        return weapons[currentWeaponIndex].getAmmoCount();
+    }
+    int getWeaponMaxAmmo() const {
+        return weapons[currentWeaponIndex].getMaxAmmo();
+    }
 };
 class Hud {
     sf::Texture texture;
     sf::Sprite sprite;
 
+    class Section {
+        int amount;
+        int previousAmount;
+        std::vector<sf::Sprite> infoDigits;
+        std::vector<sf::Texture> allDigits;
+
+    public:
+        void loadDigitTextures() {
+            // Redimensionează vectorul pentru a avea 11 elemente (0-9 și un simbol special)
+            allDigits.resize(11);
+            if(!allDigits[0].loadFromFile("./assets/textures/hud/b0.png"))
+                std::cerr << "Eroare la incarcarea b0.png\n";
+            if(!allDigits[1].loadFromFile("./assets/textures/hud/b1.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[2].loadFromFile("./assets/textures/hud/b2.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[3].loadFromFile("./assets/textures/hud/b3.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[4].loadFromFile("./assets/textures/hud/b4.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[5].loadFromFile("./assets/textures/hud/b5.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[6].loadFromFile("./assets/textures/hud/b6.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[7].loadFromFile("./assets/textures/hud/b7.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[8].loadFromFile("./assets/textures/hud/b8.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[9].loadFromFile("./assets/textures/hud/b9.png"))
+                std::cerr << "Eroare la incarcarea b1.png\n";
+            if(!allDigits[10].loadFromFile("./assets/textures/hud/b%.png"))
+                std::cerr << "Eroare la incarcarea b%.png\n";
+        }
+
+        explicit Section(int amount) : amount(amount), previousAmount(0){
+            loadDigitTextures();
+
+            sf::Sprite sprite(allDigits[0]);
+            if (!allDigits.empty()) {
+                infoDigits.emplace_back(sprite);
+                infoDigits.emplace_back(sprite);
+                infoDigits.emplace_back(sprite);
+            }
+            sectionSetPosition();
+        }
+        void sectionAmmoHandler(int ammo) {
+            amount = ammo;
+            if (previousAmount != amount) {
+                infoDigits[0].setTexture(allDigits[amount/100]);
+                infoDigits[1].setTexture(allDigits[(amount/10)%10]);
+                infoDigits[2].setTexture(allDigits[amount%10]);
+
+
+                previousAmount = amount;
+            }
+        }
+        // necesita REVIZIE MASIVA pentru ca e doar un test momentan
+        void sectionSetPosition() {
+            infoDigits[0].setPosition(sf::Vector2f(44, 1200.0f - 192.0f + 48.0f));
+            infoDigits[0].setScale(sf::Vector2f(4.0f, 4.0f));
+            infoDigits[1].setPosition(sf::Vector2f(108, 1200.0f - 192.0f + 48.0f));
+            infoDigits[1].setScale(sf::Vector2f(4.0f, 4.0f));
+            infoDigits[2].setPosition(sf::Vector2f(172, 1200.0f - 192.0f + 48.0f));
+            infoDigits[2].setScale(sf::Vector2f(4.0f, 4.0f));
+        }
+        void sectionDraw(sf::RenderWindow& window) const{
+            window.draw(infoDigits[0]);
+            window.draw(infoDigits[1]);
+            window.draw(infoDigits[2]);
+        }
+    };
+    Section ammo;
+
 public:
 
-    Hud (const std::string& path, float height) : texture(path), sprite(texture) {
+    Hud (const std::string& path, float height, int digits) : texture(path), sprite(texture), ammo(digits) {
         sprite.setTexture(texture);
         sprite.setPosition(sf::Vector2f(0, height - static_cast<float>(texture.getSize().y)));
     }
     void draw(sf::RenderWindow& window) const {
         window.draw(sprite);
+        ammo.sectionDraw(window);
+    }
+    void hudUpdate(int amount) {
+        ammo.sectionAmmoHandler(amount);
+    }
+
+    sf::Texture getTexture() const{
+        return texture;
     }
 };
 class Game {
@@ -377,7 +475,7 @@ public:
     Game()
         : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
           player("./assets/textures/player/idle/plr_sprite_s1.png", 400.f, 300.f, 300.f),
-          musicVolume(20.0f), currentMusicIndex(0), hud("./assets/textures/hud/hud_bg.png", static_cast<float>(window.getSize().y)) {
+          musicVolume(20.0f), currentMusicIndex(0), hud("./assets/textures/hud/hud_bg.png", static_cast<float>(window.getSize().y), 0){
         window.setVerticalSyncEnabled(true);
     }
 
@@ -432,12 +530,13 @@ private:
     // }
     void update(float deltaTime) {
         player.update(deltaTime, window.getSize().x, window.getSize().y);
+        hud.hudUpdate(player.getWeaponAmmoCount());
     }
 
     void render() {
         window.clear();
-        hud.draw(window);
         player.draw(window);
+        hud.draw(window);
         window.display();
     }
 
