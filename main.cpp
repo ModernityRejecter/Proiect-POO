@@ -116,10 +116,10 @@ public:
         return {projectileTexture, startX, startY, targetX, targetY, projectileSpeed, spread};
     }
 
-    void passiveReload() {
-        if (ammoCount < maxAmmo) {}
-            ammoCount += 1;
-    }
+    // void passiveReload() {
+    //     if (ammoCount < maxAmmo) {}
+    //         ammoCount += 1;
+    // }
     friend std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
         info << "Weapon name: " << weapon.name << "\n"
              << "Fire rate: " << weapon.fireRate << "\n"
@@ -355,15 +355,15 @@ public:
     sf::Vector2u getSize() const {
         return texture.getSize();
     }
-    size_t getWeaponIndex() const {
-        return currentWeaponIndex;
-    }
+    // size_t getWeaponIndex() const {
+    //     return currentWeaponIndex;
+    // }
     int getWeaponAmmoCount() const {
         return weapons[currentWeaponIndex].getAmmoCount();
     }
-    int getWeaponMaxAmmo() const {
-        return weapons[currentWeaponIndex].getMaxAmmo();
-    }
+    // int getWeaponMaxAmmo() const {
+    //     return weapons[currentWeaponIndex].getMaxAmmo();
+    // }
 };
 class Hud {
     sf::Texture texture;
@@ -377,7 +377,7 @@ class Hud {
 
     public:
         void loadDigitTextures() {
-            // Redimensionează vectorul pentru a avea 11 elemente (0-9 și un simbol special)
+
             allDigits.resize(11);
             if(!allDigits[0].loadFromFile("./assets/textures/hud/b0.png"))
                 std::cerr << "Eroare la incarcarea b0.png\n";
@@ -456,9 +456,9 @@ public:
         ammo.sectionAmmoHandler(amount);
     }
 
-    sf::Texture getTexture() const{
-        return texture;
-    }
+    // sf::Texture getTexture() const{
+    //     return texture;
+    // }
 };
 class Game {
 private:
