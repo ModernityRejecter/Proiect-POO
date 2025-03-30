@@ -133,9 +133,9 @@ public:
     int getAmmoCount() const {
         return ammoCount;
     }
-    int getMaxAmmo() const {
-        return maxAmmo;
-    }
+    // int getMaxAmmo() const {
+    //     return maxAmmo;
+    // }
 };
 
 class Player {
@@ -406,12 +406,12 @@ class Hud {
         explicit Section(int amount) : amount(amount), previousAmount(0){
             loadDigitTextures();
 
-            sf::Sprite sprite(allDigits[0]);
-            if (!allDigits.empty()) {
-                infoDigits.emplace_back(sprite);
-                infoDigits.emplace_back(sprite);
-                infoDigits.emplace_back(sprite);
-            }
+            sf::Sprite localSprite(allDigits[0]);
+
+            infoDigits.emplace_back(localSprite);
+            infoDigits.emplace_back(localSprite);
+            infoDigits.emplace_back(localSprite);
+
             sectionSetPosition();
         }
         void sectionAmmoHandler(int ammo) {
