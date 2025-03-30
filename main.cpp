@@ -20,7 +20,7 @@ private:
     static constexpr float maxLifetime = 3.0f;
 
 public:
-    Projectile(const sf::Texture& texture, float startX, float startY, float targetX, float targetY, float speed)
+    Projectile(const sf::Texture& texture, float startX, float startY, float targetX, float targetY, float speed, float spreadAngle)
         : sprite(texture), speed(speed), lifetime(0.f)
     {
         sf::Vector2u size = texture.getSize();
@@ -30,6 +30,17 @@ public:
         sf::Vector2f vec(targetX - startX, targetY - startY);
         float length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
         direction = (length != 0) ? vec / length : sf::Vector2f(1.f, 0.f);
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<float> angleDist(-spreadAngle / 2, spreadAngle / 2);
+        float angleOffset = angleDist(gen); // Unghi de variație
+
+        float radians = angleOffset * (3.14159265f / 180.f);
+
+        float newX = direction.x * std::cos(radians) - direction.y * std::sin(radians);
+        float newY = direction.x * std::sin(radians) + direction.y * std::cos(radians);
+        direction = sf::Vector2f(newX, newY);
     }
 
     Projectile (const Projectile& other)
@@ -76,57 +87,43 @@ class Weapon {
 private:
     std::string name;
     sf::Texture projectileTexture;
-    std::vector<Projectile> projectiles;
     float fireRate;
-    float projectileSpeed;
+    int ammoCount;
+    const int maxAmmo;
+    const float projectileSpeed;
     sf::Clock fireClock;
-    bool canShoot = true;
+    float spread;
 
 public:
-    Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate)
-        : name(name), fireRate(rate), projectileSpeed(speed)
-    {
+    Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate, int ammo, int maxAmmo, float spread)
+        : name(name), fireRate(rate), ammoCount(ammo), maxAmmo(maxAmmo), projectileSpeed(speed), spread(spread) {
         if (!projectileTexture.loadFromFile(projectilePath)) {
             std::cerr << "Eroare la incarcarea texturii pentru " << name << "\n";
             exit(EXIT_FAILURE);
         }
     }
 
-    friend std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
-        info <<"Weapon name : "<<weapon.name<<std::endl
-             <<"Firerate : "<<weapon.fireRate<<std::endl;
+    bool canShoot() const {
+        return (fireClock.getElapsedTime().asSeconds() >= 1.0f / fireRate && ammoCount != 0);
+    }
 
-        // for (const auto& projectile : weapon.projectiles) {
-        //     std::cout<<"Projectile information : "<<std::endl<<projectile;
-        // }
+    void resetFireClock() {
+        fireClock.restart();
+    }
+
+    Projectile createProjectile(float startX, float startY, float targetX, float targetY) {
+        ammoCount -= 1;
+        return {projectileTexture, startX, startY, targetX, targetY, projectileSpeed, spread};
+    }
+
+    friend std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
+        info << "Weapon name: " << weapon.name << "\n"
+             << "Fire rate: " << weapon.fireRate << "\n"
+             << "Projectile speed: " << weapon.projectileSpeed << "\n";
         return info;
     }
-    void update(float deltaTime) {
 
-        for (auto& p : projectiles) p.update(deltaTime);
-
-        std::erase_if(projectiles, [](const Projectile& p) { return !p.isAlive(); });
-
-        if (!canShoot && fireClock.getElapsedTime().asSeconds() >= 1.0f/fireRate) {
-            canShoot = true;
-        }
-    }
-
-    void fire(float startX, float startY, float targetX, float targetY) {
-        if (canShoot) {
-            projectiles.emplace_back(projectileTexture, startX, startY, targetX, targetY, projectileSpeed);
-            fireClock.restart();
-            canShoot = false;
-        }
-    }
-
-    void drawProjectiles(sf::RenderWindow& window) const {
-        for (const auto& p : projectiles) p.draw(window);
-    }
-
-    float getFireRate() const {
-        return fireRate;
-    }
+    float getFireRate() const { return fireRate; }
 };
 
 class Player {
@@ -140,6 +137,7 @@ private:
     int directionIndex;
     int previousDirectionIndex;
     std::vector<Weapon> weapons;
+    std::vector<Projectile> playerProjectiles;
     size_t currentWeaponIndex = 0;
 
 public:
@@ -152,8 +150,7 @@ public:
         }
         sprite.setTexture(texture);
         sprite.setPosition(sf::Vector2f(x, y));
-
-        weapons.emplace_back("Plasma Rifle", "./assets/plasma_proj1.png", 500.0f, 20.0f);
+        loadWeaponsAttributes();
     }
     // afisarea cauzeaza lag in cazul in care sunt active multe proiectile
     // motiv pentru care este apelata la 5 secunde (trebuie gandita putin mai bine)
@@ -163,6 +160,7 @@ public:
              << "Current weapon information: "<<player.weapons[player.currentWeaponIndex]<<std::endl;
         return info;
     }
+
     void loadPlayerTextures() {
         sf::Texture playerTexture("./assets/textures/player/idle/plr_sprite_d1.png");
         playerTextures[1][1] = playerTexture;
@@ -220,10 +218,13 @@ public:
             interval.restart();
         }
     }
-    // void loadWeaponsAttributes() {
-    //     weapons.clear();
-    //     weapons.emplace_back("PlasmaRifle", "./assets/plasma_proj1.png", 500.0f, 0.2f);
-    // } Work in progress
+    void loadWeaponsAttributes() {
+        weapons.clear();
+        weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f);
+        weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f);
+        weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f);
+        weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj1.png", 2000.0f, 50.0f, 1000, 1000, 10.0f);
+    }
     void idleAnimation() {
         if (previousDirectionIndex != directionIndex) {
             sprite.setTexture(playerTextures[directionIndex][1]);
@@ -259,7 +260,6 @@ public:
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
             movement.x += speed * deltaTime;
 
-
         sf::Vector2i mousePos = sf::Mouse::getPosition();
         float angle = std::atan2(static_cast<float>(mousePos.y) - position.y, static_cast<float>(mousePos.x) - position.x) * 180.f / 3.14f;
 
@@ -284,7 +284,6 @@ public:
         float halfWidth = static_cast<float>(getSize().x) / 2.f;
         float halfHeight = static_cast<float>(getSize().y) / 2.f;
 
-        // Definește limitele pentru centrul sprite-ului
         float minX = 0;
         float maxX = static_cast<float>(width) - 28.f - halfWidth;
         float minY = 0;
@@ -296,28 +295,46 @@ public:
         sprite.setPosition(newPos);
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-            shootingAnimation();
+            Weapon& currentWeapon = weapons[currentWeaponIndex];
+            if (currentWeapon.canShoot()) {
+                shootingAnimation();
+                currentWeapon.resetFireClock();
 
-            sf::Vector2f playerPos = getPosition();
-            sf::Vector2u playerSize = getSize();
-            weapons[currentWeaponIndex].fire(
-                playerPos.x + static_cast<float>(playerSize.x)/2.0f,
-                playerPos.y + static_cast<float>(playerSize.y)/2.0f,
-                static_cast<float>(mousePos.x),
-                static_cast<float>(mousePos.y)
-            );
-        } else {
+                sf::Vector2f playerCenter = {
+                    position.x + static_cast<float>(texture.getSize().x) / 2.0f,
+                    position.y + static_cast<float>(texture.getSize().y) / 2.0f
+                };
+
+                playerProjectiles.push_back(currentWeapon.createProjectile(
+                    playerCenter.x,
+                    playerCenter.y,
+                    static_cast<float>(mousePos.x),
+                    static_cast<float>(mousePos.y)
+                ));
+            }
+        }
+        else {
             idleAnimation();
         }
 
-        weapons[currentWeaponIndex].update(deltaTime);
+        for (auto& projectile : playerProjectiles) {
+            projectile.update(deltaTime);
+        }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) currentWeaponIndex = 0;
+        std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
+        weaponsHandler();
     }
-
+    void weaponsHandler() {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) currentWeaponIndex = 0;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) currentWeaponIndex = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) currentWeaponIndex = 2;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4)) currentWeaponIndex = 3;
+    }
     void draw(sf::RenderWindow& window) const {
         window.draw(sprite);
-        weapons[currentWeaponIndex].drawProjectiles(window);
+        for (const auto& projectile : playerProjectiles) {
+            projectile.draw(window);
+        }
     }
 
     sf::Vector2f getPosition() const {
@@ -340,7 +357,7 @@ private:
 
 public:
     Game()
-        : window(sf::VideoMode({1920, 1111}), "ETERNAL DOOM", sf::Style::Default),
+        : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
           player("./assets/textures/player/idle/plr_sprite_s1.png", 400.f, 300.f, 300.f),
           musicVolume(20.0f), currentMusicIndex(0){
         window.setVerticalSyncEnabled(true);
@@ -407,7 +424,7 @@ private:
 
     void musicHandler () {
         static sf::Clock clock;
-        if (clock.getElapsedTime().asMilliseconds() >= 300) {
+        if (clock.getElapsedTime().asMilliseconds() >= 300 && window.hasFocus()) {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Hyphen) && soundTrack.getVolume() > 0) {
                 std::cout<<"Volume lowered"<<std::endl;
                 musicVolume -= 1;
