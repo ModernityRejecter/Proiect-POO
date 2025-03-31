@@ -433,7 +433,7 @@ class Hud {
                 std::cerr << "Eroare la incarcarea b%.png\n";
         }
 
-        explicit Section(int amount) : amount(amount), previousAmount(0){
+        explicit Section(int amount, float width, float height) : amount(amount), previousAmount(0){
             loadDigitTextures();
 
             sf::Sprite localSprite(allDigits[0]);
@@ -442,7 +442,7 @@ class Hud {
             infoDigits.emplace_back(localSprite);
             infoDigits.emplace_back(localSprite);
 
-            sectionSetPosition();
+            sectionSetPosition(width, height);
         }
         void sectionAmmoHandler(int ammo) {
             amount = ammo;
@@ -456,13 +456,14 @@ class Hud {
             }
         }
         // necesita REVIZIE MASIVA pentru ca e doar un test momentan
-        void sectionSetPosition() {
-            infoDigits[0].setPosition(sf::Vector2f(44, 1200.0f - 192.0f + 48.0f));
+        void sectionSetPosition(float width, float height) {
+            infoDigits[0].setPosition(sf::Vector2f(46, height - 192.0f + 48.0f));
             infoDigits[0].setScale(sf::Vector2f(4.0f, 4.0f));
-            infoDigits[1].setPosition(sf::Vector2f(108, 1200.0f - 192.0f + 48.0f));
+            infoDigits[1].setPosition(sf::Vector2f(110, height - 192.0f + 48.0f));
             infoDigits[1].setScale(sf::Vector2f(4.0f, 4.0f));
-            infoDigits[2].setPosition(sf::Vector2f(172, 1200.0f - 192.0f + 48.0f));
+            infoDigits[2].setPosition(sf::Vector2f(174, height - 192.0f + 48.0f));
             infoDigits[2].setScale(sf::Vector2f(4.0f, 4.0f));
+            std::cout<<"Window width : "<<width<<std::endl;
         }
         void sectionDraw(sf::RenderWindow& window) const{
             window.draw(infoDigits[0]);
@@ -474,7 +475,7 @@ class Hud {
 
 public:
 
-    Hud (const std::string& path, float height, int digits) : texture(path), sprite(texture), ammo(digits) {
+    Hud (const std::string& path, float width, float height, int digits) : texture(path), sprite(texture), ammo(digits, width, height) {
         sprite.setTexture(texture);
         sprite.setPosition(sf::Vector2f(0, height - static_cast<float>(texture.getSize().y)));
     }
@@ -505,7 +506,7 @@ public:
     Game()
         : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
           player("./assets/textures/player/idle/plr_sprite_s1.png", 400.f, 300.f, 300.f),
-          musicVolume(20.0f), currentMusicIndex(0), hud("./assets/textures/hud/hud_bg.png", static_cast<float>(window.getSize().y), 0){
+          musicVolume(20.0f), currentMusicIndex(0), hud("./assets/textures/hud/hud_bg.png",static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y), 0){
         window.setVerticalSyncEnabled(true);
     }
 
