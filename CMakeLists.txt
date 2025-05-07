@@ -59,6 +59,16 @@ endif()
 add_executable(${MAIN_EXECUTABLE_NAME}
     main.cpp
     generated/src/Helper.cpp
+        headers/game.h
+        headers/player.h
+        sources/game.cpp
+        sources/player.cpp
+        headers/weapon.h
+        sources/weapon.cpp
+        sources/projectile.cpp
+        headers/projectile.h
+        headers/hud.h
+        sources/hud.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
