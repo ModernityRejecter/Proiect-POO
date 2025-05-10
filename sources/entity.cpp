@@ -1,5 +1,7 @@
 #include "../headers/entity.h"
 #include <cmath>
+#include "../headers/game.h"
+
 Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed, sf::Vector2f position) : Drawable(texturePath, position), maxHealth(maxHealth), health(health), speed(speed), directionIndex(1), previousDirectionIndex(1) {
     std::cout<<"skibidi"<<std::endl;
 }
@@ -29,9 +31,8 @@ void Entity::move(float /*deltaTime*/, unsigned int width, unsigned int height) 
 }
 Entity::~Entity() = default;
 
-void Entity::shooting() {
-    sf::Vector2i mousePos = sf::Mouse::getPosition();
-    float angle = std::atan2(static_cast<float>(mousePos.y) - position.y, static_cast<float>(mousePos.x) - position.x) * 180.f / 3.14f;
+void Entity::shooting(sf::Vector2f& targetPosition) {
+    float angle = std::atan2((targetPosition.y) - position.y,(targetPosition.x) - position.x) * 180.f / 3.14f;
 
     previousDirectionIndex = directionIndex;
     if (angle >= -22.5 && angle < 22.5)

@@ -18,5 +18,5 @@ public:
 
     virtual ~Drawable() = default;
 
-    sf::Vector2f getPosition() const;
+    virtual sf::Vector2f getPosition() const;
 };

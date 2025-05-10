@@ -230,6 +230,10 @@
     int Player::getWeaponAmmoCount() const {
         return weapons[currentWeaponIndex].getAmmoCount();
     }
+    sf::Vector2f Player::getPosition() const {
+        return position;
+    }
+
     // int Player::getWeaponMaxAmmo() const {
     //     return weapons[currentWeaponIndex].getMaxAmmo();
     // }

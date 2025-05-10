@@ -26,5 +26,6 @@ public:
     int getWeaponAmmoCount() const;
     // int getWeaponMaxAmmo() const;
     virtual ~Player() override = default;
-    void shooting() override;
+    void shooting();
+    sf::Vector2f getPosition() const override;
 };
