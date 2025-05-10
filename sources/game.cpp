@@ -17,7 +17,7 @@
     }
 
     void Game::run() {
-        player.loadPlayerTextures();
+        player.loadEntityTextures();
         loadTracks();
         sf::Clock clock;
         sf::Clock informationClock;

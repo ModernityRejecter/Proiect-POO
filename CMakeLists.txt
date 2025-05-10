@@ -69,6 +69,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/projectile.h
         headers/hud.h
         sources/hud.cpp
+        headers/entity.h
+        headers/drawable.h
+        sources/drawable.cpp
+        sources/entity.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

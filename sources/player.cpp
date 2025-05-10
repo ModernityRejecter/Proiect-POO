@@ -1,7 +1,7 @@
 #include "../headers/player.h"
 
     Player::Player(const std::string& texturePath, float x, float y, float speed)
-        :texture(texturePath), sprite(texture), speed(speed), textureIndex(1), directionIndex(1), previousDirectionIndex(1)
+        :Entity(texturePath, maxHealth, health, speed), textureIndex(1), directionIndex(1), previousDirectionIndex(1)
     {
         if (!texture.loadFromFile(texturePath)) {
             std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";
@@ -21,7 +21,7 @@
         return info;
     }
 
-    void Player::loadPlayerTextures() {
+    void Player::loadEntityTextures() {
         sf::Texture playerTexture("./assets/textures/player/idle/plr_sprite_d1.png");
         playerTextures[1][1] = playerTexture;
         playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_d2.png");
@@ -87,7 +87,6 @@
         playerTextures[16][1] = playerTexture;
         playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wd2.png");
         playerTextures[16][2] = playerTexture;
-
     }
 
     void Player::move(float offsetX, float offsetY) {
