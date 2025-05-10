@@ -3,8 +3,9 @@
     Game::Game()
         : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
           player("./assets/textures/player/idle/plr_sprite_s1.png", 400.f, 300.f, 300.f),
-          musicVolume(20.0f), currentMusicIndex(0), hud("./assets/textures/hud/hud_bg.png",static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y), 0){
+          musicVolume(20.0f), currentMusicIndex(0), background("./assets/textures/backgrounds/bg1.png"), backgroundSprite(background), hud("./assets/textures/hud/hud_bg.png",static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y), 0){
         window.setVerticalSyncEnabled(true);
+        backgroundSprite.setPosition({0,0});
     }
 
     void Game::loadTracks() {
@@ -63,6 +64,7 @@
 
     void Game::render() {
         window.clear();
+        window.draw(backgroundSprite);
         player.draw(window);
         hud.draw(window);
         window.display();

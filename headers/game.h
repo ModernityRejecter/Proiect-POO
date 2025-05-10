@@ -16,6 +16,8 @@ private:
     std::vector<std::string> trackPaths;
     float musicVolume;
     int currentMusicIndex;
+    sf::Texture background;
+    sf::Sprite backgroundSprite;
     Hud hud;
 
 public:

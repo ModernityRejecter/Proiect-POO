@@ -1,7 +1,7 @@
 #include "../headers/player.h"
 
     Player::Player(const std::string& texturePath, float x, float y, float speed)
-        :Entity(texturePath, 100, 100, speed, {x, y}), textureIndex(1), directionIndex(1), previousDirectionIndex(1)
+        :Entity(texturePath, 100, 100, speed, {x, y}), textureIndex(1)
     {
         if (!texture.loadFromFile(texturePath)) {
             std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";
@@ -89,9 +89,6 @@
         playerTextures[16][2] = playerTexture;
     }
 
-    void Player::move(float offsetX, float offsetY) {
-        sprite.move({offsetX, offsetY});
-    }
     void Player::shootingAnimation() {
         if(static_cast<float>(interval.getElapsedTime().asMilliseconds()) >= 1000.0f / weapons[currentWeaponIndex].getFireRate()) {
             if (textureIndex == 1) {
@@ -132,9 +129,7 @@
         }
         // weapons[currentWeaponIndex].passiveReload();
     }
-
-    void Player::update(float deltaTime, unsigned int width, unsigned int height) {
-
+    void Player::move(float deltaTime, unsigned int width, unsigned int height) {
         sf::Vector2f movement(0.f, 0.f);
         position = getPosition();
 
@@ -147,6 +142,23 @@
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
             movement.x += speed * deltaTime;
 
+        // float halfWidth = static_cast<float>(getSize().x) / 2.f;
+        // float halfHeight = static_cast<float>(getSize().y) / 2.f;
+
+        float minX = 0;
+        float maxX = static_cast<float>(width) - static_cast<float>(getSize().x);
+        float minY = 0;
+        float maxY = static_cast<float>(height) - static_cast<float>(getSize().y) - 192.0f * static_cast<float>(height)/1080;
+        sf::Vector2f newPos = position + movement;
+
+        // newPos.x = std::max(minX, std::min(newPos.x, maxX));
+        // newPos.y = std::max(minY, std::min(newPos.y, maxY));
+        // sprite.setPosition(newPos);
+        if (newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)
+            sprite.move(movement);
+
+    }
+    void Player::shooting() {
         sf::Vector2i mousePos = sf::Mouse::getPosition();
         float angle = std::atan2(static_cast<float>(mousePos.y) - position.y, static_cast<float>(mousePos.x) - position.x) * 180.f / 3.14f;
 
@@ -167,19 +179,6 @@
             directionIndex = 7;
         else if (angle >= -67.5 && angle < -22.5)
             directionIndex = 8;
-
-        // float halfWidth = static_cast<float>(getSize().x) / 2.f;
-        // float halfHeight = static_cast<float>(getSize().y) / 2.f;
-
-        float minX = 0;
-        float maxX = static_cast<float>(width) - static_cast<float>(getSize().x);
-        float minY = 0;
-        float maxY = static_cast<float>(height) - static_cast<float>(getSize().y) - 192.0f * static_cast<float>(height)/1080;
-        sf::Vector2f newPos = position + movement;
-
-        newPos.x = std::max(minX, std::min(newPos.x, maxX));
-        newPos.y = std::max(minY, std::min(newPos.y, maxY));
-        sprite.setPosition(newPos);
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             Weapon& currentWeapon = weapons[currentWeaponIndex];
@@ -203,13 +202,15 @@
         else {
             idleAnimation();
         }
-
+        std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
+    }
+    void Player::update(float deltaTime, unsigned int width, unsigned int height) {
+        move(deltaTime, width, height);
+        shooting();
+        weaponsHandler();
         for (auto& projectile : playerProjectiles) {
             projectile.update(deltaTime);
         }
-
-        std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
-        weaponsHandler();
     }
     void Player::weaponsHandler() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) currentWeaponIndex = 0;
@@ -222,13 +223,6 @@
         for (const auto& projectile : playerProjectiles) {
             projectile.draw(window);
         }
-    }
-
-    sf::Vector2f Player::getPosition() const {
-        return sprite.getPosition();
-    }
-    sf::Vector2u Player::getSize() const {
-        return texture.getSize();
     }
     // size_t getWeaponIndex() const {
     //     return currentWeaponIndex;

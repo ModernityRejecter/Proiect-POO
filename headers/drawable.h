@@ -17,4 +17,6 @@ public:
     virtual sf::Vector2u getSize() const;
 
     virtual ~Drawable() = default;
+
+    sf::Vector2f getPosition() const;
 };

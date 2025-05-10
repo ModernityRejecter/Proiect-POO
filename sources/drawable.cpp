@@ -16,3 +16,7 @@ void Drawable::draw(sf::RenderWindow& window) const {
 sf::Vector2u Drawable::getSize() const {
     return texture.getSize();
 }
+
+sf::Vector2f Drawable::getPosition() const {
+    return sprite.getPosition();
+}
