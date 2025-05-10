@@ -29,7 +29,7 @@ void Entity::move(float /*deltaTime*/, unsigned int width, unsigned int height) 
 }
 Entity::~Entity() = default;
 
-[[maybe_unused]] void Entity::shooting(sf::Vector2f& targetPosition) {
+void Entity::shooting(const sf::Vector2f& targetPosition) {
     [[maybe_unused]] float angle = std::atan2((targetPosition.y) - position.y, (targetPosition.x) - position.x) * 180.f / 3.14f;
 
     previousDirectionIndex = directionIndex;

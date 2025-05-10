@@ -18,5 +18,5 @@ public:
     virtual ~Entity() override;
     virtual void move(float deltaTime, unsigned int width, unsigned int height);
     virtual void update(float deltaTime, unsigned int width, unsigned int height) = 0;
-    virtual void shooting(sf::Vector2f& targetPosition);
+    [[maybe_unused]] void shooting(const sf::Vector2f& targetPosition);
 };
