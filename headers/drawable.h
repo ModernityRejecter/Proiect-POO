@@ -8,7 +8,7 @@ protected:
     sf::Vector2f position;
 
 public:
-    Drawable(const std::string& texturePath, const sf::Vector2f& position = {600, 600});
+    explicit Drawable(const std::string& texturePath, const sf::Vector2f& position = {600, 600});
 
     virtual void setPosition(sf::Vector2f pos);
 
