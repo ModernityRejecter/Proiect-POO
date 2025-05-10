@@ -1,7 +1,7 @@
 #include "../headers/player.h"
 
     Player::Player(const std::string& texturePath, float x, float y, float speed)
-        :Entity(texturePath, maxHealth, health, speed), textureIndex(1), directionIndex(1), previousDirectionIndex(1)
+        :Entity(texturePath, 100, 100, speed), textureIndex(1), directionIndex(1), previousDirectionIndex(1)
     {
         if (!texture.loadFromFile(texturePath)) {
             std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";
@@ -136,7 +136,7 @@
     void Player::update(float deltaTime, unsigned int width, unsigned int height) {
 
         sf::Vector2f movement(0.f, 0.f);
-        sf::Vector2f position = getPosition();
+        position = getPosition();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
             movement.y -= speed * deltaTime;

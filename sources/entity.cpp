@@ -11,6 +11,6 @@ void Entity::move(float offsetX, float offsetY) {
 }
 Entity::~Entity() = default;
 
-void Entity::update(float deltaTime, unsigned int /*width*/, unsigned int /*height*/) {
+void Entity::update(float /*deltaTime*/, unsigned int /*width*/, unsigned int /*height*/) {
 
 }

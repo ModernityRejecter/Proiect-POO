@@ -25,7 +25,7 @@ public:
     void weaponsHandler();
     void draw(sf::RenderWindow& window) const override;
     sf::Vector2f getPosition() const;
-    sf::Vector2u getSize() const;
+    sf::Vector2u getSize() const override;
     // size_t getWeaponIndex() const;
     int getWeaponAmmoCount() const;
     // int getWeaponMaxAmmo() const;
