@@ -8,13 +8,13 @@ protected:
     sf::Vector2f position;
 
 public:
-    Drawable(const sf::Vector2f& position, const std::string& texturePath);
+    Drawable(const std::string& texturePath, const sf::Vector2f& position = {600, 600});
 
-    void setPosition(sf::Vector2f pos);
+    virtual void setPosition(sf::Vector2f pos);
 
     virtual void draw(sf::RenderWindow& window) const;
 
-    sf::Vector2u getSize(sf::RenderWindow& window) const;
+    virtual sf::Vector2u getSize() const;
 
     virtual ~Drawable() = default;
 };

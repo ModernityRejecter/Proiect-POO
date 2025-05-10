@@ -1,6 +1,6 @@
 #include "../headers/drawable.h"
 
-Drawable::Drawable(const sf::Vector2f& position, const std::string& texturePath) : texture(texturePath), sprite(texture), position(position) {
+Drawable::Drawable(const std::string& texturePath, const sf::Vector2f& position) : texture(texturePath), sprite(texture), position(position) {
     std::cout<<"Drawable created at position ("<<position.x<<", "<<")"<<std::endl;
 }
 
@@ -13,6 +13,6 @@ void Drawable::draw(sf::RenderWindow& window) const {
     window.draw(sprite);
 }
 
-sf::Vector2u Drawable::getSize(sf::RenderWindow& window) const {
+sf::Vector2u Drawable::getSize() const {
     return texture.getSize();
 }
