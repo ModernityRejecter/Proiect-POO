@@ -11,7 +11,7 @@ protected:
     float speed;
     std::unordered_map<int, std::unordered_map<int, sf::Texture>> playerTextures;
 public:
-    Entity (const std::string& texturePath, int maxHealth = 100, int health = 100, float speed = 100.0f);
+    Entity (const std::string& texturePath, int maxHealth = 100, int health = 100, float speed = 100.0f, sf::Vector2f  = {600,600});
     virtual void loadEntityTextures() = 0;
     virtual ~Entity() override;
     virtual void move(float offsetX, float offsetY);

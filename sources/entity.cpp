@@ -1,6 +1,6 @@
 #include "../headers/entity.h"
 
-Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed) : Drawable(texturePath, position), maxHealth(maxHealth), health(health), speed(speed) {
+Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed, sf::Vector2f position) : Drawable(texturePath, position), maxHealth(maxHealth), health(health), speed(speed) {
     std::cout<<"skibidi"<<std::endl;
 }
 void Entity::loadEntityTextures() {
