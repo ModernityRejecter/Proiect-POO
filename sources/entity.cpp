@@ -1,7 +1,5 @@
 #include "../headers/entity.h"
 #include <cmath>
-#include "../headers/game.h"
-
 Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed, sf::Vector2f position) : Drawable(texturePath, position), maxHealth(maxHealth), health(health), speed(speed), directionIndex(1), previousDirectionIndex(1) {
     std::cout<<"skibidi"<<std::endl;
 }
@@ -32,26 +30,27 @@ void Entity::move(float /*deltaTime*/, unsigned int width, unsigned int height) 
 Entity::~Entity() = default;
 
 void Entity::shooting(sf::Vector2f& targetPosition) {
-    float angle = std::atan2((targetPosition.y) - position.y,(targetPosition.x) - position.x) * 180.f / 3.14f;
+    [[maybe_unused]]float angle = std::atan2((targetPosition.y) - position.y, (targetPosition.x) - position.x) * 180.f / 3.14f;
 
     previousDirectionIndex = directionIndex;
-    if (angle >= -22.5 && angle < 22.5)
-        directionIndex = 1;
-    else if (angle >= 22.5 && angle < 67.5)
-        directionIndex = 2;
-    else if (angle >= 67.5 && angle < 112.5)
-        directionIndex = 3;
-    else if (angle >= 112.5 && angle < 157.5)
-        directionIndex = 4;
-    else if (angle >= 157.5 || angle < -157.5)
-        directionIndex = 5;
-    else if (angle >= -157.5 && angle < -112.5)
-        directionIndex = 6;
-    else if (angle >= -112.5 && angle < -67.5)
-        directionIndex = 7;
-    else if (angle >= -67.5 && angle < -22.5)
-        directionIndex = 8;
+    // if (angle >= -22.5 && angle < 22.5)
+    //     directionIndex = 1;
+    // else if (angle >= 22.5 && angle < 67.5)
+    //     directionIndex = 2;
+    // else if (angle >= 67.5 && angle < 112.5)
+    //     directionIndex = 3;
+    // else if (angle >= 112.5 && angle < 157.5)
+    //     directionIndex = 4;
+    // else if (angle >= 157.5 || angle < -157.5)
+    //     directionIndex = 5;
+    // else if (angle >= -157.5 && angle < -112.5)
+    //     directionIndex = 6;
+    // else if (angle >= -112.5 && angle < -67.5)
+    //     directionIndex = 7;
+    // else if (angle >= -67.5 && angle < -22.5)
+    //     directionIndex = 8;
 
+    // logica de mai sus este momentan comentata deoarece nu este in folos si cauzeaza probleme la bife
 
     // else {
     //     idleAnimation();

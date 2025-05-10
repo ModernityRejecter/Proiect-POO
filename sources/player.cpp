@@ -158,7 +158,7 @@
             sprite.move(movement);
 
     }
-    void Player::shooting() {
+    void Player::playerShooting() {
         sf::Vector2i mousePos = sf::Mouse::getPosition();
         float angle = std::atan2(static_cast<float>(mousePos.y) - position.y, static_cast<float>(mousePos.x) - position.x) * 180.f / 3.14f;
 
@@ -206,7 +206,7 @@
     }
     void Player::update(float deltaTime, unsigned int width, unsigned int height) {
         move(deltaTime, width, height);
-        shooting();
+        playerShooting();
         weaponsHandler();
         for (auto& projectile : playerProjectiles) {
             projectile.update(deltaTime);
@@ -230,10 +230,6 @@
     int Player::getWeaponAmmoCount() const {
         return weapons[currentWeaponIndex].getAmmoCount();
     }
-    sf::Vector2f Player::getPosition() const {
-        return position;
-    }
-
     // int Player::getWeaponMaxAmmo() const {
     //     return weapons[currentWeaponIndex].getMaxAmmo();
     // }
