@@ -1,12 +1,12 @@
 #include "../headers/entity.h"
 #include <cmath>
-Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed, sf::Vector2f position) : Drawable(texturePath, position), maxHealth(maxHealth), health(health), speed(speed) {
+Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed, sf::Vector2f position) : Drawable(texturePath, position), maxHealth(maxHealth), health(health), speed(speed), directionIndex(1), previousDirectionIndex(1) {
     std::cout<<"skibidi"<<std::endl;
 }
 void Entity::loadEntityTextures() {
 
 }
-void Entity::move(float deltaTime, unsigned int width, unsigned int height) {
+void Entity::move(float /*deltaTime*/, unsigned int width, unsigned int height) {
     sf::Vector2f movement(0.f, 0.f);
     position = getPosition();
 
