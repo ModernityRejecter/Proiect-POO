@@ -20,11 +20,6 @@
         return {projectileTexture, startX, startY, targetX, targetY, projectileSpeed, spread};
     }
 
-    // void Weapon::passiveReload() {
-    //     if (ammoCount < maxAmmo) {}
-    //         ammoCount += 1;
-    // }
-
     std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
         info << "Weapon name: " << weapon.name << "\n"
              << "Fire rate: " << weapon.fireRate << "\n"

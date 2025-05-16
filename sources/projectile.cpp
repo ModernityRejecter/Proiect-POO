@@ -1,6 +1,7 @@
 #include "../headers/projectile.h"
-static constexpr float LOGICAL_WIDTH  = 1920;
+
 static constexpr float LOGICAL_HEIGHT = 1080;
+
     Projectile::Projectile(const sf::Texture& texture, float startX, float startY, float targetX, float targetY, float speed, float spreadAngle)
         : sprite(texture), speed(speed), lifetime(0.f)
     {

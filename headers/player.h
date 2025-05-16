@@ -13,7 +13,7 @@ private:
     sf::Vector2f aimPosition;
     int armor = 200;
 
-    void move(float deltaTime, unsigned int width, unsigned int height) override;
+    void move(float deltaTime) override;
     void loadWeaponsAttributes();
     void weaponsHandler();
     void playerShooting();
@@ -32,5 +32,5 @@ public:
     void setAim(const sf::Vector2f& worldMousePos);
     int getWeaponMaxAmmo() const;
     int getPlayerArmor() const;
-    void update(float deltaTime, unsigned int width, unsigned int height) override;
+    void update(float deltaTime) override;
 };

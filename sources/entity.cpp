@@ -1,12 +1,22 @@
 #include "../headers/entity.h"
 #include <cmath>
-Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed, sf::Vector2f position) : Drawable(texturePath, position), maxHealth(maxHealth), health(health), speed(speed), directionIndex(1), previousDirectionIndex(1) {
+
+static constexpr float LOGICAL_WIDTH  = 1920;
+static constexpr float LOGICAL_HEIGHT = 1080;
+
+Entity::Entity (const std::string& texturePath, int maxHealth, int health, float speed, sf::Vector2f position)
+    : Drawable(texturePath, position),
+      maxHealth(maxHealth),
+      health(health),
+      speed(speed),
+      directionIndex(1),
+      previousDirectionIndex(1) {
     std::cout<<"skibidi"<<std::endl;
 }
 void Entity::loadEntityTextures() {
 
 }
-void Entity::move(float /*deltaTime*/, unsigned int width, unsigned int height) {
+void Entity::move(float /*deltaTime*/) {
     sf::Vector2f movement(0.f, 0.f);
     position = getPosition();
 
@@ -16,9 +26,9 @@ void Entity::move(float /*deltaTime*/, unsigned int width, unsigned int height) 
     // float halfHeight = static_cast<float>(getSize().y) / 2.f;
 
     float minX = 0;
-    float maxX = static_cast<float>(width) - static_cast<float>(getSize().x);
+    float maxX = static_cast<float>(LOGICAL_WIDTH) - static_cast<float>(getSize().x);
     float minY = 0;
-    float maxY = static_cast<float>(height) - static_cast<float>(getSize().y) - 192.0f * static_cast<float>(height)/1080;
+    float maxY = static_cast<float>(LOGICAL_HEIGHT) - static_cast<float>(getSize().y) - 192.0f;
     sf::Vector2f newPos = position + movement;
 
     // newPos.x = std::max(minX, std::min(newPos.x, maxX));
@@ -58,8 +68,8 @@ void Entity::shooting(const sf::Vector2f& targetPosition) {
     // std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
 }
 
-void Entity::update(float deltaTime, unsigned int width, unsigned int height) {
-    move(deltaTime, width, height);
+void Entity::update(float deltaTime) {
+    move(deltaTime);
 }
 
 int Entity::getHealth() const {

@@ -135,7 +135,7 @@ void Player::idleAnimation() {
     // weapons[currentWeaponIndex].passiveReload();
 }
 
-void Player::move(float deltaTime, unsigned int width, unsigned int height) {
+void Player::move(float deltaTime) {
     sf::Vector2f movement(0.f, 0.f);
     position = getPosition();
 
@@ -210,8 +210,8 @@ void Player::playerShooting() {
     std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
 }
 
-void Player::update(float deltaTime, unsigned int width, unsigned int height) {
-    move(deltaTime, width, height);
+void Player::update(float deltaTime) {
+    move(deltaTime);
     playerShooting();
     weaponsHandler();
     for (auto& projectile : playerProjectiles) {
@@ -232,9 +232,7 @@ void Player::draw(sf::RenderWindow& window) const {
         projectile.draw(window);
     }
 }
-// size_t getWeaponIndex() const {
-//     return currentWeaponIndex;
-// }
+
 int Player::getWeaponAmmoCount() const {
     return weapons[currentWeaponIndex].getAmmoCount();
 }

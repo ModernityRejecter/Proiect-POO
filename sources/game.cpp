@@ -108,7 +108,7 @@ void Game::update(float deltaTime) {
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
     player.setAim(worldPos);
 
-    player.update(deltaTime,window.getSize().x, window.getSize().y);
+    player.update(deltaTime);
     int ammoCount = player.getWeaponAmmoCount();
     ammo.hudUpdate(ammoCount);
     int playerHealth = player.getHealth();
