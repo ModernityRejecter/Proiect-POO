@@ -9,7 +9,7 @@ Game::Game()
         musicVolume(20.0f), currentMusicIndex(0), background("./assets/textures/backgrounds/bg1.png"), backgroundSprite(background),
         hudTexture("../assets/textures/hud/hud_bg.png"), hudSprite(hudTexture),
         view(sf::FloatRect({0,0},{LOGICAL_WIDTH, LOGICAL_HEIGHT})),
-        ammo(player.getWeaponAmmoCount(), sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
+        ammo(player.getWeaponMaxAmmo(), sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
         health(player.getHealth(), sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
         armor(player.getPlayerArmor(), sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192})
         /*, hud("./assets/textures/hud/hud_bg.png",static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y), 0)*/{
@@ -115,7 +115,6 @@ void Game::update(float deltaTime) {
     health.hudUpdate(playerHealth);
     int playerArmor = player.getPlayerArmor();
     armor.hudUpdate(playerArmor);
-    // hud.hudUpdate(player.getWeaponAmmoCount());
 }
 
 void Game::render() {

@@ -40,10 +40,10 @@ std::vector<sf::Texture> Hud::allDigits;
             setDigitPosition();
 
         }
-        void Hud::valueHandler(int amount) {
-                infoDigits[0].setTexture(allDigits[amount/100]);
-                infoDigits[1].setTexture(allDigits[(amount/10)%10]);
-                infoDigits[2].setTexture(allDigits[amount%10]);
+        void Hud::valueHandler(int value) {
+                infoDigits[0].setTexture(allDigits[value/100]);
+                infoDigits[1].setTexture(allDigits[(value/10)%10]);
+                infoDigits[2].setTexture(allDigits[value%10]);
         }
 
         void Hud::setDigitPosition() {
