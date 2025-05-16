@@ -20,5 +20,4 @@ public:
     void hudUpdate(int value);
     void draw(sf::RenderWindow& window) const;
     // void hudDraw(sf::RenderWindow& window) const;
-
 };
