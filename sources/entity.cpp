@@ -57,6 +57,11 @@ void Entity::shooting(const sf::Vector2f& targetPosition) {
     // }
     // std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
 }
+
 void Entity::update(float deltaTime, unsigned int width, unsigned int height) {
     move(deltaTime, width, height);
+}
+
+int Entity::getHealth() const {
+    return health;
 }

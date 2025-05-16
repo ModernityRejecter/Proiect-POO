@@ -73,6 +73,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/drawable.h
         sources/drawable.cpp
         sources/entity.cpp
+        sources/gameState.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

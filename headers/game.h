@@ -5,8 +5,9 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/Music.hpp>
 #include "player.h"
-#include "hud.h"
+#include "../headers/hud.h"
 #include <random>
+
 class Game {
 private:
     sf::RenderWindow window;
@@ -18,18 +19,24 @@ private:
     int currentMusicIndex;
     sf::Texture background;
     sf::Sprite backgroundSprite;
-    Hud hud;
+    sf::Texture hudTexture;
+    sf::Sprite hudSprite;
+    sf::View view;
+    Hud ammo;
+    Hud health;
+    Hud armor;
 
-public:
-    Game();
-    void loadTracks();
-    void run();
-    friend std::ostream& operator<<(std::ostream& info, const Game &game);
-
-private:
     void processEvents();
     // bool isWithinBounds();
     void update(float deltaTime);
     void render();
     void musicHandler();
+    void loadTracks();
+    void onResize(float width, float height);
+    sf::Vector2f getGlobalBounds() const;
+
+public:
+    Game();
+    void run();
+    friend std::ostream& operator<<(std::ostream& info, const Game &game);
 };

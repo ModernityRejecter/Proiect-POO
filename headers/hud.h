@@ -4,26 +4,21 @@
 #include <iostream>
 #include<cstdlib>
 class Hud {
-    sf::Texture texture;
-    sf::Sprite sprite;
+    sf::FloatRect rect;
+    int amount;
+    int previousAmount;
+    std::vector<sf::Sprite> infoDigits;
+    static std::vector<sf::Texture> allDigits;
+    static constexpr float scaleRatio = 6.0f;
 
-    class Section {
-        int amount;
-        int previousAmount;
-        std::vector<sf::Sprite> infoDigits;
-        std::vector<sf::Texture> allDigits;
-    public:
-        void loadDigitTextures();
-        explicit Section(int amount, float width, float height);
-        void sectionAmmoHandler(int ammo);
-        // necesita REVIZIE MASIVA pentru ca e doar un test momentan
-        void sectionSetPosition(float width, float height);
-        void sectionDraw(sf::RenderWindow& window) const;
-    };
-    Section ammo;
+    void setDigitPosition();
+    void valueHandler(int value);
+    static void loadDigitTextures();
 public:
-    Hud (const std::string& path, float width, float height, int digits);
+
+    Hud(int amount, sf::Vector2f position, sf::Vector2f size);
+    void hudUpdate(int value);
     void draw(sf::RenderWindow& window) const;
-    void hudUpdate(int amount);
-    // sf::Texture getTexture() const;
+    // void hudDraw(sf::RenderWindow& window) const;
+
 };

@@ -1,6 +1,7 @@
 #include "../headers/hud.h"
 #include <SFML/Graphics.hpp>
-        void Hud::Section::loadDigitTextures() {
+std::vector<sf::Texture> Hud::allDigits;
+        void Hud::loadDigitTextures() {
 
             allDigits.resize(11);
             if(!allDigits[0].loadFromFile("./assets/textures/hud/b0.png"))
@@ -27,7 +28,7 @@
                 std::cerr << "Eroare la incarcarea b%.png\n";
         }
 
-        Hud::Section::Section(int amount, float width, float height) : amount(amount), previousAmount(0){
+        Hud::Hud(int amount, sf::Vector2f position, sf::Vector2f size) :  rect(position, size), amount(amount), previousAmount(0) {
             loadDigitTextures();
 
             sf::Sprite localSprite(allDigits[0]);
@@ -36,45 +37,35 @@
             infoDigits.emplace_back(localSprite);
             infoDigits.emplace_back(localSprite);
 
-            sectionSetPosition(width, height);
+            setDigitPosition();
+
         }
-        void Hud::Section::sectionAmmoHandler(int ammo) {
-            amount = ammo;
-            if (previousAmount != amount) {
+        void Hud::valueHandler(int amount) {
                 infoDigits[0].setTexture(allDigits[amount/100]);
                 infoDigits[1].setTexture(allDigits[(amount/10)%10]);
                 infoDigits[2].setTexture(allDigits[amount%10]);
+        }
 
+        void Hud::setDigitPosition() {
+            infoDigits[0].setPosition(sf::Vector2f(rect.position.x + (rect.size.x - 56*scaleRatio*0.25*3 - 14) / 2, rect.position.y + rect.size.y / 2 - 56*1.2 ));
+            infoDigits[0].setScale(sf::Vector2f(scaleRatio, scaleRatio));
+            infoDigits[1].setPosition(sf::Vector2f(infoDigits[0].getPosition().x + 56*scaleRatio*0.25, rect.position.y + rect.size.y / 2 - 56*1.2 ));
+            infoDigits[1].setScale(sf::Vector2f(scaleRatio, scaleRatio));
+            infoDigits[2].setPosition(sf::Vector2f(infoDigits[1].getPosition().x + 56*scaleRatio*0.25 , rect.position.y + rect.size.y / 2 - 56*1.2 ));
+            infoDigits[2].setScale(sf::Vector2f(scaleRatio, scaleRatio));
+        }
 
-                previousAmount = amount;
-            }
-        }
-        // necesita REVIZIE MASIVA pentru ca e doar un test momentan
-        void Hud::Section::sectionSetPosition(float width, float height) {
-            infoDigits[0].setPosition(sf::Vector2f(46, height - 192.0f + 48.0f));
-            infoDigits[0].setScale(sf::Vector2f(4.0f, 4.0f));
-            infoDigits[1].setPosition(sf::Vector2f(110, height - 192.0f + 48.0f));
-            infoDigits[1].setScale(sf::Vector2f(4.0f, 4.0f));
-            infoDigits[2].setPosition(sf::Vector2f(174, height - 192.0f + 48.0f));
-            infoDigits[2].setScale(sf::Vector2f(4.0f, 4.0f));
-            std::cout<<"Window width : "<<width<<std::endl;
-        }
-        void Hud::Section::sectionDraw(sf::RenderWindow& window) const{
-            window.draw(infoDigits[0]);
-            window.draw(infoDigits[1]);
-            window.draw(infoDigits[2]);
-        }
-    Hud::Hud (const std::string& path, float width, float height, int digits) : texture(path), sprite(texture), ammo(digits, width, height) {
-        sprite.setScale(sf::Vector2f(width/static_cast<float>(texture.getSize().x), height/1080.0f));
-        sprite.setTexture(texture);
-        sprite.setPosition(sf::Vector2f(0, height - (height/1080.0f) * static_cast<float>(texture.getSize().y)));
-    }
     void Hud::draw(sf::RenderWindow& window) const {
-        window.draw(sprite);
-        ammo.sectionDraw(window);
+        for (auto& digit: infoDigits)
+            window.draw(digit);
     }
-    void Hud::hudUpdate(int amount) {
-        ammo.sectionAmmoHandler(amount);
+
+    void Hud::hudUpdate(int value) {
+        amount = value;
+        if (previousAmount != amount)
+            valueHandler(amount);
+
+        previousAmount = amount;
     }
 
     // sf::Texture getTexture() const{

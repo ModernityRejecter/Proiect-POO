@@ -15,11 +15,11 @@ private:
 public:
     Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate, int ammo, int maxAmmo, float spread);
     bool canShoot() const;
-    void resetFireClock();
     Projectile createProjectile(float startX, float startY, float targetX, float targetY);
     // void passiveReload();
     friend std::ostream& operator<<(std::ostream& info, const Weapon& weapon);
     float getFireRate() const;
     int getAmmoCount() const;
     int getMaxAmmo() const;
+    void resetFireClock();
 };
