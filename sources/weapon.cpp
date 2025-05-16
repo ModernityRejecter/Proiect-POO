@@ -1,10 +1,12 @@
 #include "../headers/weapon.h"
-Weapon::Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate, int ammo, int maxAmmo, float spread)
-    : name(name), fireRate(rate), ammoCount(ammo), maxAmmo(maxAmmo), projectileSpeed(speed), spread(spread) {
+Weapon::Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate, int ammo, int maxAmmo, float spread, const std::string& soundPath)
+    : name(name), fireRate(rate), ammoCount(ammo), maxAmmo(maxAmmo), projectileSpeed(speed), spread(spread),
+      soundBuffer(soundPath), sound(soundBuffer) {
     if (!projectileTexture.loadFromFile(projectilePath)) {
         std::cerr << "Eroare la incarcarea texturii pentru " << name << "\n";
         exit(EXIT_FAILURE);
     }
+    sound.setVolume(10);
 }
 
 bool Weapon::canShoot() const {
@@ -27,7 +29,9 @@ std::ostream& operator<<(std::ostream& info, const Weapon& weapon) {
          << "Max ammo : "<<weapon.getMaxAmmo();
     return info;
 }
-
+void Weapon::playSound(){
+    sound.play();
+}
 float Weapon::getFireRate() const {
     return fireRate;
 }

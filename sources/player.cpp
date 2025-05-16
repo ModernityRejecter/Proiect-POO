@@ -108,10 +108,11 @@ void Player::shootingAnimation() {
 
 void Player::loadWeaponsAttributes() {
     weapons.clear();
-    weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f);
-    weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f);
-    weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f);
-    weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 999, 999, 10.0f);
+    weapons.reserve(4);
+    weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f, "./assets/sounds/plasma.wav");
+    weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f, "./assets/sounds/rocket_launcher.wav");
+    weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 999, 999, 10.0f, "./assets/sounds/pistol.wav");
+    weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f, "./assets/sounds/BFG_9000.wav");
 }
 
 void Player::idleAnimation() {
@@ -188,6 +189,7 @@ void Player::playerShooting() {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
         Weapon& currentWeapon = weapons[currentWeaponIndex];
         if (currentWeapon.canShoot()) {
+            weapons[currentWeaponIndex].playSound();
             shootingAnimation();
             currentWeapon.resetFireClock();
 

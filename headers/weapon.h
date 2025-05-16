@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "../headers/projectile.h"
 class Weapon {
 private:
@@ -11,9 +12,12 @@ private:
     const float projectileSpeed;
     sf::Clock fireClock;
     float spread;
+    sf::SoundBuffer soundBuffer;
+    sf::Sound sound;
 
 public:
-    Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate, int ammo, int maxAmmo, float spread);
+    Weapon(const std::string& name, const std::string& projectilePath, float speed, float rate, int ammo,
+           int maxAmmo, float spread, const std::string& soundPath);
     bool canShoot() const;
     Projectile createProjectile(float startX, float startY, float targetX, float targetY);
     // void passiveReload();
@@ -22,4 +26,5 @@ public:
     int getAmmoCount() const;
     int getMaxAmmo() const;
     void resetFireClock();
+    void playSound();
 };
