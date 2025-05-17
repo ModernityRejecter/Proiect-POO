@@ -1,0 +1,257 @@
+[33mcommit 028707f14323930bfd5a4c1cd65d984c604361c1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 23:40:22 2025 +0300
+
+    slightly modified shooting method for entity class to comply with checks and for future implementations
+
+[33mcommit 8de08a36dff20a187992319b1d0dbb86c6ffeedc[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 21:42:04 2025 +0300
+
+    fixed minor warns oversight
+
+[33mcommit 1f107b62c09dee9b32078f5c61b0835ab35d123e[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 21:36:08 2025 +0300
+
+    added enemy classes and a background to the game
+
+[33mcommit 2bae58c73734cdb339766c5a32a64717439e5d6e[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 18:26:47 2025 +0300
+
+    very minor compliance change, not definitive
+
+[33mcommit 40ec22db520ece400dea169fffabfeedfca611f5[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 18:21:40 2025 +0300
+
+    potential working workaround for now
+
+[33mcommit 8eee5cccff36738947106456f432bbff9bc7fecb[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 18:05:16 2025 +0300
+
+    trying to find a few workarounds for the WIP implementation
+
+[33mcommit f7e5795c23532998873323b88b6d6a8c29ac8a78[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 17:49:52 2025 +0300
+
+    minor fixes, current hierarchy implementation is still rudimental
+
+[33mcommit 645a93376a880fd8fe2a593c5633a57d3013e441[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat May 10 17:15:28 2025 +0300
+
+    new class hierarchy meant to improve overall entity handling
+
+[33mcommit d5795140e027a863f06e237fa91179fc86f01aa8[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Wed May 7 15:50:38 2025 +0300
+
+    greatest oversight of all time
+
+[33mcommit 12a51aaaea16c8b457a3019cd449b34d1082a6af[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Wed May 7 15:43:36 2025 +0300
+
+    added headers and sources folders, classes have been relocated to their respective files
+
+[33mcommit 2e04ade1a979b599aaca7a689ab58f598cf78761[m[33m ([m[1;33mtag: [m[1;33mv0.1[m[33m)[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Mon Mar 31 14:46:35 2025 +0300
+
+    Minor change to improve hud items positioning
+
+[33mcommit c38b8283d22ea710a59329773f7d7c0cec6f73f0[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Mon Mar 31 00:23:19 2025 +0300
+
+    Minor edits to the README.md file
+
+[33mcommit c7a73a40eb074e9f7007e65f3f04b2aa8d6e3be4[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Mon Mar 31 00:03:34 2025 +0300
+
+    Updated README.md file
+
+[33mcommit 7c2ebec91018993417cc84485436f27cb21a5cad[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 22:47:13 2025 +0300
+
+    Added fully working shooting animations
+
+[33mcommit 7156de24daec86cb9f95df53d6489e3d37dca030[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 22:37:21 2025 +0300
+
+    Hopefully this does hammer all the issues down
+
+[33mcommit 3b66d97c750c6be2a4ece9aa225c29e9eed07346[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 22:32:09 2025 +0300
+
+    Fix for checkmark related issues
+
+[33mcommit 28e1dfffc7f13806ea73fb14e3839184b2db7c56[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 22:29:34 2025 +0300
+
+    Attempt at fixing issues with checkmarks
+
+[33mcommit 41b7bc822435cded55ffc8ebdc9a4867ede0887c[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 22:21:19 2025 +0300
+
+    Temporarily disabled unused functions
+
+[33mcommit db251628bfabcbda4090f9d0f88622af053cea9a[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 22:16:36 2025 +0300
+
+    Added Hud class along with a WIP ammo counter on screen
+
+[33mcommit 32193e42c49447b0e5efbb0daeeefcaf4fe840da[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 15:00:40 2025 +0300
+
+    Added WIP hud and a few textures
+
+[33mcommit 1e73a2359b51cfbf2978ea2cee9ac07d39ab9d87[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sun Mar 30 13:58:44 2025 +0300
+
+    Added 4 different weapons with unique traits
+
+[33mcommit 0896834204618a1732187a0faca66a6962b8b919[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 22:33:21 2025 +0200
+
+    I might just be the GOAT of idiocy 🔥
+
+[33mcommit de60abcd626508458744f6b4ee24e7aae44e135c[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 22:29:57 2025 +0200
+
+    Corrected a minor warning
+
+[33mcommit 6c3a10a1fb4b6269b5af0fe54b87af28bbc4b363[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 22:20:03 2025 +0200
+
+    Player can no longer get outside of the window
+
+[33mcommit 9fae243a64c165773260a284069cc663e653b985[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 20:31:03 2025 +0200
+
+    Added changes to CmakeLists.txt to make audio files usable
+
+[33mcommit 652066b2060a8b123106017a62c8611a7b3852c2[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 20:27:52 2025 +0200
+
+    Added soundtrack functionality along with 6 samples and some other changes
+
+[33mcommit 76db49dc065a2b4ba5950274c5cb746c8ae3b70e[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 16:10:05 2025 +0200
+
+    goofy ahhh const update
+
+[33mcommit f4e9d45ce1e0e957f8391150db9f9013c8de1c0d[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 16:06:19 2025 +0200
+
+    Fixed incompatibility issues and other minor fixes
+
+[33mcommit 71bcf5a4638cfcf9fa8e72a10b5289e91d65ce45[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 15:53:35 2025 +0200
+
+    Added missing features required for assignement 1
+
+[33mcommit 7d694ca825588654505a5172efe9c6ff7b4c0b59[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 29 14:38:11 2025 +0200
+
+    Quick fix for some minor conversion issues
+
+[33mcommit a4267220db141967411c45e945c98008f59924b0[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Tue Mar 25 23:02:28 2025 +0200
+
+    Heavily reorganized projectile logic to allow simpler future implementations
+
+[33mcommit 808c44ef5f4ad68b935e1af488ace5e7b18e6b31[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Mon Mar 24 16:31:08 2025 +0200
+
+    Updated README.md file with an actual title and description
+
+[33mcommit 22ca9594ac764e783c400c5fe0ce366fa352a1d6[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 22 19:22:51 2025 +0200
+
+    Chat am i cooking?
+
+[33mcommit 5efb177220ceb18ea36a9890f06cd4c57c81d61a[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 22 18:59:56 2025 +0200
+
+    Removed textures being loaded redundantly
+
+[33mcommit d5e69fc899bac50377de3220d2d3ec877ef9cded[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 22 18:44:11 2025 +0200
+
+    Fixed textures path issue
+
+[33mcommit 53ea6081fbab8f69d0a88e33ae26169d8005ebf3[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 22 18:22:25 2025 +0200
+
+    🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀🥀
+
+[33mcommit d7476ed535ebddb7dfc7f80262f124c92b9db246[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 22 18:19:00 2025 +0200
+
+    🥀
+
+[33mcommit a99df62ead659e3025c5dba9d9643664c393ef38[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 22 18:15:32 2025 +0200
+
+    Finalized idle animations with all the necessary textures that were previously missing
+
+[33mcommit 7c3c9345b730955aaf56fa9e31823e72f7edf8f2[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 22 17:15:07 2025 +0200
+
+    Added wip animations for the player using the angle between the player and cursor
+
+[33mcommit 31c48a02c5abfa9285fb748241002c51324f881e[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Mon Mar 17 14:27:04 2025 +0200
+
+    Forgot to add assets folder containing textures
+
+[33mcommit c4399bd23b0a44c94c94f577790dd86124662422[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 15 22:49:53 2025 +0200
+
+    Added Projectile class along with wip shooting mechanic
+
+[33mcommit 0ce6f543a5e8ed9188a7a7a60e77b5000c00ce5e[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 15 20:29:53 2025 +0200
+
+    Added player movement and a few classes
+
+[33mcommit fc17f46f81deca82d24d8a5c567aea25b3d6d870[m
+Author: ModernityRejecter <andreidanielciocoiu@gmail.com>
+Date:   Sat Mar 15 13:50:42 2025 +0200
+
+    Initial commit

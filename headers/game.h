@@ -7,6 +7,7 @@
 #include "player.h"
 #include "../headers/hud.h"
 #include <random>
+#include "../headers/stateMachine.h"
 
 class Game {
 private:
@@ -25,6 +26,7 @@ private:
     Hud ammo;
     Hud health;
     Hud armor;
+    StateMachine states;
 
     void processEvents();
     // bool isWithinBounds();

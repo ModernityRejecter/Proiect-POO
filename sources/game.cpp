@@ -11,11 +11,12 @@ Game::Game()
         view(sf::FloatRect({0,0},{LOGICAL_WIDTH, LOGICAL_HEIGHT})),
         ammo(player.getWeaponMaxAmmo(), sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
         health(player.getHealth(), sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
-        armor(player.getPlayerArmor(), sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192})
-        /*, hud("./assets/textures/hud/hud_bg.png",static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y), 0)*/{
+        armor(player.getPlayerArmor(), sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}),
+        states(*this) {
     window.setView(view);
     onResize(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y));
     window.setVerticalSyncEnabled(true);
+    states.change(StateID::MainMenu);
     backgroundSprite.setPosition({0,0});
     hudSprite.setPosition({0,LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)});
 }
@@ -80,6 +81,7 @@ std::ostream& operator<<(std::ostream& info, const Game &game) {
 
 void Game::processEvents() {
     while (auto event = window.pollEvent()) {
+            states.handleEvent(*event);
         if (event->is<sf::Event::Closed>()) {
             window.close();
         }
@@ -115,6 +117,7 @@ void Game::update(float deltaTime) {
     health.hudUpdate(playerHealth);
     int playerArmor = player.getPlayerArmor();
     armor.hudUpdate(playerArmor);
+    states.update(deltaTime);
 }
 
 void Game::render() {
@@ -125,6 +128,7 @@ void Game::render() {
     ammo.draw(window);
     health.draw(window);
     armor.draw(window);
+    states.draw(window);
     sf::Texture faceTexture("./assets/textures/player/faces/face1.png"); // mic extra ca decoratiune momentan
     sf::Sprite faceSprite(faceTexture);
     faceSprite.setPosition({LOGICAL_WIDTH / 2 - faceTexture.getSize().x / 2 * 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT, LOGICAL_HEIGHT - 192 / 2 - (faceTexture.getSize().y * 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT) / 2 + 6});

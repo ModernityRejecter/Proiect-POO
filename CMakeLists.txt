@@ -60,19 +60,30 @@ add_executable(${MAIN_EXECUTABLE_NAME}
     main.cpp
     generated/src/Helper.cpp
         headers/game.h
-        headers/player.h
         sources/game.cpp
+        headers/player.h
         sources/player.cpp
         headers/weapon.h
         sources/weapon.cpp
-        sources/projectile.cpp
         headers/projectile.h
+        sources/projectile.cpp
         headers/hud.h
         sources/hud.cpp
-        headers/entity.h
         headers/drawable.h
         sources/drawable.cpp
+        headers/entity.h
         sources/entity.cpp
+        headers/playState.h
+        sources/playState.cpp
+        headers/stateMachine.h
+        sources/stateMachine.cpp
+        headers/pauseState.h
+        sources/pauseState.cpp
+        headers/mainMenuState.h
+        sources/mainMenuState.cpp
+        headers/gameState.h
+        sources/gameState.cpp
+        headers/stateID.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
