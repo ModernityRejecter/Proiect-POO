@@ -20,7 +20,7 @@ void PauseState::handleEvent(sf::Event* event) {
     }
 }
 
-void PauseState::update(float deltaTime) {
+void PauseState::update([[maybe_unused]] float deltaTime) {
     //WIP
 }
 

@@ -9,6 +9,7 @@ public:
     [[maybe_unused]] void update(float deltaTime) override;
     void draw(sf::RenderWindow& window) override;
     StateID getID() const override;
+
 private:
     sf::Font font;
     sf::Text title;

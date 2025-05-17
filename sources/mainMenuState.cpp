@@ -17,7 +17,7 @@ void MainMenuState::handleEvent(sf::Event* event) {
     }
 }
 
-void MainMenuState::update(float deltaTime) {
+void MainMenuState::update([[maybe_unused]] float deltaTime) {
     //WIP
 }
 

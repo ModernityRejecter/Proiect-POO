@@ -16,11 +16,11 @@ void PlayState::handleEvent(sf::Event* event) {
     }
 }
 
-void PlayState::update(float deltaTime) {
+void PlayState::update([[maybe_unused]] float deltaTime) {
     //WIP
 }
 
-void PlayState::draw(sf::RenderWindow& window) {
+void PlayState::draw([[maybe_unused]] sf::RenderWindow& window) {
     //WIP
 }
 

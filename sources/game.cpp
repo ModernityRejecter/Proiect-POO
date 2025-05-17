@@ -11,8 +11,7 @@ Game::Game()
         view(sf::FloatRect({0,0},{LOGICAL_WIDTH, LOGICAL_HEIGHT})),
         ammo(player.getWeaponMaxAmmo(), sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
         health(player.getHealth(), sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
-        armor(player.getPlayerArmor(), sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}),
-        states(*this) {
+        armor(player.getPlayerArmor(), sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}){
     window.setView(view);
     onResize(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y));
     window.setVerticalSyncEnabled(true);
