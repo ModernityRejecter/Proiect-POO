@@ -21,7 +21,7 @@ void StateMachine::push(StateID id) {
         break;
     }
 }
-
+// cppcheck-suppress unusedFunction
 void StateMachine::pop() {
     if (!states.empty()) {
         states.pop_back();

@@ -10,7 +10,7 @@ class GameState;
 class StateMachine {
 public:
     void push(StateID id);
-    [[maybe_unused]] void pop();
+    void pop();
     explicit StateMachine() = default;
     void change(StateID id);
     void handleEvent(sf::Event& ev) const;
