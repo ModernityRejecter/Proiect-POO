@@ -21,7 +21,7 @@ void PauseState::handleEvent(sf::Event* event) {
 }
 
 void PauseState::update(float deltaTime) {
-
+    //WIP
 }
 
 void PauseState::draw(sf::RenderWindow& window) {

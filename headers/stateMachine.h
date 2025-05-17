@@ -9,17 +9,14 @@ class GameState;
 
 class StateMachine {
 public:
-    explicit StateMachine(Game& game);
-
-    // switch to a new state
+    explicit StateMachine();
     void change(StateID id);
-
-    // forward calls
     void handleEvent(sf::Event& ev) const;
     void update(float deltaTime) const;
     void draw(sf::RenderWindow& window) const;
-    GameState* getCurrentState() const;
+    [[nodiscard]] GameState* getCurrentState() const;
+
 private:
-    Game& game;
+
     std::unique_ptr<GameState> current;
 };

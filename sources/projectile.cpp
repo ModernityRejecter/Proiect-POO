@@ -57,10 +57,10 @@ void Projectile::update(float deltaTime) {
     lifetime += deltaTime;
 }
 
-
 bool Projectile::isAlive() const {
     return sprite.getPosition().y < LOGICAL_HEIGHT - 200 && lifetime < maxLifetime;
 }
+
 void Projectile::draw(sf::RenderWindow& window) const {
     window.draw(sprite);
 }

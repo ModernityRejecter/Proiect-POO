@@ -4,7 +4,7 @@
 PlayState::PlayState(StateMachine& m)
 : GameState(m)
 {
-    // load level, initialize player etc.
+    //WIP
 }
 
 void PlayState::handleEvent(sf::Event* event) {
@@ -17,11 +17,11 @@ void PlayState::handleEvent(sf::Event* event) {
 }
 
 void PlayState::update(float deltaTime) {
-    // game logic
+    //WIP
 }
 
 void PlayState::draw(sf::RenderWindow& window) {
-    // draw game world
+    //WIP
 }
 
 StateID PlayState::getID() const {

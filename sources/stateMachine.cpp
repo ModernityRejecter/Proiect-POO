@@ -3,8 +3,8 @@
 #include "../headers/playState.h"
 #include "../headers/pauseState.h"
 
-StateMachine::StateMachine(Game& game)
-    : game(game), current(nullptr) {}
+StateMachine::StateMachine()
+    : current(nullptr) {}
 
 void StateMachine::change(StateID id) {
     switch (id) {

@@ -17,7 +17,9 @@ void MainMenuState::handleEvent(sf::Event* event) {
     }
 }
 
-void MainMenuState::update(float deltaTime) {}
+void MainMenuState::update(float deltaTime) {
+    //WIP
+}
 
 void MainMenuState::draw(sf::RenderWindow& window) {
     window.draw(title);
