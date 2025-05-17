@@ -3,36 +3,52 @@
 #include "../headers/playState.h"
 #include "../headers/pauseState.h"
 
-StateMachine::StateMachine()
-    : current(nullptr) {}
-
 void StateMachine::change(StateID id) {
+    states.clear();
+    push(id);
+}
+
+void StateMachine::push(StateID id) {
     switch (id) {
         case StateID::MainMenu:
-            current = std::make_unique<MainMenuState>(*this);
+            states.emplace_back(std::make_unique<MainMenuState>(*this));
         break;
         case StateID::Play:
-            current = std::make_unique<PlayState>(*this);
+            states.emplace_back(std::make_unique<PlayState>(*this));
         break;
         case StateID::Pause:
-            current = std::make_unique<PauseState>(*this);
+            states.emplace_back(std::make_unique<PauseState>(*this));
         break;
     }
 }
 
+void StateMachine::pop() {
+    if (!states.empty()) {
+        states.pop_back();
+    }
+}
+
 void StateMachine::handleEvent(sf::Event& ev) const {
-    if (current) current->handleEvent(&ev);
+    if (!states.empty()) {
+        states.back()->handleEvent(&ev);
+    }
 }
 
 void StateMachine::update(float deltaTime) const {
-    if (current) current->update(deltaTime);
+    if (!states.empty()) {
+        if (states.back()->getID() == StateID::Play) {
+            states.back()->update(deltaTime);
+        }
+    }
 }
 
-void StateMachine::draw(sf::RenderWindow& window) const{
-    if (current) current->draw(window);
+void StateMachine::draw(sf::RenderWindow& window) const {
+    for (auto& state : states) {
+        state->draw(window);
+    }
 }
 
-GameState* StateMachine::getCurrentState() const{
-    return current.get();
+GameState* StateMachine::getCurrentState() const {
+    return states.empty() ? nullptr : states.back().get();
 }
 

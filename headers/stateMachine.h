@@ -9,7 +9,9 @@ class GameState;
 
 class StateMachine {
 public:
-    explicit StateMachine();
+    void push(StateID id);
+    void pop();
+    explicit StateMachine() = default;
     void change(StateID id);
     void handleEvent(sf::Event& ev) const;
     void update(float deltaTime) const;
@@ -18,5 +20,5 @@ public:
 
 private:
 
-    std::unique_ptr<GameState> current;
+    std::vector<std::unique_ptr<GameState>> states;
 };

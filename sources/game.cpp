@@ -80,7 +80,8 @@ std::ostream& operator<<(std::ostream& info, const Game &game) {
 
 void Game::processEvents() {
     while (auto event = window.pollEvent()) {
-            states.handleEvent(*event);
+        states.handleEvent(*event);
+
         if (event->is<sf::Event::Closed>()) {
             window.close();
         }
@@ -105,18 +106,20 @@ void Game::processEvents() {
 // }
 
 void Game::update(float deltaTime) {
-    sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-    sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-    player.setAim(worldPos);
-
-    player.update(deltaTime);
-    int ammoCount = player.getWeaponAmmoCount();
-    ammo.hudUpdate(ammoCount);
-    int playerHealth = player.getHealth();
-    health.hudUpdate(playerHealth);
-    int playerArmor = player.getPlayerArmor();
-    armor.hudUpdate(playerArmor);
     states.update(deltaTime);
+    if (states.getCurrentState()->getID() == StateID::Play) {
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+        sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+        player.setAim(worldPos);
+
+        player.update(deltaTime);
+        int ammoCount = player.getWeaponAmmoCount();
+        ammo.hudUpdate(ammoCount);
+        int playerHealth = player.getHealth();
+        health.hudUpdate(playerHealth);
+        int playerArmor = player.getPlayerArmor();
+        armor.hudUpdate(playerArmor);
+    }
 }
 
 void Game::render() {
@@ -127,12 +130,12 @@ void Game::render() {
     ammo.draw(window);
     health.draw(window);
     armor.draw(window);
-    states.draw(window);
     sf::Texture faceTexture("./assets/textures/player/faces/face1.png"); // mic extra ca decoratiune momentan
     sf::Sprite faceSprite(faceTexture);
     faceSprite.setPosition({LOGICAL_WIDTH / 2 - faceTexture.getSize().x / 2 * 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT, LOGICAL_HEIGHT - 192 / 2 - (faceTexture.getSize().y * 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT) / 2 + 6});
     faceSprite.setScale({3 * LOGICAL_WIDTH / LOGICAL_HEIGHT, 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT}); // placeholder, deocamdata e implementat intr-un mod foarte stupid
     window.draw(faceSprite);
+    states.draw(window);
     window.display();
 }
 

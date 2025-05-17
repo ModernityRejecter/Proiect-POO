@@ -12,4 +12,8 @@ public:
 private:
     sf::Font font;
     sf::Text pauseText;
+    sf::Font instructionFont;
+    sf::Text instruction;
+    sf::Texture pauseTexture;
+    sf::Sprite pauseSprite;
 };

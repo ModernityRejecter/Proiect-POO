@@ -11,6 +11,12 @@ public:
     StateID getID() const override;
 
 private:
-    sf::Font font;
-    sf::Text title;
+    sf::Font fontLeft;
+    sf::Font fontRight;
+    sf::Text titleLeft;
+    sf::Text titleRight;
+    sf::Texture menuTexture;
+    sf::Sprite menuSprite;
+    sf::Text instruction;
+    sf::Clock clock;
 };
