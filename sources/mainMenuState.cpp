@@ -34,12 +34,16 @@ void MainMenuState::handleEvent(sf::Event* event) {
 }
 
 void MainMenuState::update([[maybe_unused]] float deltaTime) {
-    if (clock.getElapsedTime().asMilliseconds() > 500) {
+    if (clock.getElapsedTime().asMilliseconds() > 700) {
         std::uint8_t currentAlpha = instruction.getFillColor().a;
-        std::uint8_t newAlpha = (currentAlpha == 255) ? 0 : 255;
+        std::uint8_t newAlpha;
+        if (currentAlpha == 255)
+            newAlpha = 0;
+        else
+            newAlpha = 255;
         instruction.setFillColor(sf::Color(255, 255, 255, newAlpha));
         instruction.setOutlineColor(sf::Color(0, 0, 0, newAlpha));
-        clock.restart(); //nu functioneaza deocamdata...
+        clock.restart();
     }
 }
 

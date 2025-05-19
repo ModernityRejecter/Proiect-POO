@@ -4,51 +4,33 @@
 #include "../headers/pauseState.h"
 
 void StateMachine::change(StateID id) {
-    states.clear();
-    push(id);
-}
-
-void StateMachine::push(StateID id) {
-    switch (id) {
-        case StateID::MainMenu:
-            states.emplace_back(std::make_unique<MainMenuState>(*this));
-        break;
-        case StateID::Play:
-            states.emplace_back(std::make_unique<PlayState>(*this));
-        break;
-        case StateID::Pause:
-            states.emplace_back(std::make_unique<PauseState>(*this));
-        break;
+    if (!states.contains(id)) {
+        switch (id) {
+            case StateID::MainMenu:
+                states[id] = std::make_unique<MainMenuState>(*this); break;
+            case StateID::Play:
+                states[id] = std::make_unique<PlayState>(*this); break;
+            case StateID::Pause:
+                states[id] = std::make_unique<PauseState>(*this); break;
+        }
     }
-}
-// cppcheck-suppress unusedFunction
-void StateMachine::pop() {
-    if (!states.empty()) {
-        states.pop_back();
-    }
-}
-
-void StateMachine::handleEvent(sf::Event& ev) const {
-    if (!states.empty()) {
-        states.back()->handleEvent(&ev);
-    }
+    currentState = states[id].get();
 }
 
 void StateMachine::update(float deltaTime) const {
-    if (!states.empty()) {
-        if (states.back()->getID() == StateID::Play) {
-            states.back()->update(deltaTime);
-        }
-    }
+    if (currentState) currentState->update(deltaTime);
 }
 
 void StateMachine::draw(sf::RenderWindow& window) const {
-    for (auto& state : states) {
-        state->draw(window);
-    }
+    if (currentState) currentState->draw(window);
+}
+
+void StateMachine::handleEvent(sf::Event& event) const {
+    if (currentState) currentState->handleEvent(&event);
 }
 
 GameState* StateMachine::getCurrentState() const {
-    return states.empty() ? nullptr : states.back().get();
+    return currentState;
 }
+
 

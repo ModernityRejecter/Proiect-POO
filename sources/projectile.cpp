@@ -27,11 +27,11 @@ Projectile::Projectile(const sf::Texture& texture, float startX, float startY, f
 
 Projectile::Projectile (const Projectile& other)
     : sprite(other.sprite), direction(other.direction), speed(other.speed), lifetime(other.lifetime) {
-    std::cout<<"Proiectilul a fost copiat cu succes";
+    // std::cout<<"Proiectilul a fost copiat cu succes";
 }
 
 Projectile::~Projectile() {
-    std::cout<<"Proiectiilul a fost distrus cu succes";
+    // std::cout<<"Proiectiilul a fost distrus cu succes";
 }
 
 Projectile& Projectile::operator=(const Projectile& other) {

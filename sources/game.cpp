@@ -64,7 +64,6 @@ void Game::run() {
         float deltaTime = clock.restart().asSeconds();
         processEvents();
         update(deltaTime);
-        musicHandler();
         render();
         if (informationClock.getElapsedTime().asMilliseconds() >= 5000) {
             std::cout<<player;
@@ -81,7 +80,7 @@ std::ostream& operator<<(std::ostream& info, const Game &game) {
 void Game::processEvents() {
     while (auto event = window.pollEvent()) {
         states.handleEvent(*event);
-
+        musicHandler(&(*event));
         if (event->is<sf::Event::Closed>()) {
             window.close();
         }
@@ -139,28 +138,29 @@ void Game::render() {
     window.display();
 }
 
-void Game::musicHandler () {
-    static sf::Clock clock;
-    if (clock.getElapsedTime().asMilliseconds() >= 300 && window.hasFocus()) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Hyphen) && soundTrack.getVolume() > 0) {
+void Game::musicHandler (const sf::Event* event) {
+    if (window.hasFocus()) {
+        if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::M
+            && soundTrack.getStatus() == sf::SoundSource::Status::Playing) {
+            std::cout<<"Playback paused"<<std::endl;
+            soundTrack.pause();
+        }
+        else if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::M
+            && soundTrack.getStatus() == sf::SoundSource::Status::Paused) {
+            std::cout<<"Playback resumed"<<std::endl;
+            soundTrack.play();
+        }
+        if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::Hyphen
+            && soundTrack.getStatus() == sf::SoundSource::Status::Playing && soundTrack.getVolume() > 0) {
             std::cout<<"Volume lowered"<<std::endl;
-            musicVolume -= 1;
+            musicVolume -= 2;
             soundTrack.setVolume(musicVolume);
-            clock.restart();
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Equal) && soundTrack.getVolume() < 30) {
+        if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::Equal
+            && soundTrack.getStatus() == sf::SoundSource::Status::Playing && soundTrack.getVolume() < 30) {
             std::cout<<"Volume increased"<<std::endl;
-            musicVolume += 1;
+            musicVolume += 2;
             soundTrack.setVolume(musicVolume);
-            clock.restart();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::M) && soundTrack.getVolume() != 0) {
-            soundTrack.setVolume(0);
-            clock.restart();
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::M) && soundTrack.getVolume() == 0) {
-            soundTrack.setVolume(musicVolume);
-            clock.restart();
         }
     }
     if (soundTrack.getStatus() == sf::Sound::Status::Stopped) {

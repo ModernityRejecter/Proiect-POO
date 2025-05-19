@@ -11,7 +11,6 @@ Entity::Entity (const std::string& texturePath, int maxHealth, int health, float
       speed(speed),
       directionIndex(1),
       previousDirectionIndex(1) {
-    std::cout<<"skibidi"<<std::endl;
 }
 void Entity::loadEntityTextures() {
 

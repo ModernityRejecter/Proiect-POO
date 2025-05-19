@@ -6,6 +6,8 @@ class Player : public Entity{
 private:
 
     sf::Clock interval;
+    sf::Clock shotClock;
+    bool isShooting = false;
     int textureIndex;
     std::vector<Weapon> weapons;
     std::vector<Projectile> playerProjectiles;
@@ -19,7 +21,7 @@ private:
     void playerShooting();
     void idleAnimation();
     void shootingAnimation();
-
+    void updateShootingAnimation();
 public:
     Player(const std::string& texturePath, float x, float y, float speed);
     friend std::ostream& operator<<(std::ostream& info, const Player& player);

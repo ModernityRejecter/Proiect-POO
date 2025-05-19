@@ -8,7 +8,7 @@
 #include "../headers/hud.h"
 #include <random>
 #include "../headers/stateMachine.h"
-
+#include "../headers/pauseState.h"
 class Game {
 private:
     sf::RenderWindow window;
@@ -32,7 +32,7 @@ private:
     // bool isWithinBounds();
     void update(float deltaTime);
     void render();
-    void musicHandler();
+    void musicHandler(const sf::Event* event);
     void loadTracks();
     void onResize(float width, float height);
     sf::Vector2f getGlobalBounds() const;

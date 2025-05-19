@@ -93,17 +93,10 @@ void Player::loadEntityTextures() {
 }
 
 void Player::shootingAnimation() {
-    if(static_cast<float>(interval.getElapsedTime().asMilliseconds()) >= 1000.0f / weapons[currentWeaponIndex].getFireRate()) {
-        if (textureIndex == 1) {
-            sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
-            textureIndex = 2;
-        }
-        else {
-            sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
-            textureIndex = 1;
-        }
-        interval.restart();
-    }
+    isShooting = true;
+    shotClock.restart();
+    textureIndex = 2;
+    sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
 }
 
 void Player::loadWeaponsAttributes() {
@@ -206,15 +199,32 @@ void Player::playerShooting() {
             ));
         }
     }
-    else {
+    else if (!isShooting){
         idleAnimation();
     }
     std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
 }
 
+void Player::updateShootingAnimation() {
+    if (!isShooting) return;
+    float fireRateMs = std::min(1000.0f / weapons[currentWeaponIndex].getFireRate(), 500.0f);
+    float elapsedTotal = shotClock.getElapsedTime().asMilliseconds();
+
+    if (elapsedTotal >= fireRateMs / 2 && textureIndex == 2) {
+        textureIndex = 1;
+        sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
+    }
+    else if (elapsedTotal >= fireRateMs) {
+        sprite.setTexture(playerTextures[directionIndex][1]);
+        isShooting = false;
+        textureIndex = 2;
+    }
+}
+
 void Player::update(float deltaTime) {
     move(deltaTime);
     playerShooting();
+    updateShootingAnimation();
     weaponsHandler();
     for (auto& projectile : playerProjectiles) {
         projectile.update(deltaTime);
