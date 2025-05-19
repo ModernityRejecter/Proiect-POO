@@ -15,6 +15,8 @@ Game::Game()
     window.setView(view);
     onResize(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y));
     window.setVerticalSyncEnabled(true);
+    states.change(StateID::Pause);
+    states.change(StateID::Play);
     states.change(StateID::MainMenu);
     backgroundSprite.setPosition({0,0});
     hudSprite.setPosition({0,LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)});

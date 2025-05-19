@@ -30,8 +30,20 @@ void PauseState::handleEvent(sf::Event* event) {
     }
 }
 
+// sincer nu prea aveam alte idei pentru implementare decat asta,
+// probabil o sa revizitez ca sa rezolv
 void PauseState::update([[maybe_unused]] float deltaTime) {
-    //WIP
+    if (clock.getElapsedTime().asMilliseconds() > 700) {
+        std::uint8_t currentAlpha = instruction.getFillColor().a;
+        std::uint8_t newAlpha;
+        if (currentAlpha == 255)
+            newAlpha = 0;
+        else
+            newAlpha = 255;
+        instruction.setFillColor(sf::Color(255, 255, 255, newAlpha));
+        instruction.setOutlineColor(sf::Color(0, 0, 0, newAlpha));
+        clock.restart();
+    }
 }
 
 void PauseState::draw(sf::RenderWindow& window) {

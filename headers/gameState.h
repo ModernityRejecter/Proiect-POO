@@ -2,7 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include "../headers/stateMachine.h"
 #include "../headers/stateID.h"
-
 class StateMachine;
 
 class GameState {
