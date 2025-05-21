@@ -31,9 +31,9 @@ int Entity::findDirection() {
         directionIndex = 5;
     else if (angle < -112.5)
         directionIndex = 6;
-    else if (angle >= -112.5 && angle < -67.5)
+    else if (angle < -67.5)
         directionIndex = 7;
-    else if (angle >= -67.5 && angle < -22.5)
+    else if (angle < -22.5)
         directionIndex = 8;
 
     return directionIndex;
