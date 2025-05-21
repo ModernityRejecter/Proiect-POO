@@ -24,7 +24,7 @@ Game::Game()
     entities.reserve(4);
     entities.push_back(std::make_unique<Player>("./assets/textures/player/idle/sprite_1_1.png",
                                                  400.f, 300.f, 300.f));
-    auto player = dynamic_cast<Player*>(entities[0].get());
+    const Player* player = dynamic_cast<Player*>(entities[0].get());
     ammo.hudUpdate(player->getWeaponMaxAmmo());
     health.hudUpdate(player->getHealth());
     armor.hudUpdate(player->getPlayerArmor());
@@ -130,7 +130,7 @@ void Game::update(float deltaTime) {
             health.hudUpdate(player->getHealth());
             armor.hudUpdate(player->getPlayerArmor());
         }
-        for (auto& entity : entities) {
+        for (const auto& entity : entities) {
             entity->update(deltaTime);
         }
     }
@@ -140,7 +140,7 @@ void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
     window.draw(hudSprite);
-    for (auto & entity : entities) {
+    for (const auto & entity : entities) {
         entity->draw(window);
     }
     ammo.draw(window);
