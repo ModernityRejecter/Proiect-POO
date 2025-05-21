@@ -84,6 +84,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/gameState.h
         sources/gameState.cpp
         headers/stateID.h
+        sources/Imp.cpp
+        headers/Imp.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

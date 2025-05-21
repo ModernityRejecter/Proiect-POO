@@ -11,15 +11,18 @@ protected:
     float speed;
     int directionIndex;
     int previousDirectionIndex;
-    std::unordered_map<int, std::unordered_map<int, sf::Texture>> playerTextures;
+    sf::Vector2f aimPosition;
+    sf::Clock interval;
+    int textureIndex;
 
+    virtual int findDirection();
     virtual void move(float deltaTime);
-
+    virtual void idleAnimation() = 0;
 public:
     explicit Entity (const std::string& texturePath, int maxHealth = 100, int health = 100, float speed = 100.0f, sf::Vector2f  = {600,600});
-    virtual void loadEntityTextures() = 0;
     ~Entity() override;
     virtual void update(float deltaTime) = 0;
     [[maybe_unused]] virtual void shooting(const sf::Vector2f& targetPosition);
     int virtual getHealth() const;
+
 };

@@ -5,13 +5,14 @@ static constexpr float LOGICAL_HEIGHT = 1080;
 
 Game::Game()
     : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
-        player("./assets/textures/player/idle/plr_sprite_s1.png", 400.f, 300.f, 300.f),
         musicVolume(20.0f), currentMusicIndex(0), background("./assets/textures/backgrounds/bg1.png"), backgroundSprite(background),
         hudTexture("./assets/textures/hud/hud_bg.png"), hudSprite(hudTexture),
         view(sf::FloatRect({0,0},{LOGICAL_WIDTH, LOGICAL_HEIGHT})),
-        ammo(player.getWeaponMaxAmmo(), sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
-        health(player.getHealth(), sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
-        armor(player.getPlayerArmor(), sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}){
+        ammo(0, sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
+        health(0, sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
+        armor(0, sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}) {
+    Player::loadEntityTextures();
+    Imp::loadEntityTextures();
     window.setView(view);
     onResize(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y));
     window.setVerticalSyncEnabled(true);
@@ -20,6 +21,18 @@ Game::Game()
     states.change(StateID::MainMenu);
     backgroundSprite.setPosition({0,0});
     hudSprite.setPosition({0,LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)});
+    entities.reserve(4);
+    entities.push_back(std::make_unique<Player>("./assets/textures/player/idle/sprite_1_1.png",
+                                                 400.f, 300.f, 300.f));
+    auto player = dynamic_cast<Player*>(entities[0].get());
+    ammo.hudUpdate(player->getWeaponMaxAmmo());
+    health.hudUpdate(player->getHealth());
+    armor.hudUpdate(player->getPlayerArmor());
+
+    entities.push_back(std::make_unique<Imp>(sf::Vector2f{1000.f, 500.f}, dynamic_cast<Player*>(entities[0].get())));
+    entities.push_back(std::make_unique<Imp>(sf::Vector2f{400.f, 900.f}, dynamic_cast<Player*>(entities[0].get())));
+    entities.push_back(std::make_unique<Imp>(sf::Vector2f{700.f, 600.f}, dynamic_cast<Player*>(entities[0].get())));
+
 }
 
 void Game::loadTracks() {
@@ -32,7 +45,7 @@ void Game::loadTracks() {
 }
 
 sf::Vector2f Game::getGlobalBounds() const{
-    return sf::Vector2f(LOGICAL_WIDTH, LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y));
+    return {LOGICAL_WIDTH, LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)};
 }
 
 void Game::onResize(float w, float h) {
@@ -41,16 +54,16 @@ void Game::onResize(float w, float h) {
 
     float viewportW = 1.f;
     float viewportH = 1.f;
-    float offsetX  = 0.f;
-    float offsetY  = 0.f;
+    float offsetX = 0.f;
+    float offsetY = 0.f;
 
     if (windowRatio > targetRatio) {
         viewportW = targetRatio / windowRatio;
-        offsetX   = (1.f - viewportW) / 2.f;
+        offsetX = (1.f - viewportW) / 2.f;
     }
     else {
         viewportH = windowRatio / targetRatio;
-        offsetY   = (1.f - viewportH) / 2.f;
+        offsetY = (1.f - viewportH) / 2.f;
     }
 
     view.setViewport(sf::FloatRect({ offsetX, offsetY}, {viewportW, viewportH }));
@@ -58,7 +71,6 @@ void Game::onResize(float w, float h) {
 }
 
 void Game::run() {
-    player.loadEntityTextures();
     loadTracks();
     sf::Clock clock;
     sf::Clock informationClock;
@@ -68,14 +80,14 @@ void Game::run() {
         update(deltaTime);
         render();
         if (informationClock.getElapsedTime().asMilliseconds() >= 5000) {
-            std::cout<<player;
+            std::cout<<entities[0];
             informationClock.restart();
         }
     }
 }
 
 std::ostream& operator<<(std::ostream& info, const Game &game) {
-    info <<"Player information : "<< game.player <<std::endl;
+    info <<"Player information : "<< game.entities[0] <<std::endl;
     return info;
 }
 
@@ -100,8 +112,8 @@ void Game::processEvents() {
 }
 
 // bool isWithinBounds() {
-//     if (player.getPosition().x > 20 && player.getPosition().y > 20 &&
-//         player.getPosition().x < window.getSize().x - 20 && player.getPosition().y < window.getSize().y - 20) {
+//     if (entities[0]->getPosition().x > 20 && entities[0]->getPosition().y > 20 &&
+//         entities[0]->getPosition().x < window.getSize().x - 20 && entities[0]->getPosition().y < window.getSize().y - 20) {
 //         return true;
 //     }
 // }
@@ -109,17 +121,18 @@ void Game::processEvents() {
 void Game::update(float deltaTime) {
     states.update(deltaTime);
     if (states.getCurrentState()->getID() == StateID::Play) {
-        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-        sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-        player.setAim(worldPos);
+        if (Player* player = dynamic_cast<Player*>(entities[0].get())) {
+            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+            player->setAim(worldPos);
 
-        player.update(deltaTime);
-        int ammoCount = player.getWeaponAmmoCount();
-        ammo.hudUpdate(ammoCount);
-        int playerHealth = player.getHealth();
-        health.hudUpdate(playerHealth);
-        int playerArmor = player.getPlayerArmor();
-        armor.hudUpdate(playerArmor);
+            ammo.hudUpdate(player->getWeaponAmmoCount());
+            health.hudUpdate(player->getHealth());
+            armor.hudUpdate(player->getPlayerArmor());
+        }
+        for (auto& entity : entities) {
+            entity->update(deltaTime);
+        }
     }
 }
 
@@ -127,7 +140,9 @@ void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
     window.draw(hudSprite);
-    player.draw(window);
+    for (auto & entity : entities) {
+        entity->draw(window);
+    }
     ammo.draw(window);
     health.draw(window);
     armor.draw(window);

@@ -9,10 +9,10 @@
 #include <random>
 #include "../headers/stateMachine.h"
 #include "../headers/pauseState.h"
+#include "../headers/imp.h"
 class Game {
 private:
     sf::RenderWindow window;
-    Player player;
     bool shouldExit = false;
     sf::Music soundTrack;
     std::vector<std::string> trackPaths;
@@ -27,6 +27,7 @@ private:
     Hud health;
     Hud armor;
     StateMachine states;
+    std::vector<std::unique_ptr<Entity>> entities;
 
     void processEvents();
     // bool isWithinBounds();

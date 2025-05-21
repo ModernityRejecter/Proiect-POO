@@ -5,27 +5,25 @@
 class Player : public Entity{
 private:
 
-    sf::Clock interval;
     sf::Clock shotClock;
     bool isShooting = false;
-    int textureIndex;
     std::vector<Weapon> weapons;
     std::vector<Projectile> playerProjectiles;
     size_t currentWeaponIndex = 0;
-    sf::Vector2f aimPosition;
+    static std::unordered_map<int, std::unordered_map<int, sf::Texture>> entityTextures;
     int armor = 200;
 
     void move(float deltaTime) override;
     void loadWeaponsAttributes();
     void weaponsHandler();
     void playerShooting();
-    void idleAnimation();
     void shootingAnimation();
     void updateShootingAnimation();
+
 public:
     Player(const std::string& texturePath, float x, float y, float speed);
     friend std::ostream& operator<<(std::ostream& info, const Player& player);
-    void loadEntityTextures() override;
+    static void loadEntityTextures();
     void draw(sf::RenderWindow& window) const override;
     // size_t getWeaponIndex() const;
     int getWeaponAmmoCount() const;

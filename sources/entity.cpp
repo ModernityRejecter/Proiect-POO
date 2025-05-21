@@ -10,11 +10,35 @@ Entity::Entity (const std::string& texturePath, int maxHealth, int health, float
       health(health),
       speed(speed),
       directionIndex(1),
-      previousDirectionIndex(1) {
-}
-void Entity::loadEntityTextures() {
+      previousDirectionIndex(1),
+      textureIndex(1) {
 
 }
+
+int Entity::findDirection() {
+    float angle = std::atan2(aimPosition.y - position.y, aimPosition.x - position.x)* 180.f / 3.14159265f;
+
+    previousDirectionIndex = directionIndex;
+    if (angle >= -22.5 && angle < 22.5)
+        directionIndex = 1;
+    else if (angle >= 22.5 && angle < 67.5)
+        directionIndex = 2;
+    else if (angle >= 67.5 && angle < 112.5)
+        directionIndex = 3;
+    else if (angle >= 112.5 && angle < 157.5)
+        directionIndex = 4;
+    else if (angle >= 157.5 || angle < -157.5)
+        directionIndex = 5;
+    else if (angle >= -157.5 && angle < -112.5)
+        directionIndex = 6;
+    else if (angle >= -112.5 && angle < -67.5)
+        directionIndex = 7;
+    else if (angle >= -67.5 && angle < -22.5)
+        directionIndex = 8;
+
+    return directionIndex;
+}
+
 void Entity::move(float /*deltaTime*/) {
     sf::Vector2f movement(0.f, 0.f);
     position = getPosition();

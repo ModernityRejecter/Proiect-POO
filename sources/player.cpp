@@ -2,9 +2,10 @@
 
 static constexpr float LOGICAL_WIDTH  = 1920;
 static constexpr float LOGICAL_HEIGHT = 1080;
+std::unordered_map<int, std::unordered_map<int, sf::Texture>> Player::entityTextures;
 
 Player::Player(const std::string& texturePath, float x, float y, float speed)
-    :Entity(texturePath, 100, 100, speed, {x, y}), textureIndex(1)
+    :Entity(texturePath, 100, 100, speed, {x, y})
 {
     if (!texture.loadFromFile(texturePath)) {
         std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";
@@ -25,78 +26,24 @@ std::ostream& operator<<(std::ostream& info, const Player& player) {
 }
 
 void Player::loadEntityTextures() {
-    sf::Texture playerTexture("./assets/textures/player/idle/plr_sprite_d1.png");
-    playerTextures[1][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_d2.png");
-    playerTextures[1][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sd1.png");
-    playerTextures[2][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sd2.png");
-    playerTextures[2][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_s1.png");
-    playerTextures[3][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_s2.png");
-    playerTextures[3][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sa1.png");
-    playerTextures[4][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_sa2.png");
-    playerTextures[4][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_a1.png");
-    playerTextures[5][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_a2.png");
-    playerTextures[5][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wa1.png");
-    playerTextures[6][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wa2.png");
-    playerTextures[6][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_w1.png");
-    playerTextures[7][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_w2.png");
-    playerTextures[7][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wd1.png");
-    playerTextures[8][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/idle/plr_sprite_wd2.png");
-    playerTextures[8][2] = playerTexture;
-
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_d1.png");
-    playerTextures[9][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_d2.png");
-    playerTextures[9][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sd1.png");
-    playerTextures[10][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sd2.png");
-    playerTextures[10][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s1.png");
-    playerTextures[11][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_s2.png");
-    playerTextures[11][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sa1.png");
-    playerTextures[12][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_sa2.png");
-    playerTextures[12][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_a1.png");
-    playerTextures[13][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_a2.png");
-    playerTextures[13][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wa1.png");
-    playerTextures[14][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wa2.png");
-    playerTextures[14][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_w1.png");
-    playerTextures[15][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_w2.png");
-    playerTextures[15][2] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wd1.png");
-    playerTextures[16][1] = playerTexture;
-    playerTexture = sf::Texture("./assets/textures/player/shooting/plr_shooting_wd2.png");
-    playerTextures[16][2] = playerTexture;
+    std::string path = "./assets/textures/";
+    std::string type = "player/";
+    std::string test = "sprite_";
+    for (int i = 1; i <= 8; i++) {
+        for (int j = 1; j <= 2; j++) {
+            sf::Texture entityTexture = sf::Texture(path + type + "idle/" + test + std::to_string(i) + "_" + std::to_string(j) + ".png");
+            entityTextures[i][j] = entityTexture;
+            entityTexture = sf::Texture(path + type + "shooting/" + test + std::to_string(i + 8) + "_" + std::to_string(j) + ".png");
+            entityTextures[i + 8][j] = entityTexture;
+        }
+    }
 }
 
 void Player::shootingAnimation() {
     isShooting = true;
     shotClock.restart();
     textureIndex = 2;
-    sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
+    sprite.setTexture(entityTextures[directionIndex + 8][textureIndex]);
 }
 
 void Player::loadWeaponsAttributes() {
@@ -110,16 +57,16 @@ void Player::loadWeaponsAttributes() {
 
 void Player::idleAnimation() {
     if (previousDirectionIndex != directionIndex) {
-        sprite.setTexture(playerTextures[directionIndex][1]);
+        sprite.setTexture(entityTextures[directionIndex][1]);
     }
     if (interval.getElapsedTime().asMilliseconds() >= 300) {
         if (textureIndex == 1) {
-            sprite.setTexture(playerTextures[directionIndex][2]);
+            sprite.setTexture(entityTextures[directionIndex][2]);
             textureIndex = 2;
             // std::cout <<"am actualizat ";
         }
         else {
-            sprite.setTexture(playerTextures[directionIndex][1]);
+            sprite.setTexture(entityTextures[directionIndex][1]);
             textureIndex = 1;
             // std::cout <<"am actualizat ";
         }
@@ -142,43 +89,19 @@ void Player::move(float deltaTime) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
         movement.x += speed * deltaTime;
 
-    // float halfWidth = static_cast<float>(getSize().x) / 2.f;
-    // float halfHeight = static_cast<float>(getSize().y) / 2.f;
-
     float minX = 0;
     float maxX = static_cast<float>(LOGICAL_WIDTH) - static_cast<float>(getSize().x);
     float minY = 0;
     float maxY = static_cast<float>(LOGICAL_HEIGHT) - 192 -  static_cast<float>(getSize().y);
     sf::Vector2f newPos = position + movement;
 
-    // newPos.x = std::max(minX, std::min(newPos.x, maxX));
-    // newPos.y = std::max(minY, std::min(newPos.y, maxY));
-    // sprite.setPosition(newPos);
     if (newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)
         sprite.move(movement);
 }
 
 void Player::playerShooting() {
-    float angle = std::atan2(aimPosition.y - position.y, aimPosition.x - position.x)* 180.f / 3.14159265f;
 
-    previousDirectionIndex = directionIndex;
-    if (angle >= -22.5 && angle < 22.5)
-        directionIndex = 1;
-    else if (angle >= 22.5 && angle < 67.5)
-        directionIndex = 2;
-    else if (angle >= 67.5 && angle < 112.5)
-        directionIndex = 3;
-    else if (angle >= 112.5 && angle < 157.5)
-        directionIndex = 4;
-    else if (angle >= 157.5 || angle < -157.5)
-        directionIndex = 5;
-    else if (angle >= -157.5 && angle < -112.5)
-        directionIndex = 6;
-    else if (angle >= -112.5 && angle < -67.5)
-        directionIndex = 7;
-    else if (angle >= -67.5 && angle < -22.5)
-        directionIndex = 8;
-
+    findDirection();
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
         Weapon& currentWeapon = weapons[currentWeaponIndex];
         if (currentWeapon.canShoot()) {
@@ -212,10 +135,10 @@ void Player::updateShootingAnimation() {
 
     if (elapsedTotal >= fireRateMs / 2 && textureIndex == 2) {
         textureIndex = 1;
-        sprite.setTexture(playerTextures[directionIndex + 8][textureIndex]);
+        sprite.setTexture(entityTextures[directionIndex + 8][textureIndex]);
     }
     else if (elapsedTotal >= fireRateMs) {
-        sprite.setTexture(playerTextures[directionIndex][1]);
+        sprite.setTexture(entityTextures[directionIndex][1]);
         isShooting = false;
         textureIndex = 2;
     }
