@@ -17,9 +17,9 @@ private:
     void loadWeaponsAttributes();
     void weaponsHandler();
     void playerShooting();
+    void idleAnimation() override;
     void shootingAnimation();
     void updateShootingAnimation();
-
 public:
     Player(const std::string& texturePath, float x, float y, float speed);
     friend std::ostream& operator<<(std::ostream& info, const Player& player);
