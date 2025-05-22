@@ -49,7 +49,7 @@ public:
     void resetFireClock();
     void playSound();
 
-    float getProjectileSpeed() const;
-    float getSpreadAngle() const;
-    int getDamageValue() const;
+    // float getProjectileSpeed() const;
+    // float getSpreadAngle() const;
+    // int getDamageValue() const;
 };

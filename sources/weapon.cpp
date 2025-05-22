@@ -73,14 +73,14 @@ void Weapon::playSound() {
     sound.play();
 }
 
-float Weapon::getProjectileSpeed() const {
-    return projectileSpeed;
-}
-
-float Weapon::getSpreadAngle() const {
-    return spread;
-}
-
-int Weapon::getDamageValue() const {
-    return damageValue;
-}
+// float Weapon::getProjectileSpeed() const {
+//     return projectileSpeed;
+// }
+//
+// float Weapon::getSpreadAngle() const {
+//     return spread;
+// }
+//
+// int Weapon::getDamageValue() const {
+//     return damageValue;
+// }

@@ -78,6 +78,6 @@ std::vector<std::unique_ptr<Projectile>>& Entity::getProjectiles() {
     return emptyList;
 }
 
-void Entity::shooting(const sf::Vector2f& /*targetPosition*/) {
-
-}
+// void Entity::shooting(const sf::Vector2f& /*targetPosition*/) {
+//
+// }

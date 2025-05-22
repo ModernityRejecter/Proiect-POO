@@ -40,5 +40,5 @@ public:
     sf::FloatRect getBounds() const;
     virtual void update(float deltaTime) = 0;
     virtual std::vector<std::unique_ptr<Projectile>>& getProjectiles();
-    [[maybe_unused]] virtual void shooting(const sf::Vector2f& targetPosition);
+    // [[maybe_unused]] virtual void shooting(const sf::Vector2f& targetPosition);
 };
