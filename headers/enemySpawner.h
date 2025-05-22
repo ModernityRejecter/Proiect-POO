@@ -1,5 +1,5 @@
 #pragma once
-#pragma clang diagnostic ignored "-Wself-assign-overloaded"
+
 #include <vector>
 #include <random>
 #include <memory>
