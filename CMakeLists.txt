@@ -86,6 +86,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/stateID.h
         sources/imp.cpp
         headers/imp.h
+        headers/enemySpawner.h
+        sources/enemySpawner.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

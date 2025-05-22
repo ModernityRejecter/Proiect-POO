@@ -5,34 +5,40 @@ static constexpr float LOGICAL_HEIGHT = 1080;
 
 Game::Game()
     : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
-        musicVolume(20.0f), currentMusicIndex(0), background("./assets/textures/backgrounds/bg1.png"), backgroundSprite(background),
-        hudTexture("./assets/textures/hud/hud_bg.png"), hudSprite(hudTexture),
-        view(sf::FloatRect({0,0},{LOGICAL_WIDTH, LOGICAL_HEIGHT})),
-        ammo(0, sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
-        health(0, sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
-        armor(0, sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}) {
+      musicVolume(20.0f), currentMusicIndex(0),
+      background("./assets/textures/backgrounds/bg1.png"), backgroundSprite(background),
+      hudTexture("./assets/textures/hud/hud_bg.png"), hudSprite(hudTexture),
+      view(sf::FloatRect({0,0},{LOGICAL_WIDTH, LOGICAL_HEIGHT})),
+      ammo(0, sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
+      health(0, sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
+      armor(0, sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}),
+      enemySpawner(entities)
+{
     Player::loadEntityTextures();
     Imp::loadEntityTextures();
+
     window.setView(view);
     onResize(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y));
     window.setVerticalSyncEnabled(true);
+
     states.change(StateID::Pause);
     states.change(StateID::Play);
     states.change(StateID::MainMenu);
+
     backgroundSprite.setPosition({0,0});
     hudSprite.setPosition({0,LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)});
-    entities.reserve(4);
-    entities.push_back(std::make_unique<Player>("./assets/textures/player/idle/sprite_1_1.png",
-                                                 400.f, 300.f, 300.f));
-    const Player* player = dynamic_cast<Player*>(entities[0].get());
+    entities.reserve(8);
+
+    entities.push_back(std::make_unique<Player>(
+        "./assets/textures/player/idle/sprite_1_1.png",
+        400.f, 300.f, 300.f
+    ));
+    Player *player = dynamic_cast<Player *>(entities[0].get());
     ammo.hudUpdate(player->getWeaponMaxAmmo());
     health.hudUpdate(player->getHealth());
     armor.hudUpdate(player->getPlayerArmor());
 
-    entities.push_back(std::make_unique<Imp>(sf::Vector2f{1000.f, 500.f}, dynamic_cast<Player*>(entities[0].get())));
-    entities.push_back(std::make_unique<Imp>(sf::Vector2f{400.f, 900.f}, dynamic_cast<Player*>(entities[0].get())));
-    entities.push_back(std::make_unique<Imp>(sf::Vector2f{700.f, 600.f}, dynamic_cast<Player*>(entities[0].get())));
-
+    enemySpawner.init(player, getGlobalBounds());
 }
 
 void Game::loadTracks() {
@@ -105,18 +111,10 @@ void Game::processEvents() {
         if (event->is<sf::Event::Resized>()) {
             auto re = event->getIf<sf::Event::Resized>();
             onResize(static_cast<float>(re->size.x), static_cast<float>(re->size.y));
-            // ammo.setDigitPosition();
         }
     }
     if (shouldExit) window.close();
 }
-
-// bool isWithinBounds() {
-//     if (entities[0]->getPosition().x > 20 && entities[0]->getPosition().y > 20 &&
-//         entities[0]->getPosition().x < window.getSize().x - 20 && entities[0]->getPosition().y < window.getSize().y - 20) {
-//         return true;
-//     }
-// }
 
 void Game::update(float deltaTime) {
     states.update(deltaTime);
@@ -133,6 +131,7 @@ void Game::update(float deltaTime) {
         for (const auto& entity : entities) {
             entity->update(deltaTime);
         }
+        enemySpawner.update(deltaTime);
     }
 }
 
