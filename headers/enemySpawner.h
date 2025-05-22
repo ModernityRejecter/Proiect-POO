@@ -4,14 +4,14 @@
 #include <random>
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "entity.h"
-#include "imp.h"
-#include "player.h"
+#include "../headers/entity.h"
+#include "../headers/player.h"
+#include "../headers/imp.h"
 
 class EnemySpawner {
 public:
-    explicit EnemySpawner(std::vector<std::unique_ptr<Entity>>& entitiesRef);
-    void init(Player* playerPtr, const sf::Vector2f& logicalSize);
+    explicit EnemySpawner(std::vector<std::shared_ptr<Entity>>& entitiesRef);
+    void init(const std::shared_ptr<Player> &playerPtr, const sf::Vector2f& logicalSize);
     void update(float deltaTime);
 
 private:
@@ -19,13 +19,14 @@ private:
         Imp = 0,
         COUNT
     };
-    std::vector<std::unique_ptr<Entity>>& entities;
-    Player* playerPtr;
+
+    std::vector<std::shared_ptr<Entity>>& entities;
+    std::weak_ptr<Player> playerPtr;
     sf::Vector2f bounds;
 
     std::mt19937 rng;
     std::uniform_real_distribution<float> spawnIntervalDist;
-    std::uniform_int_distribution<int> enemyTypeDist{0, static_cast<int>(EnemyType::COUNT) - 1};
+    std::uniform_int_distribution<int> enemyTypeDist;
     std::uniform_int_distribution<int> borderDist;
 
     float nextSpawnTime;

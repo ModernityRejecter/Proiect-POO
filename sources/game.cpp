@@ -1,17 +1,18 @@
 #include "../headers/game.h"
 
-static constexpr float LOGICAL_WIDTH  = 1920;
-static constexpr float LOGICAL_HEIGHT = 1080;
-
 Game::Game()
     : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
-      musicVolume(20.0f), currentMusicIndex(0),
-      background("./assets/textures/backgrounds/bg1.png"), backgroundSprite(background),
-      hudTexture("./assets/textures/hud/hud_bg.png"), hudSprite(hudTexture),
-      view(sf::FloatRect({0,0},{LOGICAL_WIDTH, LOGICAL_HEIGHT})),
-      ammo(0, sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282, 192)),
-      health(0, sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342, 192)),
-      armor(0, sf::Vector2f{1068, getGlobalBounds().y}, sf::Vector2f{348, 192}),
+      shouldExit(false),
+      musicVolume(20.0f),
+      currentMusicIndex(0),
+      background("./assets/textures/backgrounds/bg1.png"),
+      backgroundSprite(background),
+      hudTexture("./assets/textures/hud/hud_bg.png"),
+      hudSprite(hudTexture),
+      view(sf::FloatRect({0,0},{LOGICAL_WIDTH,LOGICAL_HEIGHT})),
+      ammo(0, sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282,192)),
+      health(0, sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342,192)),
+      armor(0, sf::Vector2f(1068, getGlobalBounds().y), sf::Vector2f(348,192)),
       enemySpawner(entities)
 {
     Player::loadEntityTextures();
@@ -26,19 +27,20 @@ Game::Game()
     states.change(StateID::MainMenu);
 
     backgroundSprite.setPosition({0,0});
-    hudSprite.setPosition({0,LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)});
+    hudSprite.setPosition({0, LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)});
     entities.reserve(8);
 
-    entities.push_back(std::make_unique<Player>(
+    auto playerPtr = std::make_shared<Player>(
         "./assets/textures/player/idle/sprite_1_1.png",
         400.f, 300.f, 300.f
-    ));
-    Player *player = dynamic_cast<Player *>(entities[0].get());
-    ammo.hudUpdate(player->getWeaponMaxAmmo());
-    health.hudUpdate(player->getHealth());
-    armor.hudUpdate(player->getPlayerArmor());
+    );
+    entities.push_back(playerPtr);
 
-    enemySpawner.init(player, getGlobalBounds());
+    ammo.hudUpdate(playerPtr->getWeaponMaxAmmo());
+    health.hudUpdate(playerPtr->getHealth());
+    armor.hudUpdate(playerPtr->getPlayerArmor());
+
+    enemySpawner.init(playerPtr, getGlobalBounds());
 }
 
 void Game::loadTracks() {
@@ -50,50 +52,58 @@ void Game::loadTracks() {
     trackPaths.emplace_back("./assets/music/RTPN-Decay-_kK2k_W0nKdE_.ogg");
 }
 
-sf::Vector2f Game::getGlobalBounds() const{
-    return {LOGICAL_WIDTH, LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y)};
+sf::Vector2f Game::getGlobalBounds() const {
+    return { LOGICAL_WIDTH,
+             LOGICAL_HEIGHT - static_cast<float>(hudTexture.getSize().y) };
 }
 
 void Game::onResize(float w, float h) {
     float targetRatio = LOGICAL_WIDTH / LOGICAL_HEIGHT;
     float windowRatio = w / h;
 
-    float viewportW = 1.f;
-    float viewportH = 1.f;
-    float offsetX = 0.f;
-    float offsetY = 0.f;
+    float viewportW = 1.f, viewportH = 1.f;
+    float offsetX = 0.f, offsetY = 0.f;
 
     if (windowRatio > targetRatio) {
         viewportW = targetRatio / windowRatio;
         offsetX = (1.f - viewportW) / 2.f;
-    }
-    else {
+    } else {
         viewportH = windowRatio / targetRatio;
         offsetY = (1.f - viewportH) / 2.f;
     }
 
-    view.setViewport(sf::FloatRect({ offsetX, offsetY}, {viewportW, viewportH }));
+    view.setViewport(sf::FloatRect({offsetX, offsetY}, {viewportW, viewportH}));
     window.setView(view);
 }
 
 void Game::run() {
     loadTracks();
     sf::Clock clock;
-    sf::Clock informationClock;
+    sf::Clock infoClock;
+
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
         processEvents();
         update(deltaTime);
         render();
-        if (informationClock.getElapsedTime().asMilliseconds() >= 5000) {
-            std::cout<<entities[0];
-            informationClock.restart();
+
+        if (infoClock.getElapsedTime().asMilliseconds() >= 5000) {
+            if (!entities.empty()) {
+                if (auto playerPtr = std::dynamic_pointer_cast<Player>(entities[0])) {
+                    std::cout << *playerPtr << std::endl;
+                }
+            }
+            infoClock.restart();
         }
     }
 }
 
 std::ostream& operator<<(std::ostream& info, const Game &game) {
-    info <<"Player information : "<< game.entities[0] <<std::endl;
+    if (!game.entities.empty()) {
+        if (auto playerPtr = std::dynamic_pointer_cast<Player>(game.entities[0])) {
+            info << "Player information : " << *playerPtr << std::endl;
+        }
+    }
     return info;
 }
 
@@ -105,7 +115,8 @@ void Game::processEvents() {
             window.close();
         }
         if (event->is<sf::Event::KeyPressed>() &&
-            event->getIf<sf::Event::KeyPressed>()->scancode == sf::Keyboard::Scan::Escape) {
+            event->getIf<sf::Event::KeyPressed>()->scancode == sf::Keyboard::Scan::Escape)
+        {
             shouldExit = true;
         }
         if (event->is<sf::Event::Resized>()) {
@@ -118,19 +129,54 @@ void Game::processEvents() {
 
 void Game::update(float deltaTime) {
     states.update(deltaTime);
-    if (states.getCurrentState()->getID() == StateID::Play) {
-        if (Player* player = dynamic_cast<Player*>(entities[0].get())) {
-            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-            player->setAim(worldPos);
 
-            ammo.hudUpdate(player->getWeaponAmmoCount());
-            health.hudUpdate(player->getHealth());
-            armor.hudUpdate(player->getPlayerArmor());
+    if (states.getCurrentState()->getID() == StateID::Play) {
+        if (!entities.empty()) {
+            if (auto playerPtr = std::dynamic_pointer_cast<Player>(entities[0])) {
+                sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+                playerPtr->setAim(worldPos);
+
+                ammo.hudUpdate(playerPtr->getWeaponAmmoCount());
+                health.hudUpdate(playerPtr->getHealth());
+                armor.hudUpdate(playerPtr->getPlayerArmor());
+            }
         }
-        for (const auto& entity : entities) {
-            entity->update(deltaTime);
+
+        for (auto& ent : entities) {
+            ent->update(deltaTime);
         }
+
+        for (auto& ent : entities) {
+            auto& projList = ent->getProjectiles();
+            for (auto& p : projList) {
+                if (!p->isAlive()) continue;
+
+                if (p->getBounds().position.y > LOGICAL_HEIGHT - 200) {
+                    p->deactivate();
+                    continue;
+                }
+
+                for (auto& targetEnt : entities) {
+                    auto ownerPtr = p->getOwner();
+                    if (ownerPtr && ownerPtr.get() == targetEnt.get()) {
+                        continue;
+                    }
+                    if (!targetEnt->isAlive()) continue;
+                    if (p->getBounds().findIntersection(targetEnt->getBounds())) {
+                        targetEnt->takeDamage(p->getDamage());
+                        p->deactivate();
+                        break;
+                    }
+                }
+            }
+        }
+        std::erase_if(
+            entities,
+            [](const std::shared_ptr<Entity>& e) {
+                return !e->isAlive();
+            }
+        );
         enemySpawner.update(deltaTime);
     }
 }
@@ -139,52 +185,74 @@ void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
     window.draw(hudSprite);
-    for (const auto & entity : entities) {
-        entity->draw(window);
+    for (auto& ent : entities) {
+        ent->draw(window);
+        for (auto& p : ent->getProjectiles()) {
+            p->draw(window);
+        }
     }
     ammo.draw(window);
     health.draw(window);
     armor.draw(window);
-    sf::Texture faceTexture("./assets/textures/player/faces/face1.png"); // mic extra ca decoratiune momentan
+    sf::Texture faceTexture("./assets/textures/player/faces/face1.png");
     sf::Sprite faceSprite(faceTexture);
-    faceSprite.setPosition({LOGICAL_WIDTH / 2 - faceTexture.getSize().x / 2 * 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT, LOGICAL_HEIGHT - 192 / 2 - (faceTexture.getSize().y * 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT) / 2 + 6});
-    faceSprite.setScale({3 * LOGICAL_WIDTH / LOGICAL_HEIGHT, 3 * LOGICAL_WIDTH / LOGICAL_HEIGHT}); // placeholder, deocamdata e implementat intr-un mod foarte stupid
+    faceSprite.setPosition({
+        LOGICAL_WIDTH / 2.f
+          - (faceTexture.getSize().x / 2.f) * (3.f * LOGICAL_WIDTH / LOGICAL_HEIGHT),
+        LOGICAL_HEIGHT
+          - 192.f / 2.f
+          - ((faceTexture.getSize().y * 3.f * LOGICAL_WIDTH / LOGICAL_HEIGHT) / 2.f)
+          + 6.f
+    });
+    faceSprite.setScale({3.f * LOGICAL_WIDTH / LOGICAL_HEIGHT,
+                         3.f * LOGICAL_WIDTH / LOGICAL_HEIGHT});
     window.draw(faceSprite);
     states.draw(window);
     window.display();
 }
 
-void Game::musicHandler (const sf::Event* event) {
+
+void Game::musicHandler(const sf::Event* event) {
     if (window.hasFocus()) {
-        if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::M
-            && soundTrack.getStatus() == sf::SoundSource::Status::Playing) {
-            std::cout<<"Playback paused"<<std::endl;
+        if (event->is<sf::Event::KeyReleased>() &&
+            event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::M &&
+            soundTrack.getStatus() == sf::SoundSource::Status::Playing)
+        {
+            std::cout << "Playback paused" << std::endl;
             soundTrack.pause();
         }
-        else if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::M
-            && soundTrack.getStatus() == sf::SoundSource::Status::Paused) {
-            std::cout<<"Playback resumed"<<std::endl;
+        else if (event->is<sf::Event::KeyReleased>() &&
+                 event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::M &&
+                 soundTrack.getStatus() == sf::SoundSource::Status::Paused)
+        {
+            std::cout << "Playback resumed" << std::endl;
             soundTrack.play();
         }
-        if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::Hyphen
-            && soundTrack.getStatus() == sf::SoundSource::Status::Playing && soundTrack.getVolume() > 0) {
-            std::cout<<"Volume lowered"<<std::endl;
-            musicVolume -= 2;
+        if (event->is<sf::Event::KeyReleased>() &&
+            event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::Hyphen &&
+            soundTrack.getStatus() == sf::SoundSource::Status::Playing &&
+            soundTrack.getVolume() > 0.f)
+        {
+            std::cout << "Volume lowered" << std::endl;
+            musicVolume -= 2.f;
             soundTrack.setVolume(musicVolume);
         }
-        if (event->is<sf::Event::KeyReleased>() && event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::Equal
-            && soundTrack.getStatus() == sf::SoundSource::Status::Playing && soundTrack.getVolume() < 30) {
-            std::cout<<"Volume increased"<<std::endl;
-            musicVolume += 2;
+        if (event->is<sf::Event::KeyReleased>() &&
+            event->getIf<sf::Event::KeyReleased>()->scancode == sf::Keyboard::Scan::Equal &&
+            soundTrack.getStatus() == sf::SoundSource::Status::Playing &&
+            soundTrack.getVolume() < 30.f)
+        {
+            std::cout << "Volume increased" << std::endl;
+            musicVolume += 2.f;
             soundTrack.setVolume(musicVolume);
         }
     }
     if (soundTrack.getStatus() == sf::Sound::Status::Stopped) {
-        std::random_device random;
-        std::mt19937 gen(random());
+        std::random_device rd;
+        std::mt19937 gen(rd());
         std::uniform_int_distribution<> distrib(0, static_cast<int>(trackPaths.size()) - 1);
         currentMusicIndex = distrib(gen);
-        std::cout<<"Now Playing :"<<currentMusicIndex<<std::endl;
+        std::cout << "Now Playing :" << currentMusicIndex << std::endl;
         std::ignore = soundTrack.openFromFile(trackPaths[currentMusicIndex]);
         soundTrack.play();
         soundTrack.setVolume(musicVolume);

@@ -1,37 +1,51 @@
 #include "../headers/projectile.h"
+#include "../headers/entity.h"
 
-static constexpr float LOGICAL_HEIGHT = 1080;
-
-Projectile::Projectile(const sf::Texture& texture, float startX, float startY, float targetX, float targetY, float speed, float spreadAngle)
-    : sprite(texture), speed(speed), lifetime(0.f)
+Projectile::Projectile(const sf::Texture& texture,
+                       float startX,
+                       float startY,
+                       float targetX,
+                       float targetY,
+                       float speed,
+                       float spreadAngle,
+                       int damage,
+                       std::weak_ptr<Entity> ownerPtr)
+    : sprite(texture),
+      direction(0.f, 0.f),
+      speed(speed),
+      lifetime(0.f),
+      damage(damage),
+      owner(std::move(ownerPtr)),
+      active(true)
 {
-    sf::Vector2u size = texture.getSize();
-    sprite.setOrigin(sf::Vector2f(static_cast<float>(size.x) / 2.0f, static_cast<float>(size.y) / 2.0f));
-    sprite.setPosition(sf::Vector2f(startX, startY));
+    sf::Vector2u sz = texture.getSize();
+    sprite.setOrigin(sf::Vector2f(static_cast<float>(sz.x)/2.0f,
+                                  static_cast<float>(sz.y)/2.0f));
+    sprite.setPosition({ startX, startY });
 
-    sf::Vector2f vec(targetX - startX, targetY - startY);
+    sf::Vector2f vec{ targetX - startX, targetY - startY };
     float length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
-    direction = (length != 0) ? vec / length : sf::Vector2f(1.f, 0.f);
+    direction = (length != 0.f) ? (vec / length) : sf::Vector2f(1.f, 0.f);
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> angleDist(-spreadAngle / 2, spreadAngle / 2);
-    float angleOffset = angleDist(gen); // Unghi de variație
+    std::uniform_real_distribution<float> angleDist(-spreadAngle/2.0f, spreadAngle/2.0f);
+    float angleOffset = angleDist(gen) * (3.14159265f/180.f);
 
-    float radians = angleOffset * (3.14159265f / 180.f);
-
-    float newX = direction.x * std::cos(radians) - direction.y * std::sin(radians);
-    float newY = direction.x * std::sin(radians) + direction.y * std::cos(radians);
-    direction = sf::Vector2f(newX, newY);
+    float newX = direction.x * std::cos(angleOffset) - direction.y * std::sin(angleOffset);
+    float newY = direction.x * std::sin(angleOffset) + direction.y * std::cos(angleOffset);
+    direction = { newX, newY };
 }
 
-Projectile::Projectile (const Projectile& other)
-    : sprite(other.sprite), direction(other.direction), speed(other.speed), lifetime(other.lifetime) {
-    // std::cout<<"Proiectilul a fost copiat cu succes";
-}
+Projectile::Projectile(const Projectile& other)
+    : sprite(other.sprite),
+      direction(other.direction),
+      speed(other.speed),
+      lifetime(other.lifetime),
+      damage(other.damage),
+      owner(other.owner),
+      active(other.active) {
 
-Projectile::~Projectile() {
-    // std::cout<<"Proiectiilul a fost distrus cu succes";
 }
 
 Projectile& Projectile::operator=(const Projectile& other) {
@@ -40,28 +54,46 @@ Projectile& Projectile::operator=(const Projectile& other) {
         direction = other.direction;
         speed = other.speed;
         lifetime = other.lifetime;
-        // std::cout<<"Copiere efectuata cu succes"<<std::endl; cauzeaza lag
+        damage = other.damage;
+        owner = other.owner;
+        active = other.active;
     }
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& info, const Projectile& projectile) {
-    info <<"Projectile speed : "<< projectile.speed<<std::endl
-         <<"Projectile elapsed lifetime : "<<projectile.lifetime<<std::endl
-         <<"Projectile position : ("<<projectile.sprite.getPosition().x <<", "<<projectile.sprite.getPosition().y<<")";
-    return info;
-}
+Projectile::~Projectile() = default;
 
 void Projectile::update(float deltaTime) {
+    if (!active) return;
     sprite.move(direction * speed * deltaTime);
     lifetime += deltaTime;
+    if (lifetime >= maxLifetime) {
+        active = false;
+    }
 }
 
 bool Projectile::isAlive() const {
-    return sprite.getPosition().y < LOGICAL_HEIGHT - 200 && lifetime < maxLifetime;
+    return active;
+}
+
+void Projectile::deactivate() {
+    active = false;
+}
+
+int Projectile::getDamage() const {
+    return damage;
+}
+
+sf::FloatRect Projectile::getBounds() const {
+    return sprite.getGlobalBounds();
+}
+
+std::shared_ptr<Entity> Projectile::getOwner() const {
+    return owner.lock();
 }
 
 void Projectile::draw(sf::RenderWindow& window) const {
-    window.draw(sprite);
+    if (active) {
+        window.draw(sprite);
+    }
 }
-

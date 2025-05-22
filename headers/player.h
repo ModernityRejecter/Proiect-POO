@@ -1,17 +1,23 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include "../headers/weapon.h"
 #include "../headers/entity.h"
-class Player : public Entity{
-private:
+#include "../headers/projectile.h"
+#include <memory>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
 
+class Player : public Entity, public std::enable_shared_from_this<Player> {
+private:
     sf::Clock shotClock;
-    bool isShooting = false;
+    bool isShooting;
     std::vector<Weapon> weapons;
-    std::vector<Projectile> playerProjectiles;
-    size_t currentWeaponIndex = 0;
+    std::vector<std::unique_ptr<Projectile>> projectiles;
+    size_t currentWeaponIndex;
     static std::unordered_map<int, std::unordered_map<int, sf::Texture>> entityTextures;
-    int armor = 200;
+    int armor;
 
     void move(float deltaTime) override;
     void loadWeaponsAttributes();
@@ -20,17 +26,19 @@ private:
     void idleAnimation() override;
     void shootingAnimation();
     void updateShootingAnimation();
+
 public:
     Player(const std::string& texturePath, float x, float y, float speed);
-    friend std::ostream& operator<<(std::ostream& info, const Player& player);
-    static void loadEntityTextures();
-    void draw(sf::RenderWindow& window) const override;
-    // size_t getWeaponIndex() const;
-    int getWeaponAmmoCount() const;
-    // int getWeaponMaxAmmo() const;
     ~Player() override = default;
-    void setAim(const sf::Vector2f& worldMousePos);
+
+    std::vector<std::unique_ptr<Projectile>>& getProjectiles() override;
+    void draw(sf::RenderWindow& window) const override;
+    int getWeaponAmmoCount() const;
     int getWeaponMaxAmmo() const;
     int getPlayerArmor() const;
+    void setAim(const sf::Vector2f& worldMousePos);
     void update(float deltaTime) override;
+
+    static void loadEntityTextures();
+    friend std::ostream& operator<<(std::ostream& info, const Player& player);
 };

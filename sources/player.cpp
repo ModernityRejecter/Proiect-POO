@@ -1,79 +1,42 @@
 #include "../headers/player.h"
 
-static constexpr float LOGICAL_WIDTH  = 1920;
-static constexpr float LOGICAL_HEIGHT = 1080;
 std::unordered_map<int, std::unordered_map<int, sf::Texture>> Player::entityTextures;
 
 Player::Player(const std::string& texturePath, float x, float y, float speed)
-    :Entity(texturePath, 100, 100, speed, {x, y})
+    : Entity(texturePath, 100, 100, speed, {x, y}),
+      isShooting(false),
+      currentWeaponIndex(0),
+      armor(200)
 {
     if (!texture.loadFromFile(texturePath)) {
         std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";
         exit(EXIT_FAILURE);
     }
     sprite.setTexture(texture);
-    sprite.setPosition(sf::Vector2f(x, y));
+    sprite.setPosition({x, y});
     loadWeaponsAttributes();
-}
-// afisarea cauzeaza lag in cazul in care sunt active multe proiectile
-// motiv pentru care este apelata la 5 secunde (trebuie gandita putin mai bine)
-std::ostream& operator<<(std::ostream& info, const Player& player) {
-    info << "Player position : ("<< player.sprite.getPosition().x<<", "<<player.sprite.getPosition().y<<")"<<std::endl
-         << "Current direction : "<<player.directionIndex<<std::endl
-         << "Current weapon information: "<<player.weapons[player.currentWeaponIndex]<<std::endl;
-
-    return info;
 }
 
 void Player::loadEntityTextures() {
-    std::string path = "./assets/textures/";
-    std::string type = "player/";
-    std::string test = "sprite_";
+    std::string basePath = "./assets/textures/player/";
+    std::string prefix   = "sprite_";
     for (int i = 1; i <= 8; i++) {
         for (int j = 1; j <= 2; j++) {
-            sf::Texture entityTexture = sf::Texture(path + type + "idle/" + test + std::to_string(i) + "_" + std::to_string(j) + ".png");
-            entityTextures[i][j] = entityTexture;
-            entityTexture = sf::Texture(path + type + "shooting/" + test + std::to_string(i + 8) + "_" + std::to_string(j) + ".png");
-            entityTextures[i + 8][j] = entityTexture;
+            sf::Texture texture = sf::Texture(basePath + "idle/" + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png");
+            entityTextures[i][j] = texture;
+            texture =  sf::Texture(basePath + "shooting/" + prefix + std::to_string(i + 8) + "_" + std::to_string(j) + ".png");
+            entityTextures[i + 8][j] = texture;
         }
     }
-}
-
-void Player::shootingAnimation() {
-    isShooting = true;
-    shotClock.restart();
-    textureIndex = 2;
-    sprite.setTexture(entityTextures[directionIndex + 8][textureIndex]);
 }
 
 void Player::loadWeaponsAttributes() {
     weapons.clear();
     weapons.reserve(4);
-    weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f, "./assets/sounds/plasma.wav");
-    weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f, "./assets/sounds/rocket_launcher.wav");
-    weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 999, 999, 10.0f, "./assets/sounds/pistol.wav");
-    weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f, "./assets/sounds/BFG_9000.wav");
-}
-
-void Player::idleAnimation() {
-    if (previousDirectionIndex != directionIndex) {
-        sprite.setTexture(entityTextures[directionIndex][1]);
-    }
-    if (interval.getElapsedTime().asMilliseconds() >= 300) {
-        if (textureIndex == 1) {
-            sprite.setTexture(entityTextures[directionIndex][2]);
-            textureIndex = 2;
-            // std::cout <<"am actualizat ";
-        }
-        else {
-            sprite.setTexture(entityTextures[directionIndex][1]);
-            textureIndex = 1;
-            // std::cout <<"am actualizat ";
-        }
-        // std::cout << textureIndex << std::endl;
-        interval.restart();
-    }
-    // weapons[currentWeaponIndex].passiveReload();
+    weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f, "./assets/sounds/plasma.wav", 20);
+    weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f, "./assets/sounds/rocket_launcher.wav", 200);
+    weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 999, 999, 10.0f, "./assets/sounds/pistol.wav", 7);
+    weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f, "./assets/sounds/BFG_9000.wav", 2000);
 }
 
 void Player::move(float deltaTime) {
@@ -89,10 +52,10 @@ void Player::move(float deltaTime) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
         movement.x += speed * deltaTime;
 
-    float minX = 0;
-    float maxX = static_cast<float>(LOGICAL_WIDTH) - static_cast<float>(getSize().x);
-    float minY = 0;
-    float maxY = static_cast<float>(LOGICAL_HEIGHT) - 192 -  static_cast<float>(getSize().y);
+    float minX = 0.f;
+    float maxX = LOGICAL_WIDTH - static_cast<float>(getSize().x);
+    float minY = 0.f;
+    float maxY = LOGICAL_HEIGHT - 192.0f - static_cast<float>(getSize().y);
     sf::Vector2f newPos = position + movement;
 
     if (newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)
@@ -100,32 +63,44 @@ void Player::move(float deltaTime) {
 }
 
 void Player::playerShooting() {
-
     findDirection();
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
         Weapon& currentWeapon = weapons[currentWeaponIndex];
         if (currentWeapon.canShoot()) {
-            weapons[currentWeaponIndex].playSound();
+            currentWeapon.playSound();
             shootingAnimation();
             currentWeapon.resetFireClock();
 
             sf::Vector2f playerCenter = {
-                position.x + static_cast<float>(texture.getSize().x) / 2.0f,
-                position.y + static_cast<float>(texture.getSize().y) / 2.0f
+                sprite.getPosition().x + sprite.getGlobalBounds().size.x / 2.0f,
+                sprite.getPosition().y + sprite.getGlobalBounds().size.y / 2.0f
             };
 
-            playerProjectiles.push_back(currentWeapon.createProjectile(
-                playerCenter.x,
-                playerCenter.y,
-                aimPosition.x,
-                aimPosition.y
-            ));
+            Projectile p = currentWeapon.createProjectile(
+                playerCenter.x, playerCenter.y,
+                aimPosition.x, aimPosition.y,
+                shared_from_this()
+            );
+            projectiles.push_back(std::make_unique<Projectile>(p));
         }
     }
-    else if (!isShooting){
+    else if (!isShooting) {
         idleAnimation();
     }
-    std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.isAlive(); });
+
+    std::erase_if(
+        projectiles,
+        [](const std::unique_ptr<Projectile>& p) {
+            return !p->isAlive();
+        }
+    );
+}
+
+void Player::weaponsHandler() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) currentWeaponIndex = 0;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) currentWeaponIndex = 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) currentWeaponIndex = 2;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4)) currentWeaponIndex = 3;
 }
 
 void Player::updateShootingAnimation() {
@@ -149,22 +124,44 @@ void Player::update(float deltaTime) {
     playerShooting();
     updateShootingAnimation();
     weaponsHandler();
-    for (auto& projectile : playerProjectiles) {
-        projectile.update(deltaTime);
+
+    for (auto& p : projectiles) {
+        p->update(deltaTime);
     }
 }
 
-void Player::weaponsHandler() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) currentWeaponIndex = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) currentWeaponIndex = 1;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) currentWeaponIndex = 2;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4)) currentWeaponIndex = 3;
+void Player::idleAnimation() {
+    if (previousDirectionIndex != directionIndex) {
+        sprite.setTexture(entityTextures[directionIndex][1]);
+    }
+    if (interval.getElapsedTime().asMilliseconds() >= 300) {
+        if (textureIndex == 1) {
+            sprite.setTexture(entityTextures[directionIndex][2]);
+            textureIndex = 2;
+        }
+        else {
+            sprite.setTexture(entityTextures[directionIndex][1]);
+            textureIndex = 1;
+        }
+        interval.restart();
+    }
+}
+
+void Player::shootingAnimation() {
+    isShooting = true;
+    shotClock.restart();
+    textureIndex = 2;
+    sprite.setTexture(entityTextures[directionIndex + 8][textureIndex]);
+}
+
+std::vector<std::unique_ptr<Projectile>>& Player::getProjectiles() {
+    return projectiles;
 }
 
 void Player::draw(sf::RenderWindow& window) const {
     window.draw(sprite);
-    for (const auto& projectile : playerProjectiles) {
-        projectile.draw(window);
+    for (const auto& p : projectiles) {
+        p->draw(window);
     }
 }
 
@@ -182,4 +179,13 @@ int Player::getPlayerArmor() const {
 
 void Player::setAim(const sf::Vector2f& worldMousePos) {
     aimPosition = worldMousePos;
+}
+
+std::ostream& operator<<(std::ostream& info, const Player& player) {
+    info << "Player position : ("
+         << player.sprite.getPosition().x << ", "
+         << player.sprite.getPosition().y << ")\n"
+         << "Current direction : " << player.directionIndex << "\n"
+         << "Current weapon: " << player.weapons[player.currentWeaponIndex] << "\n";
+    return info;
 }
