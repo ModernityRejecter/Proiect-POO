@@ -143,7 +143,7 @@ void Game::update(float deltaTime) {
             }
         }
 
-        for (auto& ent : entities) {
+        for (const auto& ent : entities) {
             ent->update(deltaTime);
         }
 
@@ -157,7 +157,7 @@ void Game::update(float deltaTime) {
                     continue;
                 }
 
-                for (auto& targetEnt : entities) {
+                for (const auto& targetEnt : entities) {
                     auto ownerPtr = p->getOwner();
                     if (ownerPtr && ownerPtr.get() == targetEnt.get()) {
                         continue;
@@ -185,9 +185,9 @@ void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
     window.draw(hudSprite);
-    for (auto& ent : entities) {
+    for (const auto& ent : entities) {
         ent->draw(window);
-        for (auto& p : ent->getProjectiles()) {
+        for (const auto& p : ent->getProjectiles()) {
             p->draw(window);
         }
     }
