@@ -13,7 +13,7 @@
 #include "../headers/pauseState.h"
 #include "../headers/imp.h"
 #include "../headers/entity.h"
-#include "../headers/EnemySpawner.h"
+#include "../headers/enemySpawner.h"
 
 class Game {
 private:
