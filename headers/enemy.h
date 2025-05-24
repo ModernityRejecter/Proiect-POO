@@ -22,5 +22,5 @@ public:
                    const std::shared_ptr<Player> &targetPlayer);
     ~Enemy() override = default;
     std::vector<std::unique_ptr<Projectile>>& getProjectiles() override;
-
+    virtual std::unique_ptr<Entity> clone() const = 0;
 };

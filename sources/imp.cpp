@@ -18,10 +18,6 @@ Imp::Imp(const sf::Vector2f& position,
     sprite.setPosition(position);
 }
 
-std::unique_ptr<Entity> Imp::clone() const {
-
-}
-
 void Imp::loadEntityTextures() {
     std::string basePath = "./assets/textures/enemies/imp/";
     std::string prefix   = "sprite_";
@@ -54,4 +50,8 @@ void Imp::update(float deltaTime) {
             return !p->isAlive();
         }
     );
+}
+
+std::unique_ptr<Entity> Imp::clone() const {
+    return std::make_unique<Imp>(*this);
 }
