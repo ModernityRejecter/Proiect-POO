@@ -1,4 +1,4 @@
-#include "../headers/Enemy.h"
+#include "../headers/enemy.h"
 
 Enemy::Enemy(const std::string& texturePath,
              int maxHealth,
