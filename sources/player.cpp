@@ -81,7 +81,7 @@ void Player::playerShooting() {
                 aimPosition.x, aimPosition.y,
                 shared_from_this()
             );
-            projectiles.push_back(std::make_unique<Projectile>(p));
+            projectiles.push_back(std::make_shared<Projectile>(p));
         }
     }
     else if (!isShooting) {
@@ -90,7 +90,7 @@ void Player::playerShooting() {
 
     std::erase_if(
         projectiles,
-        [](const std::unique_ptr<Projectile>& p) {
+        [](const std::shared_ptr<Projectile>& p) {
             return !p->isAlive();
         }
     );
@@ -137,7 +137,7 @@ void Player::shootingAnimation() {
     sprite.setTexture(entityTextures[directionIndex + 8][textureIndex]);
 }
 
-std::vector<std::unique_ptr<Projectile>>& Player::getProjectiles() {
+std::vector<std::shared_ptr<Projectile>>& Player::getProjectiles() {
     return projectiles;
 }
 

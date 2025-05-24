@@ -46,7 +46,7 @@ void Imp::update(float deltaTime) {
     }
     std::erase_if(
         projectiles,
-        [](const std::unique_ptr<Projectile>& p) {
+        [](const std::shared_ptr<Projectile>& p) {
             return !p->isAlive();
         }
     );
@@ -55,3 +55,4 @@ void Imp::update(float deltaTime) {
 std::unique_ptr<Entity> Imp::clone() const {
     return std::make_unique<Imp>(*this);
 }
+

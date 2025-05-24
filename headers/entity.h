@@ -28,17 +28,17 @@ protected:
                     int health    = 100,
                     float speed   = 100.0f,
                     sf::Vector2f position = {600, 600});
-    virtual ~Entity() override = default;
     virtual int findDirection();
     virtual void move(float deltaTime);
     virtual void idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures);
 
 public:
+    virtual ~Entity() override = default;
     virtual void takeDamage(int amount);
     bool isAlive() const;
     int getHealth() const;
     sf::FloatRect getBounds() const;
     virtual void update(float deltaTime) = 0;
-    virtual std::vector<std::unique_ptr<Projectile>>& getProjectiles();
+    virtual std::vector<std::shared_ptr<Projectile>>& getProjectiles();
     // [[maybe_unused]] virtual void shooting(const sf::Vector2f& targetPosition);
 };

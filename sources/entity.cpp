@@ -73,8 +73,8 @@ void Entity::move(float /*deltaTime*/) {
         sprite.move(movement);
 }
 
-std::vector<std::unique_ptr<Projectile>>& Entity::getProjectiles() {
-    static std::vector<std::unique_ptr<Projectile>> emptyList;
+std::vector<std::shared_ptr<Projectile>>& Entity::getProjectiles() {
+    static std::vector<std::shared_ptr<Projectile>> emptyList;
     return emptyList;
 }
 

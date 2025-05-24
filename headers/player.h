@@ -14,7 +14,7 @@ private:
     sf::Clock shotClock;
     bool isShooting;
     std::vector<Weapon> weapons;
-    std::vector<std::unique_ptr<Projectile>> projectiles;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
     size_t currentWeaponIndex;
     static std::unordered_map<int, std::unordered_map<int, sf::Texture>> entityTextures;
     int armor;
@@ -30,7 +30,7 @@ public:
     Player(const std::string& texturePath, float x, float y, float speed);
     ~Player() override = default;
 
-    std::vector<std::unique_ptr<Projectile>>& getProjectiles() override;
+    std::vector<std::shared_ptr<Projectile>>& getProjectiles() override;
     void draw(sf::RenderWindow& window) const override;
     int getWeaponAmmoCount() const;
     int getWeaponMaxAmmo() const;

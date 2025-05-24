@@ -8,7 +8,7 @@ protected:
     void tryToShoot();
     void move(float deltaTime) override;
     void draw(sf::RenderWindow& window) const override;
-    std::vector<std::unique_ptr<Projectile>> projectiles;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
     sf::Texture projectileTexture;
     sf::Clock shootClock;
     float shootInterval;
@@ -21,6 +21,6 @@ public:
                    sf::Vector2f position,
                    const std::shared_ptr<Player> &targetPlayer);
     ~Enemy() override = default;
-    std::vector<std::unique_ptr<Projectile>>& getProjectiles() override;
+    std::vector<std::shared_ptr<Projectile>>& getProjectiles() override;
     virtual std::unique_ptr<Entity> clone() const = 0;
 };

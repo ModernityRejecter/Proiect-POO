@@ -74,6 +74,6 @@ void Enemy::move(float deltaTime) {
     }
 }
 
-std::vector<std::unique_ptr<Projectile>>& Enemy::getProjectiles() {
+std::vector<std::shared_ptr<Projectile>>& Enemy::getProjectiles() {
     return projectiles;
 }
