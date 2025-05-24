@@ -1,29 +1,29 @@
-#include "../headers/imp.h"
+#include "../headers/cyberDemon.h"
 
-std::unordered_map<int, std::unordered_map<int, sf::Texture>> Imp::entityTextures;
-int Imp::updateTime = 150;
+std::unordered_map<int, std::unordered_map<int, sf::Texture>> CyberDemon::entityTextures;
+int CyberDemon::updateTime = 200;
 
-Imp::Imp(const sf::Vector2f& position,
+CyberDemon::CyberDemon(const sf::Vector2f& position,
          const std::shared_ptr<Player>& targetPlayer)
-    : Enemy("./assets/textures/enemies/imp/sprite_1_1.png",
-            50,
-            120.0f,
+    : Enemy("./assets/textures/enemies/cyber_demon/sprite_1_1.png",
+            400,
+            60,
             position,
-            0.8f,
-            800.f,
-            5,
-            1000.f,
+            2.2f,
+            500.f,
+            30,
+            400.f,
             targetPlayer)
 {
-    if (!projectileTexture.loadFromFile("./assets/textures/projectiles/imp_proj.png")) {
-        std::cerr << "Eroare la incarcare textura proiectil imp!\n";
+    if (!projectileTexture.loadFromFile("./assets/textures/projectiles/cyber_demon_proj.png")) {
+        std::cerr << "Eroare la incarcare textura proiectil mancubus!\n";
         exit(EXIT_FAILURE);
     }
     sprite.setPosition(position);
 }
 
-void Imp::loadEntityTextures() {
-    std::string basePath = "./assets/textures/enemies/imp/";
+void CyberDemon::loadEntityTextures() {
+    std::string basePath = "./assets/textures/enemies/cyber_demon/";
     std::string prefix   = "sprite_";
     for (int i = 1; i <= 8; i++) {
         for (int j = 1; j <= 2; j++) {
@@ -33,7 +33,7 @@ void Imp::loadEntityTextures() {
     }
 }
 
-void Imp::update(float deltaTime) {
+void CyberDemon::update(float deltaTime) {
     auto playerShared = targetPlayer.lock();
     if (!playerShared) return;
 
@@ -56,7 +56,7 @@ void Imp::update(float deltaTime) {
     );
 }
 // cppcheck-suppress unusedFunction
-std::unique_ptr<Entity> Imp::clone() const {
-    return std::make_unique<Imp>(*this);
+std::unique_ptr<Entity> CyberDemon::clone() const {
+    return std::make_unique<CyberDemon>(*this);
 }
 

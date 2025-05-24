@@ -58,15 +58,26 @@ void EnemySpawner::spawnEnemy() {
     }
 
     switch (enemyTypeDist(rng)) {
-        case static_cast<int>(EnemyType::Imp): {
-            auto impPtr = std::make_shared<Imp>(
+        case static_cast<int>(EnemyType::Imp):
+            entities.push_back(std::make_shared<Imp>(
                 sf::Vector2f{x, y},
                 std::dynamic_pointer_cast<Player>(playerPtr.lock())
-            );
-            entities.push_back(impPtr);
-            break;
-        }
-        default:
-            break;
+            ));
+        break;
+
+        case static_cast<int>(EnemyType::CyberDemon):
+            entities.push_back(std::make_shared<CyberDemon>(
+                sf::Vector2f{x, y},
+                std::dynamic_pointer_cast<Player>(playerPtr.lock())
+            ));
+        break;
+
+        case static_cast<int>(EnemyType::Pinky):
+            entities.push_back(std::make_shared<Pinky>(
+                sf::Vector2f{x, y},
+                std::dynamic_pointer_cast<Player>(playerPtr.lock())
+            ));
+        break;
+        default: ;
     }
 }

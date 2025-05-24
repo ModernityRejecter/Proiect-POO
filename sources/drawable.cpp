@@ -1,7 +1,7 @@
 #include "../headers/drawable.h"
 
 Drawable::Drawable(const std::string& texturePath, const sf::Vector2f& position) : texture(texturePath), sprite(texture), position(position) {
-    std::cout<<"Drawable created at position ("<<position.x<<", "<<position.y<<")"<<std::endl;
+    // std::cout<<"Drawable created at position ("<<position.x<<", "<<position.y<<")"<<std::endl;
     sprite.setPosition(position);
 }
 

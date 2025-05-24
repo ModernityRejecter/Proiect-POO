@@ -16,7 +16,7 @@
 #include "../headers/hud.h"
 #include "../headers/stateMachine.h"
 #include "../headers/pauseState.h"
-
+#include "../headers/cyberDemon.h"
 class Game {
 private:
     sf::RenderWindow window;

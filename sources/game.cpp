@@ -17,6 +17,8 @@ Game::Game()
 {
     Player::loadEntityTextures();
     Imp::loadEntityTextures();
+    CyberDemon::loadEntityTextures();
+    Pinky::loadEntityTextures();
 
     window.setView(view);
     onResize(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y));
@@ -79,7 +81,7 @@ void Game::onResize(float w, float h) {
 void Game::run() {
     loadTracks();
     sf::Clock clock;
-    sf::Clock infoClock;
+    // sf::Clock infoClock;
 
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
@@ -87,14 +89,14 @@ void Game::run() {
         update(deltaTime);
         render();
 
-        if (infoClock.getElapsedTime().asMilliseconds() >= 5000) {
-            if (!entities.empty()) {
-                if (auto playerPtr = std::dynamic_pointer_cast<Player>(entities[0])) {
-                    std::cout << *playerPtr << std::endl;
-                }
-            }
-            infoClock.restart();
-        }
+        // if (infoClock.getElapsedTime().asMilliseconds() >= 5000) {
+        //     if (!entities.empty()) {
+        //         if (auto playerPtr = std::dynamic_pointer_cast<Player>(entities[0])) {
+        //             std::cout << *playerPtr << std::endl;
+        //         }
+        //     }
+        //     infoClock.restart();
+        // }
     }
 }
 
@@ -184,13 +186,13 @@ void Game::update(float deltaTime) {
 void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
-    window.draw(hudSprite);
     for (const auto& ent : entities) {
         ent->draw(window);
         for (const auto& p : ent->getProjectiles()) {
             p->draw(window);
         }
     }
+    window.draw(hudSprite);
     ammo.draw(window);
     health.draw(window);
     armor.draw(window);

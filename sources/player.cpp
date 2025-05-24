@@ -85,7 +85,7 @@ void Player::playerShooting() {
         }
     }
     else if (!isShooting) {
-        idleAnimation(entityTextures);
+        idleAnimation(entityTextures, updateTime);
     }
 
     std::erase_if(

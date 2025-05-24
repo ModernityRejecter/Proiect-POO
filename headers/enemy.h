@@ -13,12 +13,18 @@ protected:
     sf::Clock shootClock;
     float shootInterval;
     float shootRange;
+    int projectileDamage;
+    float projectileSpeed;
 
 public:
     explicit Enemy(const std::string& texturePath,
                    int maxHealth,
                    float speed,
                    sf::Vector2f position,
+                   float shootInterval,
+                   float shootRange,
+                   int projectileDamage,
+                   float projectileSpeed,
                    const std::shared_ptr<Player> &targetPlayer);
     ~Enemy() override = default;
     std::vector<std::shared_ptr<Projectile>>& getProjectiles() override;

@@ -90,6 +90,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/enemySpawner.h
         sources/enemy.cpp
         headers/enemy.h
+        sources/cyberDemon.cpp
+        headers/cyberDemon.h
+        sources/pinky.cpp
+        headers/pinky.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

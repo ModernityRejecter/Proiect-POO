@@ -30,7 +30,7 @@ protected:
                     sf::Vector2f position = {600, 600});
     virtual int findDirection();
     virtual void move(float deltaTime);
-    virtual void idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures);
+    virtual void idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures, int updateTime);
 
 public:
     virtual ~Entity() override = default;

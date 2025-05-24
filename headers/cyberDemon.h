@@ -10,14 +10,14 @@
 #include <cmath>
 #include <algorithm>
 
-class Imp : public Enemy {
+class CyberDemon : public Enemy {
 private:
     static std::unordered_map<int, std::unordered_map<int, sf::Texture>> entityTextures;
     static int updateTime;
 
 public:
-    Imp(const sf::Vector2f& position, const std::shared_ptr<Player> &playerPtr);
-    ~Imp() override = default;
+    CyberDemon(const sf::Vector2f& position, const std::shared_ptr<Player> &playerPtr);
+    ~CyberDemon() override = default;
     std::unique_ptr<Entity> clone() const override;
     static void loadEntityTextures();
     void update(float deltaTime) override;

@@ -78,11 +78,11 @@ std::vector<std::shared_ptr<Projectile>>& Entity::getProjectiles() {
     return emptyList;
 }
 
-void Entity::idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures) {
+void Entity::idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures, int updateTime) {
     if (previousDirectionIndex != directionIndex) {
         sprite.setTexture(entityTextures[directionIndex][1]);
     }
-    if (interval.getElapsedTime().asMilliseconds() >= 300) {
+    if (interval.getElapsedTime().asMilliseconds() >= updateTime) {
         if (textureIndex == 1) {
             sprite.setTexture(entityTextures[directionIndex][2]);
             textureIndex = 2;

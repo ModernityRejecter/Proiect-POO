@@ -18,6 +18,7 @@ private:
     size_t currentWeaponIndex;
     static std::unordered_map<int, std::unordered_map<int, sf::Texture>> entityTextures;
     int armor;
+    const int updateTime = 300;
 
     void move(float deltaTime) override;
     void loadWeaponsAttributes();

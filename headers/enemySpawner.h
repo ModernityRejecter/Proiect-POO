@@ -7,7 +7,8 @@
 #include "../headers/entity.h"
 #include "../headers/player.h"
 #include "../headers/imp.h"
-
+#include "../headers/cyberDemon.h"
+#include "../headers/pinky.h"
 class EnemySpawner {
 public:
     explicit EnemySpawner(std::vector<std::shared_ptr<Entity>>& entitiesRef);
@@ -17,6 +18,8 @@ public:
 private:
     enum class EnemyType {
         Imp = 0,
+        CyberDemon = 1,
+        Pinky = 2,
         COUNT
     };
 

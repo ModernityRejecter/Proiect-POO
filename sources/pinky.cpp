@@ -1,30 +1,30 @@
-#include "../headers/imp.h"
+#include "../headers/pinky.h"
 
-std::unordered_map<int, std::unordered_map<int, sf::Texture>> Imp::entityTextures;
-int Imp::updateTime = 150;
+std::unordered_map<int, std::unordered_map<int, sf::Texture>> Pinky::entityTextures;
+int Pinky::updateTime = 75;
 
-Imp::Imp(const sf::Vector2f& position,
+Pinky::Pinky(const sf::Vector2f& position,
          const std::shared_ptr<Player>& targetPlayer)
-    : Enemy("./assets/textures/enemies/imp/sprite_1_1.png",
-            50,
-            120.0f,
+    : Enemy("./assets/textures/enemies/pinky/sprite_1_1.png",
+            140,
+            250.f,
             position,
-            0.8f,
-            800.f,
-            5,
+            2.f,
+            50.f,
+            50.f,
             1000.f,
             targetPlayer)
 {
-    if (!projectileTexture.loadFromFile("./assets/textures/projectiles/imp_proj.png")) {
-        std::cerr << "Eroare la incarcare textura proiectil imp!\n";
+    if (!projectileTexture.loadFromFile("./assets/textures/projectiles/pinky_proj.png")) {
+        std::cerr << "Eroare la incarcare textura proiectil pinky!\n";
         exit(EXIT_FAILURE);
     }
     sprite.setPosition(position);
 }
 
-void Imp::loadEntityTextures() {
-    std::string basePath = "./assets/textures/enemies/imp/";
-    std::string prefix   = "sprite_";
+void Pinky::loadEntityTextures() {
+    std::string basePath = "./assets/textures/enemies/pinky/";
+    std::string prefix = "sprite_";
     for (int i = 1; i <= 8; i++) {
         for (int j = 1; j <= 2; j++) {
             sf::Texture texture = sf::Texture(basePath + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png");
@@ -33,7 +33,7 @@ void Imp::loadEntityTextures() {
     }
 }
 
-void Imp::update(float deltaTime) {
+void Pinky::update(float deltaTime) {
     auto playerShared = targetPlayer.lock();
     if (!playerShared) return;
 
@@ -56,7 +56,7 @@ void Imp::update(float deltaTime) {
     );
 }
 // cppcheck-suppress unusedFunction
-std::unique_ptr<Entity> Imp::clone() const {
-    return std::make_unique<Imp>(*this);
+std::unique_ptr<Entity> Pinky::clone() const {
+    return std::make_unique<Pinky>(*this);
 }
 
