@@ -51,7 +51,7 @@ void Imp::update(float deltaTime) {
         }
     );
 }
-
+// cppcheck-suppress unusedFunction
 std::unique_ptr<Entity> Imp::clone() const {
     return std::make_unique<Imp>(*this);
 }
