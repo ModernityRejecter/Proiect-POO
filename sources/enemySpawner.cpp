@@ -4,7 +4,7 @@ EnemySpawner::EnemySpawner(std::vector<std::shared_ptr<Entity>>& entitiesRef)
     : entities(entitiesRef),
       bounds({0.f, 0.f}),
       rng(std::random_device{}()),
-      spawnIntervalDist(2.0f, 5.0f),
+      spawnIntervalDist(0.0f, 3.0f),
       enemyTypeDist(0, static_cast<int>(EnemyType::COUNT) - 1),
       borderDist(0, 3),
       nextSpawnTime(0.f),

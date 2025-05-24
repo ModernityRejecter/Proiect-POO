@@ -78,6 +78,21 @@ std::vector<std::unique_ptr<Projectile>>& Entity::getProjectiles() {
     return emptyList;
 }
 
+void Entity::idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures) {
+    if (previousDirectionIndex != directionIndex) {
+        sprite.setTexture(entityTextures[directionIndex][1]);
+    }
+    if (interval.getElapsedTime().asMilliseconds() >= 300) {
+        if (textureIndex == 1) {
+            sprite.setTexture(entityTextures[directionIndex][2]);
+            textureIndex = 2;
+        } else {
+            sprite.setTexture(entityTextures[directionIndex][1]);
+            textureIndex = 1;
+        }
+        interval.restart();
+    }
+}
 // void Entity::shooting(const sf::Vector2f& /*targetPosition*/) {
 //
 // }

@@ -85,7 +85,7 @@ void Player::playerShooting() {
         }
     }
     else if (!isShooting) {
-        idleAnimation();
+        idleAnimation(entityTextures);
     }
 
     std::erase_if(
@@ -127,23 +127,6 @@ void Player::update(float deltaTime) {
 
     for (auto& p : projectiles) {
         p->update(deltaTime);
-    }
-}
-
-void Player::idleAnimation() {
-    if (previousDirectionIndex != directionIndex) {
-        sprite.setTexture(entityTextures[directionIndex][1]);
-    }
-    if (interval.getElapsedTime().asMilliseconds() >= 300) {
-        if (textureIndex == 1) {
-            sprite.setTexture(entityTextures[directionIndex][2]);
-            textureIndex = 2;
-        }
-        else {
-            sprite.setTexture(entityTextures[directionIndex][1]);
-            textureIndex = 1;
-        }
-        interval.restart();
     }
 }
 

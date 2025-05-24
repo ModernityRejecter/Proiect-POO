@@ -31,7 +31,7 @@ protected:
     virtual ~Entity() override = default;
     virtual int findDirection();
     virtual void move(float deltaTime);
-    virtual void idleAnimation() = 0;
+    virtual void idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures);
 
 public:
     virtual void takeDamage(int amount);

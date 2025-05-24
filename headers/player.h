@@ -23,7 +23,6 @@ private:
     void loadWeaponsAttributes();
     void weaponsHandler();
     void playerShooting();
-    void idleAnimation() override;
     void shootingAnimation();
     void updateShootingAnimation();
 
