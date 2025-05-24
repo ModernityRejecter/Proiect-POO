@@ -25,6 +25,8 @@ public:
                    float shootRange,
                    int projectileDamage,
                    float projectileSpeed,
+                   int armor,
+                   int damageReduction,
                    const std::shared_ptr<Player> &targetPlayer);
     ~Enemy() override = default;
     std::vector<std::shared_ptr<Projectile>>& getProjectiles() override;

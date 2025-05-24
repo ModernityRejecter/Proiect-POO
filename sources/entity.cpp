@@ -4,6 +4,8 @@ Entity::Entity(const std::string& texturePath,
                int maxHealth,
                int health,
                float speed,
+               int armor,
+               int damageReduction,
                sf::Vector2f position)
     : Drawable(texturePath, position),
       texturePath(texturePath),
@@ -12,15 +14,28 @@ Entity::Entity(const std::string& texturePath,
       speed(speed),
       directionIndex(1),
       previousDirectionIndex(1),
-      textureIndex(1)
+      textureIndex(1),
+      armor(armor),
+      damageReduction(damageReduction)
 {
 
 }
 
 void Entity::takeDamage(int amount) {
-    health -= amount;
+    if (armor > 0 && damageReduction < 100) {
+        float damageToHealth = amount * (1.f - damageReduction / 100.f);
+        float damageToArmor = amount * (damageReduction / 100.f);
+        health -= static_cast<int>(damageToHealth);
+        armor -= static_cast<int>(damageToArmor);
+    } else {
+        health -= amount;
+    }
+
     if (health < 0) health = 0;
+    if (armor < 0) armor = 0;
 }
+
+
 
 bool Entity::isAlive() const {
     return health > 0;

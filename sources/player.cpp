@@ -3,10 +3,9 @@
 std::unordered_map<int, std::unordered_map<int, sf::Texture>> Player::entityTextures;
 
 Player::Player(const std::string& texturePath, float x, float y, float speed)
-    : Entity(texturePath, 100, 100, speed, {x, y}),
+    : Entity(texturePath, 100, 100, speed, 200, 40, {x, y}),
       isShooting(false),
-      currentWeaponIndex(0),
-      armor(200)
+      currentWeaponIndex(0)
 {
     if (!texture.loadFromFile(texturePath)) {
         std::cerr << "Eroare la incarcarea imaginii jucatorului!\n";

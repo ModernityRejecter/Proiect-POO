@@ -13,6 +13,8 @@ Imp::Imp(const sf::Vector2f& position,
             800.f,
             5,
             1000.f,
+            0,
+            0,
             targetPlayer)
 {
     if (!projectileTexture.loadFromFile("./assets/textures/projectiles/imp_proj.png")) {

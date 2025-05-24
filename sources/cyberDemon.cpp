@@ -13,6 +13,8 @@ CyberDemon::CyberDemon(const sf::Vector2f& position,
             500.f,
             30,
             400.f,
+            0,
+            0,
             targetPlayer)
 {
     if (!projectileTexture.loadFromFile("./assets/textures/projectiles/cyber_demon_proj.png")) {

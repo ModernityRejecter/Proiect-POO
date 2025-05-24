@@ -17,7 +17,6 @@ private:
     std::vector<std::shared_ptr<Projectile>> projectiles;
     size_t currentWeaponIndex;
     static std::unordered_map<int, std::unordered_map<int, sf::Texture>> entityTextures;
-    int armor;
     const int updateTime = 300;
 
     void move(float deltaTime) override;
@@ -38,7 +37,6 @@ public:
     int getPlayerArmor() const;
     void setAim(const sf::Vector2f& worldMousePos);
     void update(float deltaTime) override;
-
     static void loadEntityTextures();
     friend std::ostream& operator<<(std::ostream& info, const Player& player);
 };

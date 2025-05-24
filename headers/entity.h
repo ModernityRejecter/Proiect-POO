@@ -22,11 +22,15 @@ protected:
     sf::Vector2f aimPosition;
     sf::Clock interval;
     int textureIndex;
+    int armor;
+    int damageReduction;
 
     explicit Entity(const std::string& texturePath,
                     int maxHealth = 100,
-                    int health    = 100,
-                    float speed   = 100.0f,
+                    int health = 100,
+                    float speed = 100.0f,
+                    int armor = 0,
+                    int damageReduction = 0,
                     sf::Vector2f position = {600, 600});
     virtual int findDirection();
     virtual void move(float deltaTime);

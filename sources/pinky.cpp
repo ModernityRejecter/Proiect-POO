@@ -13,6 +13,8 @@ Pinky::Pinky(const sf::Vector2f& position,
             50.f,
             50.f,
             1000.f,
+            0,
+            0,
             targetPlayer)
 {
     if (!projectileTexture.loadFromFile("./assets/textures/projectiles/pinky_proj.png")) {
