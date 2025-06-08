@@ -17,6 +17,8 @@
 #include "../headers/stateMachine.h"
 #include "../headers/pauseState.h"
 #include "../headers/cyberDemon.h"
+#include "../headers/gameException.h"
+
 class Game {
 private:
     sf::RenderWindow window;
@@ -42,6 +44,7 @@ private:
     std::vector<std::shared_ptr<Entity>> entities;
     EnemySpawner enemySpawner;
 
+    Game();
     void processEvents();
     void update(float deltaTime);
     void render();
@@ -51,7 +54,9 @@ private:
     sf::Vector2f getGlobalBounds() const;
 
 public:
-    Game();
     void run();
     friend std::ostream& operator<<(std::ostream& info, const Game &game);
+    static Game& getInstance();
+    Game& operator=(const Game&) = delete;
+    Game(const Game&) = delete;
 };

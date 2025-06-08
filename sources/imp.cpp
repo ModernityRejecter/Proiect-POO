@@ -17,9 +17,9 @@ Imp::Imp(const sf::Vector2f& position,
             0,
             targetPlayer)
 {
-    if (!projectileTexture.loadFromFile("./assets/textures/projectiles/imp_proj.png")) {
-        std::cerr << "Eroare la incarcare textura proiectil imp!\n";
-        exit(EXIT_FAILURE);
+    std::string path = "./assets/textures/projectiles/imp_proj.png";
+    if (!projectileTexture.loadFromFile(path)) {
+        throw TextureLoadException(path);
     }
     sprite.setPosition(position);
 }

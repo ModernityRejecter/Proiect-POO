@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "../headers/gameException.h"
+
 class Drawable {
 protected:
     sf::Texture texture;

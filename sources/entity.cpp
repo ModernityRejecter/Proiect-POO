@@ -31,12 +31,13 @@ void Entity::takeDamage(int amount) {
         health -= amount;
     }
 
-    if (health < 0) health = 0;
+    if (health < 0) throw EntityStateException("health below zero");
     if (armor < 0) armor = 0;
 }
 
-
-
+void Entity::setHealth(const int& newHealth) {
+    health = newHealth;
+}
 bool Entity::isAlive() const {
     return health > 0;
 }
@@ -108,6 +109,4 @@ void Entity::idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::T
         interval.restart();
     }
 }
-// void Entity::shooting(const sf::Vector2f& /*targetPosition*/) {
-//
-// }
+

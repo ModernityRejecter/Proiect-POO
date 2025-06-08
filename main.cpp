@@ -13,7 +13,11 @@
 #include "headers/game.h"
 
 int main() {
-    Game game;
-    game.run();
+    try {
+        Game::getInstance().run();
+    }
+    catch (std::exception& exception) {
+        std::cout << exception.what() << std::endl;
+    }
     return 0;
 }

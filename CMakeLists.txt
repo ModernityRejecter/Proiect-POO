@@ -94,6 +94,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/cyberDemon.h
         sources/pinky.cpp
         headers/pinky.h
+        sources/gameException.cpp
+        headers/gameException.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

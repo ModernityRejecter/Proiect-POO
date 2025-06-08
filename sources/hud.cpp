@@ -67,7 +67,3 @@ void Hud::hudUpdate(int value) {
 
     previousAmount = amount;
 }
-
-// sf::Texture getTexture() const{
-//     return texture;
-// }

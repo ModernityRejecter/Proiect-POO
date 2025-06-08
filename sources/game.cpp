@@ -45,6 +45,11 @@ Game::Game()
     enemySpawner.init(playerPtr, getGlobalBounds());
 }
 
+Game& Game::getInstance() {
+    static Game instance;
+    return instance;
+}
+
 void Game::loadTracks() {
     trackPaths.emplace_back("./assets/music/RTPN-Uprizing-_-y_5KVimqxI_.ogg");
     trackPaths.emplace_back("./assets/music/RTPN-Sustain-_Si1Uw_nmjMk_.ogg");
@@ -81,22 +86,12 @@ void Game::onResize(float w, float h) {
 void Game::run() {
     loadTracks();
     sf::Clock clock;
-    // sf::Clock infoClock;
 
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
         processEvents();
         update(deltaTime);
         render();
-
-        // if (infoClock.getElapsedTime().asMilliseconds() >= 5000) {
-        //     if (!entities.empty()) {
-        //         if (auto playerPtr = std::dynamic_pointer_cast<Player>(entities[0])) {
-        //             std::cout << *playerPtr << std::endl;
-        //         }
-        //     }
-        //     infoClock.restart();
-        // }
     }
 }
 
@@ -146,7 +141,13 @@ void Game::update(float deltaTime) {
         }
 
         for (const auto& ent : entities) {
-            ent->update(deltaTime);
+            try {
+                ent->update(deltaTime);
+            }
+            catch (const GameException& e) {
+                std::cerr << "[Entity Update Error] " << e.what() << std::endl;
+                ent.get()->setHealth(0);
+            }
         }
 
         for (auto& ent : entities) {
@@ -166,7 +167,16 @@ void Game::update(float deltaTime) {
                     }
                     if (!targetEnt->isAlive()) continue;
                     if (p->getBounds().findIntersection(targetEnt->getBounds())) {
-                        targetEnt->takeDamage(p->getDamage());
+                        try {
+                            targetEnt->takeDamage(p->getDamage());
+                        }
+                        catch (const EntityStateException& e) {
+                            std::cerr << "[EntityStateException] " << e.what() << std::endl;
+                            targetEnt.get()->setHealth(0);
+                        }
+                        catch (const GameException& e) {
+                            std::cerr << "[GameException] " << e.what() << std::endl;
+                        }
                         p->deactivate();
                         break;
                     }

@@ -46,11 +46,11 @@ void Enemy::tryToShoot() {
 
     if (dist <= shootRange && shootClock.getElapsedTime().asSeconds() >= shootInterval) {
         sf::Vector2f enemyCenter = {
-            enemyPos.x + sprite.getGlobalBounds().size.x  / 2.f,
+            enemyPos.x + sprite.getGlobalBounds().size.x / 2.f,
             enemyPos.y + sprite.getGlobalBounds().size.y / 2.f
         };
         sf::Vector2f playerCenter = {
-            playerPos.x + playerShared->getBounds().size.x  / 2.f,
+            playerPos.x + playerShared->getBounds().size.x / 2.f,
             playerPos.y + playerShared->getBounds().size.y / 2.f
         };
 

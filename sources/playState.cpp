@@ -2,10 +2,7 @@
 #include "../headers/stateMachine.h"
 
 PlayState::PlayState(StateMachine& m)
-: GameState(m)
-{
-    //WIP
-}
+: GameState(m) {};
 
 void PlayState::handleEvent(sf::Event* event) {
     if (event->is<sf::Event::KeyPressed>()) {
@@ -16,12 +13,10 @@ void PlayState::handleEvent(sf::Event* event) {
     }
 }
 
-void PlayState::update([[maybe_unused]] float deltaTime) {
-    //WIP
+void PlayState::update(float deltaTime) {
 }
 
-void PlayState::draw([[maybe_unused]] sf::RenderWindow& window) {
-    //WIP
+void PlayState::draw(sf::RenderWindow &window) {
 }
 
 StateID PlayState::getID() const {

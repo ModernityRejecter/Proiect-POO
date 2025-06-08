@@ -1,7 +1,8 @@
 #include "../headers/weapon.h"
+#include "../headers/gameException.h"
 
 Weapon::Weapon(const std::string& name,
-               const std::string& projectilePath,
+               const std::string& projPath,
                float speed,
                float rate,
                int ammo,
@@ -10,16 +11,23 @@ Weapon::Weapon(const std::string& name,
                const std::string& soundPath,
                int damage)
     : name(name),
-      projectileTexture(projectilePath),
+      projectileTexture(),
       fireRate(rate),
       ammoCount(ammo),
       maxAmmo(maxAmmo),
       projectileSpeed(speed),
       spread(spread),
-      soundBuffer(soundPath),
+      soundBuffer(),
       sound(soundBuffer),
       damageValue(damage)
 {
+    if (!projectileTexture.loadFromFile(projPath)) {
+        throw TextureLoadException(projPath);
+    }
+    if (!soundBuffer.loadFromFile(soundPath)) {
+        throw SoundLoadException(soundPath);
+    }
+    sound.setBuffer(soundBuffer);
     sound.setVolume(10.f);
 }
 
@@ -33,6 +41,9 @@ Projectile Weapon::createProjectile(float startX,
                                     float targetY,
                                     const std::shared_ptr<Entity> &ownerPtr)
 {
+    if (ammoCount <= 0) {
+        throw WeaponException("Invalid amount of ammo");
+    }
     ammoCount -= 1;
     return Projectile(projectileTexture,
                       startX,
@@ -72,15 +83,3 @@ void Weapon::resetFireClock() {
 void Weapon::playSound() {
     sound.play();
 }
-
-// float Weapon::getProjectileSpeed() const {
-//     return projectileSpeed;
-// }
-//
-// float Weapon::getSpreadAngle() const {
-//     return spread;
-// }
-//
-// int Weapon::getDamageValue() const {
-//     return damageValue;
-// }

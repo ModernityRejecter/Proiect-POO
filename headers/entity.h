@@ -41,8 +41,8 @@ public:
     virtual void takeDamage(int amount);
     bool isAlive() const;
     int getHealth() const;
+    void setHealth(const int& newHealth);
     sf::FloatRect getBounds() const;
     virtual void update(float deltaTime) = 0;
     virtual std::vector<std::shared_ptr<Projectile>>& getProjectiles();
-    // [[maybe_unused]] virtual void shooting(const sf::Vector2f& targetPosition);
 };

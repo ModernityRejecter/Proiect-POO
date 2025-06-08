@@ -5,7 +5,8 @@
 class Enemy : public Entity, public std::enable_shared_from_this<Enemy> {
 protected:
     std::weak_ptr<Player> targetPlayer;
-    void tryToShoot();
+
+    virtual void tryToShoot();
     void move(float deltaTime) override;
     void draw(sf::RenderWindow& window) const override;
     std::vector<std::shared_ptr<Projectile>> projectiles;
