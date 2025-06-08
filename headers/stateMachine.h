@@ -15,6 +15,16 @@ public:
     void handleEvent(sf::Event& ev) const;
     GameState* getCurrentState() const;
 
+    StateMachine(const StateMachine &other);
+
+    StateMachine(StateMachine &&other) noexcept;
+
+    StateMachine & operator=(const StateMachine &other);
+
+    friend void swap(StateMachine &lhs, StateMachine &rhs) noexcept;
+
+    StateMachine & operator=(StateMachine &&other) noexcept;
+
 private:
     std::map<StateID, std::unique_ptr<GameState>> states;
     GameState* currentState = nullptr;

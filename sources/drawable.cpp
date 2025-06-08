@@ -24,3 +24,7 @@ sf::Vector2u Drawable::getSize() const {
 sf::Vector2f Drawable::getPosition() const {
     return sprite.getPosition();
 }
+
+void Drawable::display(sf::RenderWindow& window) const {
+    draw(window);
+}

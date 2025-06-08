@@ -197,7 +197,7 @@ void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
     for (const auto& ent : entities) {
-        ent->draw(window);
+        ent->display(window);
         for (const auto& p : ent->getProjectiles()) {
             p->draw(window);
         }

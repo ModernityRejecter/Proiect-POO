@@ -33,4 +33,32 @@ GameState* StateMachine::getCurrentState() const {
     return currentState;
 }
 
+StateMachine::StateMachine(const StateMachine &other): states(other.states),
+                                                       currentState(other.currentState) {
+}
 
+StateMachine::StateMachine(StateMachine &&other) noexcept: states(std::move(other.states)),
+                                                           currentState(other.currentState) {
+}
+
+StateMachine & StateMachine::operator=(const StateMachine &other) {
+    if (this == &other)
+        return *this;
+    states = other.states;
+    currentState = other.currentState;
+    return *this;
+}
+
+StateMachine & StateMachine::operator=(StateMachine &&other) noexcept {
+    if (this == &other)
+        return *this;
+    states = std::move(other.states);
+    currentState = other.currentState;
+    return *this;
+}
+
+void swap(StateMachine &lhs, StateMachine &rhs) noexcept {
+    using std::swap;
+    swap(lhs.states, rhs.states);
+    swap(lhs.currentState, rhs.currentState);
+}
