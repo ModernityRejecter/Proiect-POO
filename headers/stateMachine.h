@@ -15,11 +15,13 @@ public:
     void handleEvent(sf::Event& ev) const;
     GameState* getCurrentState() const;
 
-    StateMachine(const StateMachine &other);
+    StateMachine();
+
+    StateMachine(const StateMachine &other) = delete;
 
     StateMachine(StateMachine &&other) noexcept;
 
-    StateMachine & operator=(const StateMachine &other);
+    StateMachine & operator=(const StateMachine &other) = delete;
 
     friend void swap(StateMachine &lhs, StateMachine &rhs) noexcept;
 
