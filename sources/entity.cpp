@@ -24,7 +24,7 @@ Entity::Entity(const std::string& texturePath,
 void Entity::takeDamage(int amount) {
     if (armor > 0 && damageReduction < 100) {
         float damageToHealth = amount * (1.f - damageReduction / 100.f);
-        float damageToArmor = amount * (damageReduction / 100.f);
+        float damageToArmor = amount * (damageReduction / 100.f) * 2;
         health -= static_cast<int>(damageToHealth);
         armor -= static_cast<int>(damageToArmor);
     } else {
@@ -36,18 +36,25 @@ void Entity::takeDamage(int amount) {
 }
 
 void Entity::setHealth(const int& newHealth) {
-    health = newHealth;
+    if (newHealth <= maxHealth)
+        health = newHealth;
+    else
+        health = maxHealth;
 }
+
+void Entity::setArmor(const int& newArmor) {
+    if (newArmor <= 200)
+        armor = newArmor;
+    else
+        armor = 200;
+}
+
 bool Entity::isAlive() const {
     return health > 0;
 }
 
 int Entity::getHealth() const {
     return health;
-}
-
-sf::FloatRect Entity::getBounds() const {
-    return sprite.getGlobalBounds();
 }
 
 int Entity::findDirection() {

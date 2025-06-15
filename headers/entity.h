@@ -37,12 +37,12 @@ protected:
     virtual void idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures, int updateTime);
 
 public:
-    virtual ~Entity() override = default;
+    ~Entity() override = default;
     virtual void takeDamage(int amount);
     bool isAlive() const;
     int getHealth() const;
     void setHealth(const int& newHealth);
-    sf::FloatRect getBounds() const;
+    void setArmor(const int& newArmor);
     virtual void update(float deltaTime) = 0;
     virtual std::vector<std::shared_ptr<Projectile>>& getProjectiles();
 };

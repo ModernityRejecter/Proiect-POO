@@ -48,6 +48,7 @@ public:
     int getMaxAmmo() const;
     void resetFireClock();
     void playSound();
+    void addAmmo();
 
     // float getProjectileSpeed() const;
     // float getSpreadAngle() const;

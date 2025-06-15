@@ -4,7 +4,7 @@
 std::unordered_map<int, std::unordered_map<int, sf::Texture>> Pinky::entityTextures;
 int Pinky::updateTime = 75;
 const int Pinky::dashDamage = 80;
-const float Pinky::dashHoldTime = 2.f;
+const float Pinky::dashHoldTime = 1.f;
 const float Pinky::dashTotalDistance = 1000.f;
 const float Pinky::dashCooldownTime = 3.f;
 const float Pinky::detectionRange = 500.f;
@@ -12,7 +12,7 @@ const float Pinky::detectionRange = 500.f;
 Pinky::Pinky(const sf::Vector2f& position,
              const std::shared_ptr<Player>& targetPlayer)
     : Enemy("./assets/textures/enemies/pinky/sprite_1_1.png",
-            140,
+            220,
             250.f,
             position,
             2.f,

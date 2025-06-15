@@ -96,6 +96,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/pinky.h
         sources/gameException.cpp
         headers/gameException.h
+        sources/pickup.cpp
+        headers/pickup.h
+        sources/pickupSpawner.cpp
+        headers/pickupSpawner.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

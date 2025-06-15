@@ -28,3 +28,7 @@ sf::Vector2f Drawable::getPosition() const {
 void Drawable::display(sf::RenderWindow& window) const {
     draw(window);
 }
+
+sf::FloatRect Drawable::getBounds() const {
+    return sprite.getGlobalBounds();
+}

@@ -18,6 +18,8 @@
 #include "../headers/pauseState.h"
 #include "../headers/cyberDemon.h"
 #include "../headers/gameException.h"
+#include "../headers/pickup.h"
+#include "../headers/pickupSpawner.h"
 
 class Game {
 private:
@@ -43,6 +45,10 @@ private:
     StateMachine states;
     std::vector<std::shared_ptr<Entity>> entities;
     EnemySpawner enemySpawner;
+    std::vector<std::unique_ptr<Pickup>> pickups;
+    PickupSpawnerTpl<HealthPickup> healthSpawner;
+    PickupSpawnerTpl<AmmoPickup> ammoSpawner;
+    PickupSpawnerTpl<ArmorPickup> armorSpawner;
 
     Game();
     void processEvents();

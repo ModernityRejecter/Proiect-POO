@@ -38,5 +38,6 @@ public:
     void setAim(const sf::Vector2f& worldMousePos);
     void update(float deltaTime) override;
     static void loadEntityTextures();
+    void addAmmo();
     friend std::ostream& operator<<(std::ostream& info, const Player& player);
 };

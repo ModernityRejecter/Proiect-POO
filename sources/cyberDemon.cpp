@@ -3,21 +3,21 @@
 
 std::unordered_map<int, std::unordered_map<int, sf::Texture>> CyberDemon::entityTextures;
 int CyberDemon::updateTime = 200;
-const float CyberDemon::detectionRange = 250.f;
-const float CyberDemon::chargeTime = 1.f;
+const float CyberDemon::detectionRange = 350.f;
+const float CyberDemon::chargeTime = 0.7f;
 const float CyberDemon::cooldownTime = 10.f;
 const float CyberDemon::angleOffsetDeg = 15.f;
 
 CyberDemon::CyberDemon(const sf::Vector2f& position,
                        const std::shared_ptr<Player>& targetPlayer)
     : Enemy("./assets/textures/enemies/cyber_demon/sprite_1_1.png",
-            400,
+            500,
             60.f,
             position,
-            2.2f,
-            500.f,
+            2.f,
+            600.f,
             30,
-            400.f,
+            500.f,
             0,
             0,
             targetPlayer)

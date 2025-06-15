@@ -5,7 +5,7 @@ Game::Game()
       shouldExit(false),
       musicVolume(20.0f),
       currentMusicIndex(0),
-      background("./assets/textures/backgrounds/bg1.png"),
+      background("./assets/textures/backgrounds/new_bg.png"),
       backgroundSprite(background),
       hudTexture("./assets/textures/hud/hud_bg.png"),
       hudSprite(hudTexture),
@@ -13,7 +13,10 @@ Game::Game()
       ammo(0, sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282,192)),
       health(0, sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342,192)),
       armor(0, sf::Vector2f(1068, getGlobalBounds().y), sf::Vector2f(348,192)),
-      enemySpawner(entities)
+      enemySpawner(entities),
+      healthSpawner(pickups, 0.2f),
+      ammoSpawner(pickups, 0.2f),
+      armorSpawner(pickups, 0.2f)
 {
     Player::loadEntityTextures();
     Imp::loadEntityTextures();
@@ -34,7 +37,7 @@ Game::Game()
 
     auto playerPtr = std::make_shared<Player>(
         "./assets/textures/player/idle/sprite_1_1.png",
-        400.f, 300.f, 300.f
+        LOGICAL_HEIGHT / 2, LOGICAL_HEIGHT / 2, 300.f
     );
     entities.push_back(playerPtr);
 
@@ -145,8 +148,8 @@ void Game::update(float deltaTime) {
                 ent->update(deltaTime);
             }
             catch (const GameException& e) {
-                std::cerr << "[Entity Update Error] " << e.what() << std::endl;
-                ent.get()->setHealth(0);
+                std::cout << "[Entity Update Error] " << e.what() << std::endl;
+                ent->setHealth(0);
             }
         }
 
@@ -171,11 +174,11 @@ void Game::update(float deltaTime) {
                             targetEnt->takeDamage(p->getDamage());
                         }
                         catch (const EntityStateException& e) {
-                            std::cerr << "[EntityStateException] " << e.what() << std::endl;
-                            targetEnt.get()->setHealth(0);
+                            std::cout << "[EntityStateException] " << e.what() << std::endl;
+                            targetEnt->setHealth(0);
                         }
                         catch (const GameException& e) {
-                            std::cerr << "[GameException] " << e.what() << std::endl;
+                            std::cout << "[GameException] " << e.what() << std::endl;
                         }
                         p->deactivate();
                         break;
@@ -183,12 +186,33 @@ void Game::update(float deltaTime) {
                 }
             }
         }
+        std::vector<sf::Vector2f> deadPositions;
+        for (auto& ent : entities) {
+            if (!ent->isAlive()) {
+                deadPositions.push_back(ent->getPosition());
+            }
+        }
+        for (auto& pos : deadPositions) {
+            healthSpawner.trySpawn(pos);
+            armorSpawner.trySpawn(pos);
+            ammoSpawner.trySpawn(pos);
+        }
         std::erase_if(
             entities,
             [](const std::shared_ptr<Entity>& e) {
                 return !e->isAlive();
             }
         );
+        auto playerShared = std::dynamic_pointer_cast<Player>(entities[0]);
+        for (auto it = pickups.begin(); it != pickups.end();) {
+            auto& pickup = *it;
+            if (pickup->getBounds().findIntersection(playerShared->getBounds())) {
+                pickup->apply(*playerShared);
+                it = pickups.erase(it);
+            } else {
+                ++it;
+            }
+        }
         enemySpawner.update(deltaTime);
     }
 }
@@ -196,6 +220,9 @@ void Game::update(float deltaTime) {
 void Game::render() {
     window.clear();
     window.draw(backgroundSprite);
+    for (const auto& pickup : pickups) {
+        pickup->display(window);
+    }
     for (const auto& ent : entities) {
         ent->display(window);
         for (const auto& p : ent->getProjectiles()) {

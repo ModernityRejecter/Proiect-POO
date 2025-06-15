@@ -83,3 +83,10 @@ void Weapon::resetFireClock() {
 void Weapon::playSound() {
     sound.play();
 }
+
+void Weapon::addAmmo() {
+    if (ammoCount + maxAmmo * 20 / 100 <= maxAmmo)
+        ammoCount += maxAmmo * 20 / 100;
+    else
+        ammoCount = maxAmmo;
+}

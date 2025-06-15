@@ -163,6 +163,11 @@ void Player::setAim(const sf::Vector2f& worldMousePos) {
     aimPosition = worldMousePos;
 }
 
+void Player::addAmmo() {
+    for (auto& weapon : weapons ) {
+        weapon.addAmmo();
+    }
+}
 std::ostream& operator<<(std::ostream& info, const Player& player) {
     info << "Player position : ("
          << player.sprite.getPosition().x << ", "
