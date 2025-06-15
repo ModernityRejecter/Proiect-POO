@@ -192,7 +192,7 @@ void Game::update(float deltaTime) {
                 deadPositions.push_back(ent->getPosition());
             }
         }
-        for (auto& pos : deadPositions) {
+        for (const auto& pos : deadPositions) {
             healthSpawner.trySpawn(pos);
             armorSpawner.trySpawn(pos);
             ammoSpawner.trySpawn(pos);

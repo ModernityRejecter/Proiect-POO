@@ -4,7 +4,6 @@
 #include <vector>
 #include <memory>
 #include <SFML/System/Vector2.hpp>
-#include "../headers/pickup.h"
 
 class Pickup;
 
@@ -18,7 +17,11 @@ class PickupSpawnerTpl {
 
 public:
     explicit PickupSpawnerTpl(std::vector<std::unique_ptr<Pickup>>& outList,
-                     float chance = 0.3f);
+                     float chance = 0.3f)
+        : spawnChance(chance), list(outList) {}
 
-    void trySpawn(const sf::Vector2f& pos);
+    void trySpawn(const sf::Vector2f& pos) {
+        if (chanceDist(rng) > spawnChance) return;
+        list.push_back(std::make_unique<P>(pos));
+    }
 };
