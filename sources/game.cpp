@@ -187,7 +187,7 @@ void Game::update(float deltaTime) {
             }
         }
         std::vector<sf::Vector2f> deadPositions;
-        for (auto& ent : entities) {
+        for (const auto& ent : entities) {
             if (!ent->isAlive()) {
                 deadPositions.push_back(ent->getPosition());
             }
