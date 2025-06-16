@@ -32,10 +32,10 @@ void Player::loadEntityTextures() {
 void Player::loadWeaponsAttributes() {
     weapons.clear();
     weapons.reserve(4);
-    weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 800.0f, 20.0f, 200, 200, 0.0f, "./assets/sounds/plasma.wav", 20);
-    weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj1.png", 600.0f, 0.7f, 16, 16, 0.0f, "./assets/sounds/rocket_launcher.wav", 200);
+    weapons.emplace_back("Plasma Rifle", "./assets/textures/projectiles/plasma_proj1.png", 900.0f, 20.0f, 200, 200, 0.0f, "./assets/sounds/plasma.wav", 20);
+    weapons.emplace_back("Rocket Launcher", "./assets/textures/projectiles/rocket_proj2.png", 600.0f, 1.2f, 8, 8, 0.0f, "./assets/sounds/rocket_launcher.wav", 200);
     weapons.emplace_back("Chaingun", "./assets/textures/projectiles/chaingun_proj2.png", 2000.0f, 50.0f, 999, 999, 10.0f, "./assets/sounds/pistol.wav", 7);
-    weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1000.0f, 0.3f, 4, 4, 0.0f, "./assets/sounds/BFG_9000.wav", 2000);
+    weapons.emplace_back("BFG", "./assets/textures/projectiles/bfg_proj1.png", 1200.0f, 0.7f, 5, 5, 0.0f, "./assets/sounds/BFG_9000.wav", 2000);
 }
 
 void Player::move(float deltaTime) {
