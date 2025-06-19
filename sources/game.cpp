@@ -320,3 +320,4 @@ void Game::musicHandler(const sf::Event* event) {
 int Game::getScore() const {
     return score;
 }
+//am nevoie de ceva fisier editat ca sa pot sa dau commit dupa ce am sters fisierul de sfml-subbuild
