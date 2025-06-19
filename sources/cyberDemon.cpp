@@ -9,7 +9,9 @@ const float CyberDemon::cooldownTime = 10.f;
 const float CyberDemon::angleOffsetDeg = 15.f;
 
 CyberDemon::CyberDemon(const sf::Vector2f& position,
-                       const std::shared_ptr<Player>& targetPlayer)
+                       const std::shared_ptr<Player>& targetPlayer,
+                       const std::string& soundPath,
+                       const std::string& attackSoundPath)
     : Enemy("./assets/textures/enemies/cyber_demon/sprite_1_1.png",
             500,
             60.f,
@@ -20,7 +22,9 @@ CyberDemon::CyberDemon(const sf::Vector2f& position,
             500.f,
             0,
             0,
-            targetPlayer)
+            targetPlayer,
+            soundPath,
+            attackSoundPath)
 {
     std::string path = "./assets/textures/projectiles/cyber_demon_proj.png";
     if (!projectileTexture.loadFromFile(path)) {
@@ -62,6 +66,7 @@ void CyberDemon::performAbility() {
 
     for (float ang : angles) {
         sf::Vector2f dir{ std::cos(ang), std::sin(ang) };
+        attackSound.play();
         projectiles.emplace_back(std::make_shared<Projectile>(
             projectileTexture,
             enemyCenter.x, enemyCenter.y,

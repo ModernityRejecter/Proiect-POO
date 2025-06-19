@@ -29,7 +29,10 @@ private:
     void performAbility();
 
 public:
-    CyberDemon(const sf::Vector2f& position, const std::shared_ptr<Player>& playerPtr);
+    CyberDemon(const sf::Vector2f& position,
+               const std::shared_ptr<Player>& playerPtr,
+               const std::string& soundPath,
+               const std::string& attackSoundPath);
     ~CyberDemon() override = default;
     static void loadEntityTextures();
     void update(float deltaTime) override;

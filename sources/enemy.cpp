@@ -10,8 +10,11 @@ Enemy::Enemy(const std::string& texturePath,
              float projectileSpeed,
              int armor,
              int damageReduction,
-             const std::shared_ptr<Player> &targetPlayer)
+             const std::shared_ptr<Player> &targetPlayer,
+             const std::string& soundPath,
+             const std::string& attackSoundPath)
     : Entity(texturePath,
+             soundPath,
              maxHealth,
              maxHealth,
              speed,
@@ -22,8 +25,11 @@ Enemy::Enemy(const std::string& texturePath,
              shootInterval(shootInterval),
              shootRange(shootRange),
              projectileDamage(projectileDamage),
-             projectileSpeed(projectileSpeed)
+             projectileSpeed(projectileSpeed),
+             attackSoundBuffer(attackSoundPath),
+             attackSound(attackSoundBuffer)
 {
+    attackSound.setVolume(20);
 }
 
 void Enemy::draw(sf::RenderWindow& window) const {
@@ -54,6 +60,7 @@ void Enemy::tryToShoot() {
             playerPos.y + playerShared->getBounds().size.y / 2.f
         };
 
+        attackSound.play();
         projectiles.emplace_back(std::make_shared<Projectile>(
             projectileTexture,
             enemyCenter.x, enemyCenter.y,

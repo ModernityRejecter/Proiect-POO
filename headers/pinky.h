@@ -35,7 +35,10 @@ private:
     void tryToShoot() override;
 
 public:
-    Pinky(const sf::Vector2f& position, const std::shared_ptr<Player>& playerPtr);
+    Pinky(const sf::Vector2f& position,
+          const std::shared_ptr<Player>& playerPtr,
+          const std::string& soundPath,
+          const std::string& attackSoundPath);
     ~Pinky() override = default;
     void update(float deltaTime) override;
     std::unique_ptr<Entity> clone() const override;

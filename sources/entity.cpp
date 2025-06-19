@@ -1,6 +1,7 @@
 #include "../headers/entity.h"
 
 Entity::Entity(const std::string& texturePath,
+               const std::string& soundPath,
                int maxHealth,
                int health,
                float speed,
@@ -16,12 +17,20 @@ Entity::Entity(const std::string& texturePath,
       previousDirectionIndex(1),
       textureIndex(1),
       armor(armor),
-      damageReduction(damageReduction)
+      damageReduction(damageReduction),
+      painSoundBuffer(soundPath),
+      painSound(painSoundBuffer)
 {
+    painSound.setVolume(20);
+}
 
+void Entity::playPainSound() {
+    if (painSound.getStatus() != sf::Sound::Status::Playing)
+        painSound.play();
 }
 
 void Entity::takeDamage(int amount) {
+    playPainSound();
     if (armor > 0 && damageReduction < 100) {
         float damageToHealth = amount * (1.f - damageReduction / 100.f);
         float damageToArmor = amount * (damageReduction / 100.f) * 2;

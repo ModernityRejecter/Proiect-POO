@@ -29,6 +29,7 @@ void MainMenuState::handleEvent(sf::Event* event) {
     if (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->scancode == sf::Keyboard::Scan::Enter) {
         std::ignore = menuTexture.loadFromFile("./assets/textures/backgrounds/main_menu.png");
         menuSprite.setTexture(menuTexture);
+        sound.play();
         machine.change(StateID::Play);
     }
 }

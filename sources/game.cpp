@@ -3,7 +3,7 @@
 Game::Game()
     : window(sf::VideoMode::getDesktopMode(), "ETERNAL DOOM", sf::State::Fullscreen),
       shouldExit(false),
-      musicVolume(20.0f),
+      musicVolume(30.0f),
       currentMusicIndex(0),
       background("./assets/textures/backgrounds/new_bg.png"),
       backgroundSprite(background),
@@ -16,7 +16,9 @@ Game::Game()
       enemySpawner(entities),
       healthSpawner(pickups, 0.2f),
       ammoSpawner(pickups, 0.2f),
-      armorSpawner(pickups, 0.2f)
+      armorSpawner(pickups, 0.2f),
+      pickupSoundBuffer("./assets/sounds/pickup.wav"),
+      pickupSound(pickupSoundBuffer)
 {
     Player::loadEntityTextures();
     Imp::loadEntityTextures();
@@ -37,7 +39,8 @@ Game::Game()
 
     auto playerPtr = std::make_shared<Player>(
         "./assets/textures/player/idle/sprite_1_1.png",
-        LOGICAL_HEIGHT / 2, LOGICAL_HEIGHT / 2, 300.f
+        LOGICAL_WIDTH / 2 - 28, LOGICAL_HEIGHT / 2 - 28, 300.f,
+        "./assets/sounds/player_hurt.wav"
     );
     entities.push_back(playerPtr);
 
@@ -46,6 +49,9 @@ Game::Game()
     armor.hudUpdate(playerPtr->getPlayerArmor());
 
     enemySpawner.init(playerPtr, getGlobalBounds());
+
+    pickupSound.setVolume(50);
+
 }
 
 Game& Game::getInstance() {
@@ -204,9 +210,11 @@ void Game::update(float deltaTime) {
             }
         );
         auto playerShared = std::dynamic_pointer_cast<Player>(entities[0]);
+
         for (auto it = pickups.begin(); it != pickups.end();) {
             auto& pickup = *it;
             if (pickup->getBounds().findIntersection(playerShared->getBounds())) {
+                pickupSound.play();
                 pickup->apply(*playerShared);
                 it = pickups.erase(it);
             } else {

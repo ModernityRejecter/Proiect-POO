@@ -2,8 +2,8 @@
 
 std::unordered_map<int, std::unordered_map<int, sf::Texture>> Player::entityTextures;
 
-Player::Player(const std::string& texturePath, float x, float y, float speed)
-    : Entity(texturePath, 100, 100, speed, 200, 40, {x, y}),
+Player::Player(const std::string& texturePath, float x, float y, float speed, const std::string& soundPath)
+    : Entity(texturePath, soundPath, 100, 100, speed, 200, 40, {x, y}),
       isShooting(false),
       currentWeaponIndex(0)
 {

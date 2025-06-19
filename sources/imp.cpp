@@ -4,7 +4,9 @@ std::unordered_map<int, std::unordered_map<int, sf::Texture>> Imp::entityTexture
 int Imp::updateTime = 150;
 
 Imp::Imp(const sf::Vector2f& position,
-         const std::shared_ptr<Player>& targetPlayer)
+         const std::shared_ptr<Player>& targetPlayer,
+         const std::string& soundPath,
+         const std::string& attackSoundPath)
     : Enemy("./assets/textures/enemies/imp/sprite_1_1.png",
             80,
             120.0f,
@@ -15,7 +17,9 @@ Imp::Imp(const sf::Vector2f& position,
             1000.f,
             0,
             0,
-            targetPlayer)
+            targetPlayer,
+            soundPath,
+            attackSoundPath)
 {
     std::string path = "./assets/textures/projectiles/imp_proj.png";
     if (!projectileTexture.loadFromFile(path)) {

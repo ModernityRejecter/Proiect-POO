@@ -27,7 +27,7 @@ private:
     void updateShootingAnimation();
 
 public:
-    Player(const std::string& texturePath, float x, float y, float speed);
+    Player(const std::string& texturePath, float x, float y, float speed, const std::string& soundPath);
     ~Player() override = default;
 
     std::vector<std::shared_ptr<Projectile>>& getProjectiles() override;

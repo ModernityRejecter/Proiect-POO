@@ -61,21 +61,28 @@ void EnemySpawner::spawnEnemy() {
         case static_cast<int>(EnemyType::Imp):
             entities.push_back(std::make_shared<Imp>(
                 sf::Vector2f{x, y},
-                std::dynamic_pointer_cast<Player>(playerPtr.lock())
+                std::dynamic_pointer_cast<Player>(playerPtr.lock()),
+                std::string("./assets/sounds/imp_hurt.wav"),
+                std::string("./assets/sounds/imp_attack.wav")
             ));
         break;
 
         case static_cast<int>(EnemyType::CyberDemon):
             entities.push_back(std::make_shared<CyberDemon>(
                 sf::Vector2f{x, y},
-                std::dynamic_pointer_cast<Player>(playerPtr.lock())
+                std::dynamic_pointer_cast<Player>(playerPtr.lock()),
+                std::string("./assets/sounds/cyber_demon_hurt.wav"),
+                std::string("./assets/sounds/cyber_demon_attack.wav")
+
             ));
         break;
 
         case static_cast<int>(EnemyType::Pinky):
             entities.push_back(std::make_shared<Pinky>(
                 sf::Vector2f{x, y},
-                std::dynamic_pointer_cast<Player>(playerPtr.lock())
+                std::dynamic_pointer_cast<Player>(playerPtr.lock()),
+                std::string("./assets/sounds/pinky_hurt.wav"),
+                std::string("./assets/sounds/pinky_attack.wav")
             ));
         break;
         default: ;

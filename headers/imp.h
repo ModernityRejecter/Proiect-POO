@@ -16,7 +16,10 @@ private:
     static int updateTime;
 
 public:
-    Imp(const sf::Vector2f& position, const std::shared_ptr<Player> &playerPtr);
+    Imp(const sf::Vector2f& position,
+        const std::shared_ptr<Player> &playerPtr,
+        const std::string& soundPath,
+        const std::string& attackSoundPath);
     ~Imp() override = default;
     std::unique_ptr<Entity> clone() const override;
     static void loadEntityTextures();

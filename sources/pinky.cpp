@@ -10,7 +10,9 @@ const float Pinky::dashCooldownTime = 3.f;
 const float Pinky::detectionRange = 500.f;
 
 Pinky::Pinky(const sf::Vector2f& position,
-             const std::shared_ptr<Player>& targetPlayer)
+             const std::shared_ptr<Player>& targetPlayer,
+             const std::string& soundPath,
+             const std::string& attackSoundPath)
     : Enemy("./assets/textures/enemies/pinky/sprite_1_1.png",
             220,
             250.f,
@@ -21,7 +23,9 @@ Pinky::Pinky(const sf::Vector2f& position,
             1000.f,
             0,
             0,
-            targetPlayer)
+            targetPlayer,
+            soundPath,
+            attackSoundPath)
 {
     std::string path = "./assets/textures/projectiles/pinky_proj.png";
     if (!projectileTexture.loadFromFile(path)) {
@@ -76,6 +80,7 @@ void Pinky::processDash(float deltaTime) {
     if (!dashHitPlayer) {
         if (auto playerShared = targetPlayer.lock()) {
             if (sprite.getGlobalBounds().findIntersection(playerShared->getBounds())) {
+                attackSound.play();
                 playerShared->takeDamage(dashDamage);
                 dashHitPlayer = true;
             }

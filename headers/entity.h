@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "../headers/projectile.h"
 #include "../headers/drawable.h"
 #include <vector>
@@ -24,8 +25,11 @@ protected:
     int textureIndex;
     int armor;
     int damageReduction;
+    sf::SoundBuffer painSoundBuffer;
+    sf::Sound painSound;
 
     explicit Entity(const std::string& texturePath,
+                    const std::string& soundPath,
                     int maxHealth = 100,
                     int health = 100,
                     float speed = 100.0f,
@@ -44,5 +48,6 @@ public:
     void setHealth(const int& newHealth);
     void setArmor(const int& newArmor);
     virtual void update(float deltaTime) = 0;
+    virtual void playPainSound();
     virtual std::vector<std::shared_ptr<Projectile>>& getProjectiles();
 };

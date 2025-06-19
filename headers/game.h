@@ -50,6 +50,9 @@ private:
     PickupSpawnerTpl<AmmoPickup> ammoSpawner;
     PickupSpawnerTpl<ArmorPickup> armorSpawner;
 
+    sf::SoundBuffer pickupSoundBuffer;
+    sf::Sound pickupSound;
+
     Game();
     void processEvents();
     void update(float deltaTime);
