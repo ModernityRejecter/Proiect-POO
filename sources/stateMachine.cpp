@@ -2,16 +2,23 @@
 #include "../headers/mainMenuState.h"
 #include "../headers/playState.h"
 #include "../headers/pauseState.h"
+#include "../headers/gameOverState.h"
 
 void StateMachine::change(StateID id) {
     if (!states.contains(id)) {
         switch (id) {
             case StateID::MainMenu:
-                states[id] = std::make_unique<MainMenuState>(*this); break;
+                states[id] = std::make_unique<MainMenuState>(*this);
+            break;
             case StateID::Play:
-                states[id] = std::make_unique<PlayState>(*this); break;
+                states[id] = std::make_unique<PlayState>(*this);
+            break;
             case StateID::Pause:
-                states[id] = std::make_unique<PauseState>(*this); break;
+                states[id] = std::make_unique<PauseState>(*this);
+            break;
+            case StateID::GameOver:
+                states[id] = std::make_unique<GameOverState>(*this);
+            break;
         }
     }
     currentState = states[id].get();

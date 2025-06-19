@@ -100,6 +100,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         headers/pickup.h
         sources/pickupSpawner.cpp
         headers/pickupSpawner.h
+        sources/gameOverState.cpp
+        headers/gameOverState.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

@@ -42,6 +42,8 @@ private:
     Hud health;
     Hud armor;
 
+    int score;
+
     StateMachine states;
     std::vector<std::shared_ptr<Entity>> entities;
     EnemySpawner enemySpawner;
@@ -66,6 +68,7 @@ public:
     void run();
     friend std::ostream& operator<<(std::ostream& info, const Game &game);
     static Game& getInstance();
+    int getScore() const;
     Game& operator=(const Game&) = delete;
     Game(const Game&) = delete;
 };

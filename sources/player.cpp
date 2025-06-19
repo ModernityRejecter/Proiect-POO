@@ -14,6 +14,7 @@ Player::Player(const std::string& texturePath, float x, float y, float speed, co
     sprite.setTexture(texture);
     sprite.setPosition({x, y});
     loadWeaponsAttributes();
+    painSound.setVolume(60);
 }
 
 void Player::loadEntityTextures() {

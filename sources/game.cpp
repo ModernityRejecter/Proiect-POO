@@ -13,6 +13,7 @@ Game::Game()
       ammo(0, sf::Vector2f(0, getGlobalBounds().y), sf::Vector2f(282,192)),
       health(0, sf::Vector2f(288, getGlobalBounds().y), sf::Vector2f(342,192)),
       armor(0, sf::Vector2f(1068, getGlobalBounds().y), sf::Vector2f(348,192)),
+      score(0),
       enemySpawner(entities),
       healthSpawner(pickups, 0.2f),
       ammoSpawner(pickups, 0.2f),
@@ -51,7 +52,6 @@ Game::Game()
     enemySpawner.init(playerPtr, getGlobalBounds());
 
     pickupSound.setVolume(50);
-
 }
 
 Game& Game::getInstance() {
@@ -196,6 +196,17 @@ void Game::update(float deltaTime) {
         for (const auto& ent : entities) {
             if (!ent->isAlive()) {
                 deadPositions.push_back(ent->getPosition());
+                if (std::dynamic_pointer_cast<Imp>(ent)) {
+                    score += 20;
+                } else if (std::dynamic_pointer_cast<CyberDemon>(ent)) {
+                    score += 60;
+                } else if (std::dynamic_pointer_cast<Pinky>(ent)) {
+                    score += 40;
+                }
+                else if (std::dynamic_pointer_cast<Player>(ent)) {
+                    states.change(StateID::GameOver);
+                    return;
+                }
             }
         }
         for (const auto& pos : deadPositions) {
@@ -304,4 +315,8 @@ void Game::musicHandler(const sf::Event* event) {
         soundTrack.play();
         soundTrack.setVolume(musicVolume);
     }
+}
+
+int Game::getScore() const {
+    return score;
 }
