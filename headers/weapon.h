@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
-
+#include "../headers/gameException.h"
 
 
 class Weapon {

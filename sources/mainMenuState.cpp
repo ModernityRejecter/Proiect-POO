@@ -1,6 +1,5 @@
 #include "../headers/mainMenuState.h"
-#include "../headers/stateMachine.h"
-#include <iostream>
+
 static constexpr float LOGICAL_WIDTH  = 1920;
 
 MainMenuState::MainMenuState(StateMachine& m)

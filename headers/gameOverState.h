@@ -2,8 +2,6 @@
 
 #include "../headers/gameState.h"
 #include "../headers/stateID.h"
-#include <SFML/Graphics.hpp>
-#include <iostream>
 #include "../headers/game.h"
 
 class GameOverState : public GameState {

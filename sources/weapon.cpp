@@ -1,5 +1,5 @@
 #include "../headers/weapon.h"
-#include "../headers/gameException.h"
+
 
 Weapon::Weapon(const std::string& name,
                const std::string& projPath,

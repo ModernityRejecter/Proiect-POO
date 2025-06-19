@@ -1,6 +1,8 @@
 #pragma once
+
 #include "../headers/gameState.h"
 #include "../headers/stateID.h"
+#include "../headers/stateMachine.h"
 
 class MainMenuState : public GameState {
 public:
