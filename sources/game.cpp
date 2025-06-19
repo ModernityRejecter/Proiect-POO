@@ -321,3 +321,4 @@ int Game::getScore() const {
     return score;
 }
 //am nevoie de ceva fisier editat ca sa pot sa dau commit dupa ce am sters fisierul de sfml-subbuild
+//de data asta am sters si cache-ul la cmake
