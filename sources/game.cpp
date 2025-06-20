@@ -325,3 +325,6 @@ int Game::getScore() const {
 //daca nici acum nu merge imi pierd mintile
 //am nevoie de ajutor o iau razna
 //nu am mai modificat/sters absolut nimic de data asta doar sper intr-un miracol
+//deci initial commit-ul precedent nu mi-a rezolvat problema, credeam ca problema cache-urilor vine de la ce am eu local,
+//am sters cache-urile pentru check-urile de windows si am rerulat check-urile pe acel commit si a mers, acum vreau sa testez
+//daca dand un commit nou tot o sa am probleme sau nu
