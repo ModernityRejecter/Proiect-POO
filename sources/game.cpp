@@ -324,3 +324,4 @@ int Game::getScore() const {
 //de data asta am sters si cache-ul la cmake
 //daca nici acum nu merge imi pierd mintile
 //am nevoie de ajutor o iau razna
+//nu am mai modificat/sters absolut nimic de data asta doar sper intr-un miracol
