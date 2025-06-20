@@ -4,21 +4,31 @@ GameOverState::GameOverState(StateMachine& machine)
     : GameState(machine),
       backgroundTexture("./assets/textures/backgrounds/game_over.png"),
       backgroundSprite(backgroundTexture),
-      font("./assets/fonts/AmazDooMLeft.ttf"),
-      title(font, "GAME OVER", 300),
-      score(font, "score: " + std::to_string(Game::getInstance().getScore()), 300),
-      instruction(font, "press [ enter ] or [ esc ] to accept your eternal damnation", 100)
+      fontLeft("./assets/fonts/AmazDooMLeft.ttf"),
+      fontRight("./assets/fonts/AmazDooMRight.ttf"),
+      textLeft(fontLeft, "Game", 300),
+      textRight(fontRight, "oveR", 300),
+      score(fontLeft, "score: " + std::to_string(Game::getInstance().getScore()), 300),
+      instruction(fontLeft, "press [ enter ] or [ esc ] to accept your eternal damnation", 100)
 {
     backgroundSprite.setPosition({0, 0});
-    title.setOutlineColor(sf::Color::Black);
-    title.setOutlineThickness(3);
-    title.setPosition(
-        {(LOGICAL_WIDTH - title.getLocalBounds().size.x)  / 2.f,
+
+    textLeft.setOutlineColor(sf::Color::Black);
+    textLeft.setOutlineThickness(3);
+    textLeft.setPosition(
+        {(LOGICAL_WIDTH / 2 - textLeft.getLocalBounds().size.x - 40.f),
+        100.f}
+    );
+
+    textRight.setOutlineColor(sf::Color::Black);
+    textRight.setOutlineThickness(3);
+    textRight.setPosition(
+        { (LOGICAL_WIDTH / 2 + 40.f),
         100.f}
     );
 
     score.setOutlineColor(sf::Color::Black);
-    score.setOutlineThickness(2);
+    score.setOutlineThickness(3);
     score.setPosition(
         {(LOGICAL_WIDTH - score.getLocalBounds().size.x)  / 2.f,
         500.f}
@@ -57,7 +67,8 @@ void GameOverState::update(float /*deltaTime*/) {
 
 void GameOverState::draw(sf::RenderWindow& window) {
     window.draw(backgroundSprite);
-    window.draw(title);
+    window.draw(textLeft);
+    window.draw(textRight);
     window.draw(score);
     window.draw(instruction);
 }

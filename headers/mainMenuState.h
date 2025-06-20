@@ -16,7 +16,9 @@ private:
     sf::Font fontLeft;
     sf::Font fontRight;
     sf::Text titleLeft;
+    sf::Text titleLeftExtra;
     sf::Text titleRight;
+    sf::Text titleRightExtra;
     sf::Texture menuTexture;
     sf::Sprite menuSprite;
     sf::Text instruction;

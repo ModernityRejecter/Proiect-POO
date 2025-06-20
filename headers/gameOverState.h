@@ -17,8 +17,10 @@ private:
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
 
-    sf::Font font;
-    sf::Text title;
+    sf::Font fontLeft;
+    sf::Font fontRight;
+    sf::Text textLeft;
+    sf::Text textRight;
     sf::Text score;
     sf::Text instruction;
 
