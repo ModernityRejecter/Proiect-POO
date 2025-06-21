@@ -75,6 +75,12 @@ each and every single one of them with different abilities and archetypes.
 **Note:** I've listed only these two sources, but in reality, I"ve used many others such as Stack Overflow posts to solve bugs, errors, and other issues. If I had mentioned absolutely everything, this README would have become ridiculously long and it's already big enough.
 
 ---
+
+### 7. Technologies Used
+- [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
+  - [OpenAL](https://openal-soft.org/) (LGPL): due to its license, it must be distributed as a shared library
+---
+
 <br><br><br><br>
 ### HOW THE GAME WORKS  
 ---
@@ -96,6 +102,8 @@ each and every single one of them with different abilities and archetypes.
 
 - **End of the game:**
   - When the player's health reaches 0, the game over screen appears with the final score and an option to exit the game.
+---
+
 <br><br><br><br>
 ### CONTROLS
 ---
@@ -108,7 +116,8 @@ each and every single one of them with different abilities and archetypes.
   - `P` to pause or unpause the game
 
 - **Game over screen**  
-  - `ENTER` or `ESCAPE` to exit the game
+  - `ENTER` to restart the game
+  - `ESC` to exit the game
 
 ---
 
@@ -128,6 +137,12 @@ each and every single one of them with different abilities and archetypes.
 
 ---
 
+### 🖱️ Shooting 🖱️
+- `LEFT MOUSE BUTTON` to shoot
+
+**Note:** The weapon fires towards the cursor’s position  
+
+---
 ### 🎵 Music Control 🎵
 - `M` to toggle music on/off  
 - `-` (minus) to lower the music volume  
@@ -206,9 +221,14 @@ fiecare dintre ele având abilități și arhetipuri diferite.
 - **Documentația oficială SFML 3.0:**  
    https://www.sfml-dev.org/documentation/3.0.0/  
 - **Resurse oferite de cadrul didactic:**  
-   https://github.com/mcmarius/poo/tree/master
-
+   https://github.com/mcmarius/poo/tree/master  
+  
 **Notă:** Am menționat doar aceste două resurse, însă în realitate am folosit și altele, precum postări de pe Stack Overflow pentru a rezolva probleme, erori și diverse situații. Dacă ar fi fost să menționez absolut tot, mi-ar fi ieșit un README incredibil de lung și deja e destul de mare.
+  
+---
+### 7. Tehnologii folosite
+- [SFML](https://github.com/SFML/SFML/tree/2.6.1) (Zlib)
+  - [OpenAL](https://openal-soft.org/) (LGPL): din cauza licenței, trebuie distribuită ca shared library
 
 ---
 <br><br><br><br>
@@ -245,7 +265,8 @@ fiecare dintre ele având abilități și arhetipuri diferite.
   - `P` pentru a pune în pauză jocul sau pentru a ieși din pauză
 
 - **Meniu de sfârșit**  
-  - `ENTER` sau `ESCAPE` oprește jocul
+  - `ENTER` pentru a reîncepe jocul
+  - `ESC` pentru a opri jocul
 
 ---
 
@@ -262,6 +283,13 @@ fiecare dintre ele având abilități și arhetipuri diferite.
 - `2` pentru a echipa Rocket Launcher  
 - `3` pentru a echipa Chaingun  
 - `4` pentru a echipa BFG9000
+
+---
+
+### 🖱️ Tragere 🖱️
+- `MOUSE STÂNG` pentru a trage
+
+**Notă:** arma trage în punctul în care este situat cursorul
 
 ---
 
