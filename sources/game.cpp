@@ -140,8 +140,6 @@ void Game::processEvents() {
 
 void Game::update(float deltaTime) {
     states.update(deltaTime);
-    if (entities.size() <= 0)
-        throw EntityVectorException("0 entities left");
 
     if (states.getCurrentState()->getID() == StateID::Play) {
         if (!entities.empty()) {
@@ -154,6 +152,9 @@ void Game::update(float deltaTime) {
                 health.hudUpdate(playerPtr->getHealth());
                 armor.hudUpdate(playerPtr->getPlayerArmor());
             }
+        }
+        else {
+            throw EntityVectorException("0 entities left");
         }
 
         for (const auto& ent : entities) {
