@@ -11,6 +11,9 @@ void StateMachine::change(StateID id) {
     if (currentState && currentState->getID() == StateID::Pause && id == StateID::MainMenu) {
         throw StateTransitionException("cannot go from Pause directly to MainMenu");
     }
+    if (id == StateID::GameOver) {
+        states[id] = std::make_unique<GameOverState>(*this);
+    }
     if (!states.contains(id)) {
         switch (id) {
             case StateID::MainMenu:
@@ -22,12 +25,16 @@ void StateMachine::change(StateID id) {
             case StateID::Pause:
                 states[id] = std::make_unique<PauseState>(*this);
             break;
-            case StateID::GameOver:
-                states[id] = std::make_unique<GameOverState>(*this);
-            break;
+            default:
+                break;
         }
     }
     currentState = states[id].get();
+    if (id == StateID::GameOver) {
+        if (auto gos = dynamic_cast<GameOverState*>(currentState)) {
+            gos->reset();
+        }
+    }
 }
 
 void StateMachine::update(float deltaTime) const {

@@ -14,14 +14,22 @@ class PickupSpawnerTpl {
     std::uniform_int_distribution<int> amtDist{ 1, 3 };
     float spawnChance;
     std::vector<std::unique_ptr<Pickup>>& list;
+    float elapsedSinceLast;
 
 public:
     explicit PickupSpawnerTpl(std::vector<std::unique_ptr<Pickup>>& outList,
                      float chance = 0.3f)
-        : spawnChance(chance), list(outList) {}
+        : spawnChance(chance), list(outList), elapsedSinceLast(0) {
+    }
 
     void trySpawn(const sf::Vector2f& pos) {
         if (chanceDist(rng) > spawnChance) return;
         list.push_back(std::make_unique<P>(pos));
+    }
+
+    void reset() {
+        elapsedSinceLast = 0.f;
+        rng.seed(std::random_device{}());
+        list.clear();
     }
 };

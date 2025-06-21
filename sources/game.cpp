@@ -258,7 +258,6 @@ void Game::render() {
     window.display();
 }
 
-
 void Game::musicHandler(const sf::Event* event) {
     if (window.hasFocus()) {
         if (event->is<sf::Event::KeyReleased>() &&
@@ -309,11 +308,32 @@ void Game::musicHandler(const sf::Event* event) {
 int Game::getScore() const {
     return score;
 }
-//am nevoie de ceva fisier editat ca sa pot sa dau commit dupa ce am sters fisierul de sfml-subbuild
-//de data asta am sters si cache-ul la cmake
-//daca nici acum nu merge imi pierd mintile
-//am nevoie de ajutor o iau razna
-//nu am mai modificat/sters absolut nimic de data asta doar sper intr-un miracol
-//deci initial commit-ul precedent nu mi-a rezolvat problema, credeam ca problema cache-urilor vine de la ce am eu local,
-//am sters cache-urile pentru check-urile de windows si am rerulat check-urile pe acel commit si a mers, acum vreau sa testez
-//daca dand un commit nou tot o sa am probleme sau nu
+
+void Game::reset() {
+    score = 0;
+
+    entities.clear();
+    pickups.clear();
+
+    Player::loadEntityTextures();
+    Imp::loadEntityTextures();
+    CyberDemon::loadEntityTextures();
+    Pinky::loadEntityTextures();
+
+    auto playerPtr = std::make_shared<Player>(
+        "./assets/textures/player/idle/sprite_1_1.png",
+        LOGICAL_WIDTH / 2 - 28, LOGICAL_HEIGHT / 2 - 28, 300.f,
+        "./assets/sounds/player_hurt.wav"
+    );
+    entities.push_back(playerPtr);
+    ammo.hudUpdate(playerPtr->getWeaponMaxAmmo());
+    health.hudUpdate(playerPtr->getHealth());
+    armor.hudUpdate(playerPtr->getPlayerArmor());
+
+    enemySpawner.init(playerPtr, getGlobalBounds());
+    healthSpawner.reset();
+    ammoSpawner.reset();
+    armorSpawner.reset();
+
+    pickupSound.setVolume(50);
+}

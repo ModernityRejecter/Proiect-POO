@@ -8,11 +8,6 @@ Drawable::Drawable(const std::string& texturePath, const sf::Vector2f& position)
     }
 }
 
-void Drawable::setPosition(sf::Vector2f pos) {
-    position.x = pos.x;
-    position.y = pos.y;
-}
-
 void Drawable::draw(sf::RenderWindow& window) const {
     window.draw(sprite);
 }

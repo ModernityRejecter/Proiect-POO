@@ -26,6 +26,7 @@ Imp::Imp(const sf::Vector2f& position,
         throw TextureLoadException(path);
     }
     sprite.setPosition(position);
+    attackSound.setVolume(30);
 }
 
 void Imp::loadEntityTextures() {

@@ -12,6 +12,7 @@ public:
     void update(float deltaTime) override;
     void draw(sf::RenderWindow& window) override;
     StateID getID() const override;
+    void reset();
 
 private:
     sf::Texture backgroundTexture;

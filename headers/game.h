@@ -71,4 +71,6 @@ public:
     int getScore() const;
     Game& operator=(const Game&) = delete;
     Game(const Game&) = delete;
+    void reset();
+
 };

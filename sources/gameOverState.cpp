@@ -8,9 +8,11 @@ GameOverState::GameOverState(StateMachine& machine)
       fontRight("./assets/fonts/AmazDooMRight.ttf"),
       textLeft(fontLeft, "Game", 300),
       textRight(fontRight, "oveR", 300),
-      score(fontLeft, "score: " + std::to_string(Game::getInstance().getScore()), 300),
-      instruction(fontLeft, "press [ enter ] or [ esc ] to accept your eternal damnation", 100)
+      score(fontLeft, "score: ", 300),
+      instruction(fontLeft, "press [ enter ] to rise from the depths of hell\npress [ esc ] to accept your eternal damnation", 100)
+
 {
+    reset();
     backgroundSprite.setPosition({0, 0});
 
     textLeft.setOutlineColor(sf::Color::Black);
@@ -30,22 +32,27 @@ GameOverState::GameOverState(StateMachine& machine)
     score.setOutlineColor(sf::Color::Black);
     score.setOutlineThickness(3);
     score.setPosition(
-        {(LOGICAL_WIDTH - score.getLocalBounds().size.x)  / 2.f,
+        {(LOGICAL_WIDTH - score.getLocalBounds().size.x) / 2.f,
         500.f}
     );
 
     instruction.setOutlineColor(sf::Color::Black);
     instruction.setOutlineThickness(2);
     instruction.setPosition(
-        {(LOGICAL_WIDTH - instruction.getLocalBounds().size.x)  / 2.f,
-        900.f}
+        {(LOGICAL_WIDTH - instruction.getLocalBounds().size.x) / 2.f,
+        850.f}
     );
 }
 
 void GameOverState::handleEvent(sf::Event* event) {
     if (event->is<sf::Event::KeyPressed>()) {
         auto code = event->getIf<sf::Event::KeyPressed>()->scancode;
-        if (code == sf::Keyboard::Scan::Enter || code == sf::Keyboard::Scan::Escape) {
+        if (code == sf::Keyboard::Scan::Enter) {
+            sound.play();
+            Game::getInstance().reset();
+            machine.change(StateID::MainMenu);
+        }
+        else if (code == sf::Keyboard::Scan::Escape) {
             std::exit(0);
         }
     }
@@ -75,4 +82,8 @@ void GameOverState::draw(sf::RenderWindow& window) {
 
 StateID GameOverState::getID() const {
     return StateID::GameOver;
+}
+
+void GameOverState::reset() {
+    score.setString("score: " + std::to_string(Game::getInstance().getScore()));
 }
