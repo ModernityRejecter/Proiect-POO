@@ -10,7 +10,6 @@ protected:
     virtual void tryToShoot();
     void move(float deltaTime) override;
     void draw(sf::RenderWindow& window) const override;
-    std::vector<std::shared_ptr<Projectile>> projectiles;
     sf::Texture projectileTexture;
     sf::Clock shootClock;
     float shootInterval;
@@ -35,6 +34,5 @@ public:
                    const std::string& soundPath,
                    const std::string& attackSoundPath);
     ~Enemy() override = default;
-    std::vector<std::shared_ptr<Projectile>>& getProjectiles() override;
     virtual std::unique_ptr<Entity> clone() const = 0;
 };

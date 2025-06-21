@@ -19,7 +19,7 @@ Player::Player(const std::string& texturePath, float x, float y, float speed, co
 
 void Player::loadEntityTextures() {
     std::string basePath = "./assets/textures/player/";
-    std::string prefix   = "sprite_";
+    std::string prefix = "sprite_";
     for (int i = 1; i <= 8; i++) {
         for (int j = 1; j <= 2; j++) {
             sf::Texture texture = sf::Texture(basePath + "idle/" + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png");
@@ -135,10 +135,6 @@ void Player::shootingAnimation() {
     shotClock.restart();
     textureIndex = 2;
     sprite.setTexture(entityTextures[directionIndex + 8][textureIndex]);
-}
-
-std::vector<std::shared_ptr<Projectile>>& Player::getProjectiles() {
-    return projectiles;
 }
 
 void Player::draw(sf::RenderWindow& window) const {

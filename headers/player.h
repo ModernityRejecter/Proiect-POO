@@ -14,7 +14,6 @@ private:
     sf::Clock shotClock;
     bool isShooting;
     std::vector<Weapon> weapons;
-    std::vector<std::shared_ptr<Projectile>> projectiles;
     size_t currentWeaponIndex;
     static std::unordered_map<int, std::unordered_map<int, sf::Texture>> entityTextures;
     const int updateTime = 300;
@@ -30,7 +29,6 @@ public:
     Player(const std::string& texturePath, float x, float y, float speed, const std::string& soundPath);
     ~Player() override = default;
 
-    std::vector<std::shared_ptr<Projectile>>& getProjectiles() override;
     void draw(sf::RenderWindow& window) const override;
     int getWeaponAmmoCount() const;
     int getWeaponMaxAmmo() const;

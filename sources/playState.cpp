@@ -7,7 +7,7 @@ PlayState::PlayState(StateMachine& m)
 void PlayState::handleEvent(sf::Event* event) {
     if (event->is<sf::Event::KeyPressed>()) {
         const auto* keyEvent = event->getIf<sf::Event::KeyPressed>();
-        if (keyEvent && keyEvent->scancode == sf::Keyboard::Scan::P && dynamic_cast<PlayState*>(machine.getCurrentState())->getID() == StateID::Play) {
+        if (keyEvent && keyEvent->scancode == sf::Keyboard::Scan::P && machine.getCurrentState()->getID() == StateID::Play) {
             sound.play();
             machine.change(StateID::Pause);
         }

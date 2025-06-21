@@ -27,6 +27,7 @@ protected:
     int damageReduction;
     sf::SoundBuffer painSoundBuffer;
     sf::Sound painSound;
+    std::vector<std::shared_ptr<Projectile>> projectiles;
 
     explicit Entity(const std::string& texturePath,
                     const std::string& soundPath,

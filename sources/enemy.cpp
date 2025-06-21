@@ -90,7 +90,3 @@ void Enemy::move(float deltaTime) {
         position = sprite.getPosition();
     }
 }
-
-std::vector<std::shared_ptr<Projectile>>& Enemy::getProjectiles() {
-    return projectiles;
-}

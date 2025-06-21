@@ -106,8 +106,7 @@ void Entity::move(float /*deltaTime*/) {
 }
 
 std::vector<std::shared_ptr<Projectile>>& Entity::getProjectiles() {
-    static std::vector<std::shared_ptr<Projectile>> emptyList;
-    return emptyList;
+    return projectiles;
 }
 
 void Entity::idleAnimation(std::unordered_map<int, std::unordered_map<int, sf::Texture>>& entityTextures, int updateTime) {
