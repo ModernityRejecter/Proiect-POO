@@ -23,9 +23,9 @@ public:
     explicit SoundLoadException(const std::string& path);
 };
 
-class PlayerLoadException : public GameException {
+class EntityVectorException : public GameException {
 public:
-    explicit PlayerLoadException();
+    explicit EntityVectorException(const std::string& path);
 };
 
 class ProjectileException : public GameException {

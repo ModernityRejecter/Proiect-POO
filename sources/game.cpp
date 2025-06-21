@@ -48,8 +48,6 @@ Game::Game()
         LOGICAL_WIDTH / 2 - 28, LOGICAL_HEIGHT / 2 - 28, 300.f,
         "./assets/sounds/player_hurt.wav"
     );
-    if (!playerPtr)
-        throw PlayerLoadException();
     entities.push_back(playerPtr);
 
     ammo.hudUpdate(playerPtr->getWeaponMaxAmmo());
@@ -142,6 +140,8 @@ void Game::processEvents() {
 
 void Game::update(float deltaTime) {
     states.update(deltaTime);
+    if (entities.size() <= 0)
+        throw EntityVectorException("0 entities left");
 
     if (states.getCurrentState()->getID() == StateID::Play) {
         if (!entities.empty()) {
