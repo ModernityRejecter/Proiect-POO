@@ -28,9 +28,9 @@ public:
     explicit EntityVectorException(const std::string& path);
 };
 
-class ProjectileException : public GameException {
+class StateTransitionException : public GameException {
 public:
-    explicit ProjectileException(const std::string& msg);
+    explicit StateTransitionException(const std::string& msg);
 };
 
 class WeaponException : public GameException {

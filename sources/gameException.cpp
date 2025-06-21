@@ -14,6 +14,6 @@ SoundLoadException::SoundLoadException(const std::string &path): GameException("
 
 EntityVectorException::EntityVectorException(const std::string& path): GameException("Invalid amount of entities: " + path) {}
 
-ProjectileException::ProjectileException(const std::string &msg): GameException("Projectile error: " + msg) {}
+StateTransitionException::StateTransitionException(const std::string &msg): GameException("Invalid state change: " + msg) {}
 
 WeaponException::WeaponException(const std::string &msg): GameException("Weapon error: " + msg) {}

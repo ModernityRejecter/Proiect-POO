@@ -5,6 +5,12 @@
 #include "../headers/gameOverState.h"
 
 void StateMachine::change(StateID id) {
+    if (currentState && currentState->getID() == id) {
+        throw StateTransitionException("already in state " + std::to_string(static_cast<int>(id)));
+    }
+    if (currentState && currentState->getID() == StateID::Pause && id == StateID::MainMenu) {
+        throw StateTransitionException("cannot go from Pause directly to MainMenu");
+    }
     if (!states.contains(id)) {
         switch (id) {
             case StateID::MainMenu:

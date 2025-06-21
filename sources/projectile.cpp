@@ -25,9 +25,6 @@ Projectile::Projectile(const sf::Texture& texture,
 
     sf::Vector2f vec{ targetX - startX, targetY - startY };
     float length = std::sqrt(vec.x * vec.x + vec.y * vec.y);
-    if (length == 0.f) {
-        throw ProjectileException("zero-length direction vector");
-    }
     direction = vec / length;
 
     std::random_device rd;
