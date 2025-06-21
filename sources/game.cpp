@@ -21,10 +21,15 @@ Game::Game()
       pickupSoundBuffer("./assets/sounds/pickup.wav"),
       pickupSound(pickupSoundBuffer)
 {
-    Player::loadEntityTextures();
-    Imp::loadEntityTextures();
-    CyberDemon::loadEntityTextures();
-    Pinky::loadEntityTextures();
+    try {
+        Player::loadEntityTextures();
+        Imp::loadEntityTextures();
+        CyberDemon::loadEntityTextures();
+        Pinky::loadEntityTextures();
+    }
+    catch (const TextureLoadException &e) {
+        std::cout << "[Texture Load Error] " << e.what() << std::endl;
+    }
 
     window.setView(view);
     onResize(static_cast<float>(window.getSize().x), static_cast<float>(window.getSize().y));
@@ -43,6 +48,8 @@ Game::Game()
         LOGICAL_WIDTH / 2 - 28, LOGICAL_HEIGHT / 2 - 28, 300.f,
         "./assets/sounds/player_hurt.wav"
     );
+    if (!playerPtr)
+        throw PlayerLoadException();
     entities.push_back(playerPtr);
 
     ammo.hudUpdate(playerPtr->getWeaponMaxAmmo());
@@ -150,13 +157,7 @@ void Game::update(float deltaTime) {
         }
 
         for (const auto& ent : entities) {
-            try {
                 ent->update(deltaTime);
-            }
-            catch (const GameException& e) {
-                std::cout << "[Entity Update Error] " << e.what() << std::endl;
-                ent->setHealth(0);
-            }
         }
 
         for (auto& ent : entities) {
@@ -176,16 +177,7 @@ void Game::update(float deltaTime) {
                     }
                     if (!targetEnt->isAlive()) continue;
                     if (p->getBounds().findIntersection(targetEnt->getBounds())) {
-                        try {
-                            targetEnt->takeDamage(p->getDamage());
-                        }
-                        catch (const EntityStateException& e) {
-                            std::cout << "[EntityStateException] " << e.what() << std::endl;
-                            targetEnt->setHealth(0);
-                        }
-                        catch (const GameException& e) {
-                            std::cout << "[GameException] " << e.what() << std::endl;
-                        }
+                        targetEnt->takeDamage(p->getDamage());
                         p->deactivate();
                         break;
                     }
@@ -195,15 +187,11 @@ void Game::update(float deltaTime) {
         std::vector<sf::Vector2f> deadPositions;
         for (const auto& ent : entities) {
             if (!ent->isAlive()) {
-                deadPositions.push_back(ent->getPosition());
-                if (std::dynamic_pointer_cast<Imp>(ent)) {
-                    score += 20;
-                } else if (std::dynamic_pointer_cast<CyberDemon>(ent)) {
-                    score += 60;
-                } else if (std::dynamic_pointer_cast<Pinky>(ent)) {
-                    score += 40;
+                if (ent->onDeath() > 0) {
+                    deadPositions.push_back(ent->getPosition());
+                    score += ent->onDeath();
                 }
-                else if (std::dynamic_pointer_cast<Player>(ent)) {
+                else {
                     states.change(StateID::GameOver);
                     return;
                 }

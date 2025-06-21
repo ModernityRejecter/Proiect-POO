@@ -130,3 +130,7 @@ void CyberDemon::update(float deltaTime) {
 std::unique_ptr<Entity> CyberDemon::clone() const {
     return std::make_unique<CyberDemon>(*this);
 }
+
+int CyberDemon::onDeath() {
+    return 60;
+}

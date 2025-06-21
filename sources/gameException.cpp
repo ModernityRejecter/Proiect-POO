@@ -12,7 +12,7 @@ TextureLoadException::TextureLoadException(const std::string &path): GameExcepti
 
 SoundLoadException::SoundLoadException(const std::string &path): GameException("Failed to load sound: " + path) {}
 
-EntityStateException::EntityStateException(const std::string &msg): GameException("Entity state error: " + msg) {}
+PlayerLoadException::PlayerLoadException(): GameException("Failed to load player ") {}
 
 ProjectileException::ProjectileException(const std::string &msg): GameException("Projectile error: " + msg) {}
 

@@ -38,4 +38,5 @@ public:
     static void loadEntityTextures();
     void addAmmo();
     friend std::ostream& operator<<(std::ostream& info, const Player& player);
+    int onDeath() override;
 };

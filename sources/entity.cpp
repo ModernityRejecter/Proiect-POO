@@ -40,7 +40,7 @@ void Entity::takeDamage(int amount) {
         health -= amount;
     }
 
-    if (health < 0) throw EntityStateException("health below zero");
+    if (health < 0) health = 0;
     if (armor < 0) armor = 0;
 }
 

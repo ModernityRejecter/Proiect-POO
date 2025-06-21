@@ -9,21 +9,21 @@ void Hud::loadDigitTextures() {
     if(!allDigits[1].loadFromFile("./assets/textures/hud/b1.png"))
         std::cerr << "Eroare la incarcarea b1.png\n";
     if(!allDigits[2].loadFromFile("./assets/textures/hud/b2.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b2.png\n";
     if(!allDigits[3].loadFromFile("./assets/textures/hud/b3.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b3.png\n";
     if(!allDigits[4].loadFromFile("./assets/textures/hud/b4.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b4.png\n";
     if(!allDigits[5].loadFromFile("./assets/textures/hud/b5.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b5.png\n";
     if(!allDigits[6].loadFromFile("./assets/textures/hud/b6.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b6.png\n";
     if(!allDigits[7].loadFromFile("./assets/textures/hud/b7.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b7.png\n";
     if(!allDigits[8].loadFromFile("./assets/textures/hud/b8.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b8.png\n";
     if(!allDigits[9].loadFromFile("./assets/textures/hud/b9.png"))
-        std::cerr << "Eroare la incarcarea b1.png\n";
+        std::cerr << "Eroare la incarcarea b9.png\n";
     if(!allDigits[10].loadFromFile("./assets/textures/hud/b%.png"))
         std::cerr << "Eroare la incarcarea b%.png\n";
 }

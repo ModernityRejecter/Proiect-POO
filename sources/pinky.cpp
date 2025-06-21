@@ -40,7 +40,8 @@ void Pinky::loadEntityTextures() {
     for (int i = 1; i <= 8; ++i) {
         for (int j = 1; j <= 2; ++j) {
             sf::Texture tex;
-            std::ignore = tex.loadFromFile(basePath + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png");
+            if (!tex.loadFromFile(basePath + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png"))
+                throw TextureLoadException(basePath + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png");
             entityTextures[i][j] = tex;
         }
     }
@@ -150,4 +151,8 @@ void Pinky::tryToShoot() {
 
 std::unique_ptr<Entity> Pinky::clone() const {
     return std::make_unique<Pinky>(*this);
+}
+
+int Pinky::onDeath() {
+    return 40;
 }

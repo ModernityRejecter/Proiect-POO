@@ -51,4 +51,5 @@ public:
     virtual void update(float deltaTime) = 0;
     virtual void playPainSound();
     virtual std::vector<std::shared_ptr<Projectile>>& getProjectiles();
+    virtual int onDeath() = 0;
 };

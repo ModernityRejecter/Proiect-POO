@@ -30,11 +30,13 @@ Imp::Imp(const sf::Vector2f& position,
 
 void Imp::loadEntityTextures() {
     std::string basePath = "./assets/textures/enemies/imp/";
-    std::string prefix   = "sprite_";
+    std::string prefix = "sprite_";
     for (int i = 1; i <= 8; i++) {
         for (int j = 1; j <= 2; j++) {
-            sf::Texture texture = sf::Texture(basePath + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png");
-            entityTextures[i][j] = texture;
+            sf::Texture tex;
+            if (!tex.loadFromFile(basePath + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png"))
+                throw TextureLoadException(basePath + prefix + std::to_string(i) + "_" + std::to_string(j) + ".png");
+            entityTextures[i][j] = tex;
         }
     }
 }
@@ -66,3 +68,6 @@ std::unique_ptr<Entity> Imp::clone() const {
     return std::make_unique<Imp>(*this);
 }
 
+int Imp::onDeath() {
+    return 20;
+}

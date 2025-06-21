@@ -41,9 +41,6 @@ Projectile Weapon::createProjectile(float startX,
                                     float targetY,
                                     const std::shared_ptr<Entity> &ownerPtr)
 {
-    if (ammoCount <= 0) {
-        throw WeaponException("Invalid amount of ammo");
-    }
     ammoCount -= 1;
     return Projectile(projectileTexture,
                       startX,

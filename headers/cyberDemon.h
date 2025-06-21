@@ -37,4 +37,5 @@ public:
     static void loadEntityTextures();
     void update(float deltaTime) override;
     std::unique_ptr<Entity> clone() const override;
+    int onDeath() override;
 };
