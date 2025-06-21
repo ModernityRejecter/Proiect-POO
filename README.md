@@ -72,7 +72,7 @@ each and every single one of them with different abilities and archetypes.
 - **Resources provided by the course instructor:**  
    https://github.com/mcmarius/poo/tree/master
 
-**Note:** I've listed only these two sources, but in reality, I"ve used many others such as Stack Overflow posts to solve bugs, errors, and other issues. If I had mentioned absolutely everything, this README would have become ridiculously long and it's already big enough.
+**Note:** I've listed only these two sources, but in reality, I've used many others such as Stack Overflow posts to solve bugs, errors, and other issues. If I had mentioned absolutely everything, this README would have become ridiculously long and it's already big enough.
 
 ---
 
